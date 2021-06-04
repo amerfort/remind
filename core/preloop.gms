@@ -134,5 +134,7 @@ pm_demPeBio(ttot,regi) =
     vm_demPe.l(ttot,regi,enty,enty2,te))
 ;
 
+!! all net negative co2luc
+p_macBaseMagpieNegCo2(t,regi) = p_macBaseMagpie(t,regi,"co2luc")$(p_macBaseMagpie(t,regi,"co2luc") < 0);
 
 *** EOF ./core/preloop.gms
