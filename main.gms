@@ -567,7 +567,7 @@ cm_districtHeatingMkup_build = 12; !! def = 25
 
 c_BaselineAgriEmiRedDEU = 0; !! def = 0
 
-c_deuCDRmax = -1 !! def = -1
+c_deuCDRmax = -1; !! def = -1
 
 *** --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ***                           YOU ARE IN THE WARNING ZONE (DON'T DO CHANGES HERE)
