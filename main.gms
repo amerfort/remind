@@ -341,6 +341,7 @@ cm_heatPumpMkup_build       "switch for cost markup for using heat pumps in simp
 cm_districtHeatingMkup_build "switch for cost markup for using district heat in simple buildings module"   
 c_BaselineAgriEmiRedDEU     "switch to lower agricultural base line emissions in Germany by the value assigned to it"
 c_deuCDRmax                 "switch to limit maximum annual CDR amount in Germany in MtCO2 per y"
+c_deuCCSmax                "switch to limit maximum annual CCS amount in Germany in MtCO2 per y"
 ;
 
 *** --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -531,6 +532,7 @@ $setGlobal cm_demTcomplex  temporary_trend !! def = temporary_trend
 
 c_noPeFosCCDeu = 1; !! def 0
 
+c_deuCCSmax = -1; !! def -1
 
 cm_HeatLim_b = 1; !! def 1
 cm_ElLim_b = 1; !! def 1
