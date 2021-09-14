@@ -44,6 +44,7 @@
     + sum(emiMkt, v21_taxemiMkt(t,regi,emiMkt))  
     + v21_taxrevFlex(t,regi)
     + v21_taxrevBioImport(t,regi)  
+    + v21_taxrevCDR(t,regi)
 $ifthen.cm_implicitFE not "%cm_implicitFE%" == "off"
     + vm_taxrevimplFETax(t,regi)
 $endif.cm_implicitFE    
@@ -223,5 +224,13 @@ q21_taxrevBioImport(t,regi)..
   p21_tau_BioImport(t,regi) * pm_pvp(t,"pebiolc") / pm_pvp(t,"good") * vm_Mport(t,regi,"pebiolc")
     - p21_taxrevBioImport0(t,regi)
 ;
+
+***---------------------------------------------------------------------------
+*'  Calculation of CDR revenues: tax rate (defined as fraction of carbon price) times net-negative emissions
+*'  Documentation of overall tax approach is above at q21_taxrev.
+***---------------------------------------------------------------------------
+q21_taxrevCDR(t,regi)..
+v21_taxrevCDR(t,regi) =e=  cm_frac_CDRrevenue * pm_taxCO2eq(t,regi) * vm_emiCdrAll(t,regi)
+                                 - p21_taxrevCDR0(t,regi);
 
 *** EOF ./modules/21_tax/on/equations.gms

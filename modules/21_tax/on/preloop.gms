@@ -152,6 +152,7 @@ vm_flexAdj.l(ttot,all_regi,all_te) = 0;
 *** FS: set market price of good to non-zero to avoid division by zero in first iteration
 pm_pvp(ttot,"good")$(pm_pvp(ttot,"good") = 0) = sm_eps;
 
-
+*AM initialize CDR tax
+v21_taxrevCDR.l(ttot,regi) = 0;
 
 *** EOF ./modules/21_tax/on/preloop.gms

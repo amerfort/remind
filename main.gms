@@ -83,9 +83,9 @@
 * 
 * Regionscode: 62eff8f7
 * 
-* Input data revision: 6.2413
+* Input data revision: 6.25
 * 
-* Last modification (input data): Mon Sep  6 15:38:51 2021
+* Last modification (input data): Tue Sep 14 12:12:54 2021
 * 
 *###################### R SECTION END (VERSION INFO) ###########################
 
@@ -294,6 +294,7 @@ cm_damages_SccHorizon               "Horizon for SCC calculation. Damages cm_dam
 cm_carbonprice_temperatureLimit "not-to-exceed temperature target in degree above pre-industrial"
 cm_frac_CCS          "tax on CCS to reflect risk of leakage, formulated as fraction of ccs O&M costs"
 cm_frac_NetNegEmi    "tax on CDR to reflect risk of overshooting, formulated as fraction of carbon price"
+cm_frac_CDRrevenue   "fraction (of the carbon price) by which the revenues for CDR get reduced (or enhanced for negative values)"
 
 cm_DiscRateScen          "Scenario for the implicit discount rate applied to the energy efficiency capital"
 cm_noReboundEffect      "Switch for allowing a rebound effect when closing the efficiency gap (cm_DiscRateScen)"
@@ -472,6 +473,7 @@ cm_trdcst            = 1.5;  !! def = 1.5
 c_refcapbnd          = 0;    !! def = 0
 cm_frac_CCS          = 10;   !! def = 10
 cm_frac_NetNegEmi    = 0.5;  !! def = 0.5
+cm_frac_CDRrevenue   = 0;    !! def = 0
 
 cm_damages_BurkeLike_specification    = 0;     !! def = 0
 cm_damages_BurkeLike_persistenceTime  = 30;    !! def = 30
