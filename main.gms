@@ -85,7 +85,7 @@
 * 
 * Input data revision: 6.25
 * 
-* Last modification (input data): Tue Sep 14 12:12:54 2021
+* Last modification (input data): Wed Sep 29 17:41:06 2021
 * 
 *###################### R SECTION END (VERSION INFO) ###########################
 
@@ -140,7 +140,7 @@ option profile = 0;
 
 
 ***---------------------    Run name    -----------------------------------------
-$setGlobal c_expname  default
+$setGlobal c_expname  SSP2-4targets_3_500
 
 ***------------------------------------------------------------------------------
 ***                           MODULES
@@ -165,7 +165,7 @@ $setGlobal growth  exogenous          !! def = exogenous
 ***---------------------    21_tax    -------------------------------------------
 $setGlobal tax  on                    !! def = on
 ***---------------------    22_subsidizeLearning    -----------------------------
-$setGlobal subsidizeLearning  off     !! def = off
+$setGlobal subsidizeLearning  globallyOptimal     !! def = off
 ***---------------------    23_capitalMarket    -----------------------------
 $setGlobal capitalMarket  debt_limit     !! def = debt_limit
 ***---------------------    24_trade    -----------------------------------------
@@ -191,13 +191,13 @@ $setglobal industry  fixed_shares     !! def = simple
 ***---------------------    39_CCU    --------------------------------------
 $setglobal CCU  on !! def = on
 ***---------------------    40_techpol  -----------------------------------------
-$setglobal techpol  none              !! def = none
+$setglobal techpol  NDC2018              !! def = none
 ***---------------------    41_emicapregi  --------------------------------------
 $setglobal emicapregi  none           !! def = none
 ***---------------------    42_banking  -----------------------------------------
 $setglobal banking  off               !! def = off
 ***---------------------    45_carbonprice  -------------------------------------
-$setglobal carbonprice  none          !! def = none
+$setglobal carbonprice  diffCurvPhaseIn2Lin          !! def = none
 ***---------------------    47_regipol  -------------------------------------
 $setglobal regipol  none              !! def = none
 ***---------------------    50_damages    ---------------------------------------
@@ -205,7 +205,7 @@ $setGlobal damages  off               !! def = off
 ***---------------------    51_internalizeDamages    ---------------------------------------
 $setGlobal internalizeDamages  off               !! def = off
 ***---------------------    70_water  -------------------------------------------
-$setglobal water  off                 !! def = off
+$setglobal water  heat                 !! def = off
 ***---------------------    80_optimization    ----------------------------------
 $setGlobal optimization  nash         !! def = nash
 ***---------------------    81_codePerformance    -------------------------------
@@ -294,7 +294,17 @@ cm_damages_SccHorizon               "Horizon for SCC calculation. Damages cm_dam
 cm_carbonprice_temperatureLimit "not-to-exceed temperature target in degree above pre-industrial"
 cm_frac_CCS          "tax on CCS to reflect risk of leakage, formulated as fraction of ccs O&M costs"
 cm_frac_NetNegEmi    "tax on CDR to reflect risk of overshooting, formulated as fraction of carbon price"
-cm_frac_CDRrevenue   "fraction (of the carbon price) by which the revenues for CDR get reduced (or enhanced for negative values)"
+
+!! Annes Switches for 4 target analysis
+c_frac_CDR_revenue   "Scales CDR revenues as fraction or multiple of co2 price"
+c_cap_CDR_revenue   "Caps CDR revenues so they dont exceed given value in $ per tCO2"
+cm_seperateCDRco2price "switch to seperate CDR revenues from co2 price"
+c_target2050co2     "global co2 emission year target in 2050"
+c_target2100co2     "global co2 emission year target in 2100"
+c_target2050cdr     "global cdr emission year target in 2050"
+c_target2100cdr     "global cdr emission year target in 2100"
+
+
 
 cm_DiscRateScen          "Scenario for the implicit discount rate applied to the energy efficiency capital"
 cm_noReboundEffect      "Switch for allowing a rebound effect when closing the efficiency gap (cm_DiscRateScen)"
@@ -358,9 +368,9 @@ c_keep_iteration_gdxes = 0;     !! def = 0
 cm_nash_autoconverge   = 1;     !! def = 1
 $setglobal cm_MAgPIE_coupling  off     !! def = "off"
 
-cm_emiscen        = 1;         !! def = 1
-$setglobal cm_rcp_scen  none   !! def = "none"
-cm_co2_tax_2020   = -1;        !! def = -1
+cm_emiscen        = 9;         !! def = 1
+$setglobal cm_rcp_scen  rcp20   !! def = "none"
+cm_co2_tax_2020   = 200;        !! def = -1
 cm_co2_tax_growth = 1.05;      !! def = 1.05
 c_macscen         = 1;         !! def = 1
 
@@ -396,7 +406,7 @@ $setglobal c_GDPpcScen  SSP2     !! def = gdp_SSP2   (automatically adjusted by 
 cm_GDPcovid      = 0;            !! def = 0
 
 *AG* and *CB* for cm_startyear greater than 2005, you have to copy the fulldata.gdx (rename it to: input_ref.gdx) from the run you want to build your new run onto.
-cm_startyear      = 2005;      !! def = 2005 for a BAU, 2015 for policy runs
+cm_startyear      = 2025;      !! def = 2005 for a BAU, 2015 for policy runs
 c_start_budget    = 2100;      !! def = 2100
 
 cm_prtpScen         = 3;         !! def = 3
@@ -426,7 +436,7 @@ c_techAssumptScen     = 1;         !! def = 1
 c_ccsinjecratescen    = 1;         !! def = 1
 c_ccscapratescen      = 1;         !! def = 1
 c_export_tax_scen     = 0;         !! def = 0
-cm_iterative_target_adj  = 0;      !! def = 0
+cm_iterative_target_adj  = 10;      !! def = 0
 cm_gdximport_target      = 0;      !! def = 0
 $setglobal c_SSP_forcing_adjust  forcing_SSP2   !! def = forcing_SSP2
 $setglobal c_delayPolicy  SPA0           !! def = SPA0
@@ -437,12 +447,12 @@ cm_expoLinear_yearStart  = 2050;   !! def = 2050
 c_budgetCO2FFI           = 1000;   !! def = 1000
 c_abtrdy                 = 2010;   !! def = 2010
 c_abtcst                 = 1;      !! def = 1
-c_budgetCO2              = 1350;   !! def = 1300
+c_budgetCO2              = 900;   !! def = 1300
 $setGlobal cm_regiCO2target  off   !! def = off
 cm_postTargetIncrease    = 2;      !! def = 2
 $setGlobal cm_quantity_regiCO2target  off !! def = off
-cm_peakBudgYr            = 2050;   !! def = 2050
-cm_taxCO2inc_after_peakBudgYr = 2; !! def = 2
+cm_peakBudgYr            = 2045;   !! def = 2050
+cm_taxCO2inc_after_peakBudgYr = 3; !! def = 2
 cm_CO2priceRegConvEndYr  = 2050;   !! def = 2050
 $setGlobal cm_emiMktETS  off       !! def = off
 $setGlobal cm_emiMktETS_type  off  !! def = off
@@ -472,8 +482,16 @@ cm_trdadj            = 2;    !! def = 2.0
 cm_trdcst            = 1.5;  !! def = 1.5
 c_refcapbnd          = 0;    !! def = 0
 cm_frac_CCS          = 10;   !! def = 10
-cm_frac_NetNegEmi    = 0.5;  !! def = 0.5
-cm_frac_CDRrevenue   = 0;    !! def = 0
+cm_frac_NetNegEmi    = 0;  !! def = 0.5
+
+!! Annes Switches for 4 target analysis
+c_frac_CDR_revenue   =0; !! def =1
+c_cap_CDR_revenue   = 10000; !!def =10000
+cm_seperateCDRco2price =1; !! def=1
+c_target2050co2     = 3; !! def = -1
+c_target2100co2     = 500; !! def = -1
+c_target2050cdr     = 3; !! def = -1
+c_target2100cdr     = 500; !! def = -1
 
 cm_damages_BurkeLike_specification    = 0;     !! def = 0
 cm_damages_BurkeLike_persistenceTime  = 30;    !! def = 30
@@ -609,7 +627,7 @@ $setglobal cm_calibration_string  off      !! def = off
 
 $setglobal c_testOneRegi_region  EUR       !! def = EUR
 
-$setglobal cm_cooling_shares  static    !! def = static
+$setglobal cm_cooling_shares  dynamic    !! def = static
 $setglobal cm_techcosts  REG       !! def = REG
 $setglobal cm_regNetNegCO2  on       !! def = on
 

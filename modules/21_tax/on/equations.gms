@@ -44,7 +44,7 @@
     + sum(emiMkt, v21_taxemiMkt(t,regi,emiMkt))  
     + v21_taxrevFlex(t,regi)
     + v21_taxrevBioImport(t,regi)  
-    + v21_taxrevCDR(t,regi)
+    - v21_taxrevCDR(t,regi)$(cm_seperateCDRco2price eq 1)
 $ifthen.cm_implicitFE not "%cm_implicitFE%" == "off"
     + vm_taxrevimplFETax(t,regi)
 $endif.cm_implicitFE    
@@ -56,7 +56,7 @@ $endif.cm_implicitFE
 *'  Documentation of overall tax approach is above at q21_taxrev.
 ***---------------------------------------------------------------------------
 q21_taxrevGHG(t,regi)$(t.val ge max(2010,cm_startyear))..
-v21_taxrevGHG(t,regi) =e= ( pm_taxCO2eq(t,regi)  + pm_taxCO2eqSCC(t,regi) + pm_taxCO2eqHist(t,regi)) * (vm_co2eq(t,regi) - vm_emiMacSector(t,regi,"co2luc")$(cm_multigasscen ne 3))
+v21_taxrevGHG(t,regi) =e= ( pm_taxCO2eq(t,regi)  + pm_taxCO2eqSCC(t,regi) + pm_taxCO2eqHist(t,regi)) * (vm_co2eq(t,regi) - vm_emiMacSector(t,regi,"co2luc")$(cm_multigasscen ne 3) + vm_emiCdrAll(t,regi)$(cm_seperateCDRco2price eq 1))
                            - p21_taxrevGHG0(t,regi);
 
 ***---------------------------------------------------------------------------
@@ -230,7 +230,7 @@ q21_taxrevBioImport(t,regi)..
 *'  Documentation of overall tax approach is above at q21_taxrev.
 ***---------------------------------------------------------------------------
 q21_taxrevCDR(t,regi)..
-v21_taxrevCDR(t,regi) =e=  cm_frac_CDRrevenue * pm_taxCO2eq(t,regi) * vm_emiCdrAll(t,regi)
+v21_taxrevCDR(t,regi) =e= pm_taxCDR(t,regi) * vm_emiCdrAll(t,regi)
                                  - p21_taxrevCDR0(t,regi);
 
 *** EOF ./modules/21_tax/on/equations.gms

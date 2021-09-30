@@ -28,6 +28,8 @@ pm_share_trans(tall,all_regi)                        "transportation share"
 pm_gdp_gdx(tall,all_regi)                            "GDP path from gdx, updated iteratively."
 p_inv_gdx(tall,all_regi)                            "macro-investments path from gdx, updated iteratively."
 pm_taxCO2eq(ttot,all_regi)                           "CO2 tax path in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
+pm_taxCDR(ttot,all_regi)                             "CDR tax path in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
+
 pm_taxCO2eqHist(ttot,all_regi)                       "Historic CO2 tax path in 2010 and 2015 (also in BAU!) in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
 pm_taxCO2eq_iteration(iteration,ttot,all_regi)       "save CO2eq tax used in iteration"
 pm_taxCO2eq_iterationdiff(ttot,all_regi)              "help parameter for iterative adjustment of taxes"
@@ -66,6 +68,11 @@ o_taxCO2eq_afterPeakShiftLoop_Itr_1regi(ttot, iteration) "CO2 taxed in the last 
 
 ***----------------------------------------------------------------------------------------
 ***-----------------------------------------------ESM module-------------------------------
+
+*** Anne 4 targets
+p_taxcdr_iterationdiff(ttot,all_regi)                                "helper parameter for cdr revenue level adjustment"
+o_taxCDR_iterDiff_Itr(iteration,all_regi)                                 "output parameter for manual checking of CDR revenue development"
+
 pm_emiExog(tall,all_regi,all_enty)                   "exogenous emissions"
 p_macBaseMagpie(tall,all_regi,all_enty)              "baseline emissions from MAgPIE (type emiMacMagpie)"
 p_macBaseMagpieNegCo2(tall,all_regi)                 "net negative emissions from co2luc"
@@ -554,6 +561,13 @@ sm_globalBudget_dev                                   "actual level of global cu
 sm_eps                                                "small number: 1e-9 "  /1e-9/
 
 s_histBioShareTolerance                               "tolerance range of percentage points by how much the biomass share in solids, liquids and gases in industry and buildings can deviate from the historical value in 2005"
+
+*** Anne: necessary for 4 targets
+s_actual2050co2                                       "current iterations actual global co2 emissions in 2050 needed to adjust co2 tax until 2050"
+s_actual2100co2                                       "current iterations actual global co2 emissions in 2100 needed to adjust co2 tax from 2050 onwards"
+s_actual2050cdr                                       "current iterations actual global cdr amount in 2050 needed to adjust cdr revenues until 2050"
+s_actual2100cdr                                       "current iterations actual global cdr amount in 2100 needed to adjust cdr revenues from 2050"
+
 ***----------------------------------------------------------------------------------------
 ***----------------------------------------------trade module------------------------------
 ;

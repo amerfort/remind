@@ -64,4 +64,9 @@ pm_taxCO2eq(t,regi) = p45_regCO2priceFactor(t,regi) * p45_CO2priceTrajDeveloped(
 
 display p45_regCO2priceFactor, p45_CO2priceTrajDeveloped, pm_taxCO2eq;
 
+*Anne* Seperate CO2 emissions and CDR removal prices with seperate targets in 2050 and 2100 
+if(cm_seperateCDRco2price eq 1,
+    pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi);
+);
+
 *** EOF ./modules/45_carbonprice/diffCurvPhaseIn2Lin/datainput.gms

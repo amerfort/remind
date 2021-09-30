@@ -46,4 +46,9 @@ pm_taxCO2eq(ttot,regi)$(ttot.val ge s45_stageend) = s45_constantCO2price;
 
 display pm_taxCO2eq;
 
+*Anne* Seperate CO2 emissions and CDR removal prices with seperate targets in 2050 and 2100 
+if(cm_seperateCDRco2price eq 1,
+    pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi);
+);
+
 *** EOF ./modules/45_carbonprice/diffPhaseIn2Constant/datainput.gms

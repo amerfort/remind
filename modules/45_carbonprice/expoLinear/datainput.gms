@@ -22,4 +22,10 @@ pm_taxCO2eq(ttot,regi)$(ttot.val gt 2110) = pm_taxCO2eq("2110",regi);
 display pm_taxCO2eq;
 display p45_tau_co2_tax_inc;
 
+*Anne* Seperate CO2 emissions and CDR removal prices with seperate targets in 2050 and 2100 
+if(cm_seperateCDRco2price eq 1,
+    pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi);
+);
+
+
 *** EOF ./modules/45_carbonprice/expoLinear/datainput.gms
