@@ -72,6 +72,9 @@ o_taxCO2eq_afterPeakShiftLoop_Itr_1regi(ttot, iteration) "CO2 taxed in the last 
 *** Anne 4 targets
 p_taxcdr_iterationdiff(ttot,all_regi)                                "helper parameter for cdr revenue level adjustment"
 o_taxCDR_iterDiff_Itr(iteration,all_regi)                                 "output parameter for manual checking of CDR revenue development"
+pm_CDRtaxincrafter2050(all_regi)                      "slope of linear CDR revenues for 2055-2100"
+pm_CO2taxincrafter2050(all_regi)                      "slope of linear CO2 tax for 2055-2100"
+
 
 pm_emiExog(tall,all_regi,all_enty)                   "exogenous emissions"
 p_macBaseMagpie(tall,all_regi,all_enty)              "baseline emissions from MAgPIE (type emiMacMagpie)"
@@ -557,6 +560,7 @@ s_reference2030co2eq                                  "reference level of 2030 G
 s_referencebudgetco2                                  "reference level of 2000-2100 cumulated emissions for AWP2 myopic scenarios in GtCO2, including all CO2"
 s_actual2030co2eq                                     "actual level of 2030 GHG emissions for AWP2 myopic scenarios in GtCO2eq p.a., all Kyoto gases for last iteration"
 s_actualbudgetco2                                     "actual level of 2000-2100 cumulated emissions for AWP2 myopic scenarios in GtCO2, including all CO2 for last iteration"
+s_actualpeakbudgetco2                                 "actual level of 2000-2100 peak budget"
 s_actualbudgetco2_last                                "actual level of 2000-2100 cumulated emissions for previous iteration" /0/
 
 sm_globalBudget_dev                                   "actual level of global cumulated emissions budget divided by target budget"

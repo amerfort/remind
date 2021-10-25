@@ -11,5 +11,10 @@
 
 *** CO2 tax level is set to zero
 pm_taxCO2eq(ttot,regi)$(ttot.val ge 2005) = 0;
+pm_taxCDR(ttot,regi)$(ttot.val ge 2005) = 0;
+
+***Anne***
+pm_CDRtaxincrafter2050(regi)= 0;
+pm_CO2taxincrafter2050(regi)= 0;
 
 *** EOF ./modules/45_carbonprice/none/datainput.gms

@@ -11,6 +11,11 @@ pm_taxCO2eq("2020",regi) = 5;
 *** convert tax value from $/t CO2eq to T$/GtC
 pm_taxCO2eq("2020",regi)= pm_taxCO2eq("2020",regi) * sm_DptCO2_2_TDpGtC;
 
+***Anne***
+pm_CDRtaxincrafter2050(regi)= 0;
+pm_CO2taxincrafter2050(regi)= 0;
+
+
 *** set ETS price in 2015 for EUR
 pm_taxCO2eq("2015",regi)= 0;
 pm_taxCO2eq("2015",regi)$regi_group("EUR_regi",regi)= 5 * sm_DptCO2_2_TDpGtC;
@@ -58,6 +63,10 @@ $ondelim
 $include "./modules/45_carbonprice/NDC2018/input/set_regi2030.cs4r"
 $offdelim
   /             ;
-  
+pm_taxCDR(ttot,regi)$(ttot.val ge 2005) = 0; 
+if(cm_seperateCDRco2price eq 1,
+    pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi);
+);
+
 
 *** EOF ./modules/45_carbonprice/NDC2018/datainput.gms

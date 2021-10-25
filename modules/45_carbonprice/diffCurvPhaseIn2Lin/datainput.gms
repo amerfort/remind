@@ -40,6 +40,9 @@ elseif cm_co2_tax_2020 ge 0,
 p45_CO2priceTrajDeveloped(ttot)$((ttot.val gt 2005) AND (ttot.val ge cm_startyear)) = p45_CO2priceTrajDeveloped("2040")*( 1 + 0.1/3 * (ttot.val-2040)); !! no CO2 price in 2005 and only change CO2 prices after ; 
 *** annual increase by (10/3)% of the 2040 value is the same as a 10% increase of the 2020 value is the same as a linear increase from 0 in 2010 to the 2020/2040 value
 
+***Anne***
+pm_CDRtaxincrafter2050(regi)= 0.1/3;
+pm_CO2taxincrafter2050(regi)= 0.1/3;
 
 *** Then create regional phase-in:
 loop(ttot$((ttot.val ge cm_startyear) AND (ttot.val le cm_CO2priceRegConvEndYr) ),
@@ -64,9 +67,18 @@ pm_taxCO2eq(t,regi) = p45_regCO2priceFactor(t,regi) * p45_CO2priceTrajDeveloped(
 
 display p45_regCO2priceFactor, p45_CO2priceTrajDeveloped, pm_taxCO2eq;
 
-*Anne* Seperate CO2 emissions and CDR removal prices with seperate targets in 2050 and 2100 
-if(cm_seperateCDRco2price eq 1,
-    pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi);
-);
 
+*Anne* Seperate CO2 emissions and CDR removal prices with seperate targets in 2050 and 2100 
+pm_taxCDR(ttot,regi)$(ttot.val ge 2005) = 0;
+
+if(cm_seperateCDRco2price eq 1,
+  pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi);
+  if(c_frac_CDR_revenue ne 0,
+  pm_taxCDR(t,regi) = c_frac_CDR_revenue * pm_taxCO2eq(t,regi);
+  );
+  if(c_cap_CDR_revenue ne 0,
+  pm_taxCDR(t,regi)$(pm_taxCDR(t,regi)>c_cap_CDR_revenue/272) = c_cap_CDR_revenue/272;
+  );
+*** deviate CDR revenues from carbon price as a fraction of carbon price and/or with a maximum price cap
+);
 *** EOF ./modules/45_carbonprice/diffCurvPhaseIn2Lin/datainput.gms
