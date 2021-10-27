@@ -654,6 +654,9 @@ q_emiCdrAll(t,regi)..
   -  p_macBaseMagpieNegCo2(t,regi)
        !! negative emissions from the cdr module that are not stored geologically
        -       (vm_emiCdr(t,regi,"co2") + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf)))
+*** add industry CCS with hydrocarbon fuels from biomass (industry BECCS) or synthetic origin 
+	+  sum( (entySe,entyFe,secInd37,emiMkt)$(NOT (entySeFos(entySe))),
+		pm_IndstCO2Captured(t,regi,entySe,entyFe,secInd37,emiMkt)) * pm_share_CCS_CCO2(t,regi)
 ;
 
 
