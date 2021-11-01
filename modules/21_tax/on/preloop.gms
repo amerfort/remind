@@ -13,6 +13,11 @@ pm_taxemiMkt(t,regi,emiMkt)$(t.val ge cm_startyear) = 0;
 pm_taxCO2eq("2005",regi)=0;
 pm_taxCO2eq("2010",regi)=0;
 
+*** initialise parameters needed for carbon removal obligation taxation
+p_actualbudgetco2(t)=0;
+pm_taxCarbonDebtYears(t,regi)=0;
+
+
 ***-------------------------------------------------------------------
 ***           overwrite default targets with gdx values
 ***-------------------------------------------------------------------

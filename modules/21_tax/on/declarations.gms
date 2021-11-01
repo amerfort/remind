@@ -36,6 +36,7 @@ p21_taxemiMkt0(ttot,all_regi,all_emiMkt)     "reference level value of co2 emiss
 p21_taxrevFlex0(ttot,all_regi)               "reference level value of flexibility tax"
 p21_taxrevBioImport0(ttot,all_regi)          "reference level value of bioenergy import tax"  
 p21_taxrevCDR0(ttot,all_regi)                "reference level value of tax which reduces CDR revenues as fraction of CO2 price"
+p21_taxrevCRO0(ttot,all_regi)                "reference level value of interest on carbon debt"
 
 p21_taxrevGHG_iter(iteration,ttot,all_regi)                "reference level value of GHG emission tax revenue"
 p21_taxrevCCS_iter(iteration,ttot,all_regi)                "reference level value of CCS tax revenue"
@@ -51,6 +52,7 @@ p21_implicitDiscRate_iter(iteration,ttot,all_regi)         "reference level valu
 p21_taxrevFlex_iter(iteration,ttot,all_regi)               "reference level value of flexibility tax revenue"
 p21_taxrevBioImport_iter(iteration,ttot,all_regi)          "reference level value of bioenergy import tax"
 p21_taxrevCDR_iter(iteration,ttot,all_regi)                "reference level value of tax which reduces CDR revenues as fraction of CO2 price"
+p21_taxrevCRO_iter(iteration,ttot,all_regi)                "reference level value of interest on carbon debt"
 
 p21_deltarev(iteration,all_regi)             "convergence criteria for iteration on tax revenue recycling"
 
@@ -97,6 +99,7 @@ v21_implicitDiscRate(ttot,all_regi)           "implicit tax on energy efficient 
 v21_taxemiMkt(ttot,all_regi,all_emiMkt)      "tax on greenhouse gas emissions"
 v21_taxrevBioImport(ttot,all_regi)           "bioenergy import tax"
 v21_taxrevCDR(ttot,all_regi)                 "tax which reduces CDR revenues as fraction of CO2 price"
+v21_taxrevCRO(ttot,all_regi)                 "interest payments on carbon debt, i.e. carbon emissions exceeding the given CRO budget"
 ;
 
 Positive Variable
@@ -124,6 +127,7 @@ q21_implicitDiscRate(ttot,all_regi)          "calculation of the implicit discou
 q21_taxemiMkt(ttot,all_regi,all_emiMkt)      "calculation of specific emission market tax on CO2 emissions"
 q21_taxrevBioImport(ttot,all_regi)           "calculation of bioenergy import tax"
 q21_taxrevCDR(ttot,all_regi)                 "calculation of tax which reduces CDR revenues as fraction of CO2 price"
+q21_taxrevCRO(ttot,all_regi)                 "calculation of interest payments on carbon debt, i.e. carbon emissions exceeding the given CRO budget"
 ;   
 
 *** EOF ./modules/21_tax/on/declarations.gms

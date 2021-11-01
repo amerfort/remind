@@ -74,7 +74,8 @@ p_taxcdr_iterationdiff(ttot,all_regi)                                "helper par
 o_taxCDR_iterDiff_Itr(iteration,all_regi)                                 "output parameter for manual checking of CDR revenue development"
 pm_CDRtaxincrafter2050(all_regi)                      "slope of linear CDR revenues for 2055-2100"
 pm_CO2taxincrafter2050(all_regi)                      "slope of linear CO2 tax for 2055-2100"
-
+*** Anne CRO
+pm_taxCarbonDebtYears(ttot,all_regi)                  "Parameter that indicates years with carbon debt, i.e. were the CRO budget is exceeded"
 
 pm_emiExog(tall,all_regi,all_enty)                   "exogenous emissions"
 p_macBaseMagpie(tall,all_regi,all_enty)              "baseline emissions from MAgPIE (type emiMacMagpie)"
@@ -281,6 +282,8 @@ p_teAnnuity(all_te)                                  "Annuity factor of a techno
 ***                                   VARIABLES
 ***----------------------------------------------------------------------------------------
 variables
+vm_emiAllCum(ttot)                                   "cumulated emissions at time t"
+
 ***----------------------------------------------------------------------------------------
 ***--------------------------------------------------MACRO module--------------------------
 vm_taxrev(ttot,all_regi)                             "difference between tax volume in current and previous iteration"
@@ -387,6 +390,8 @@ vm_costCESMkup(ttot,all_regi,all_in)                                   "CES mark
 ***                                   EQUATIONS
 ***----------------------------------------------------------------------------------------
 equations
+***---------------- Anne
+q_emiAllCum(ttot)                                    "equation to calculate cumulative carbon emissions in time t"
 ***----------------------------------------------------------------------------------------
 ***------------------------------------------------MACRO module----------------------------
 q_limitSeel2fehes(ttot,all_regi)                     "equation to limit the share of electricity that can be used for fehes"

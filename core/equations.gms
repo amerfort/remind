@@ -13,6 +13,18 @@
 ***---------------------------------------------------------------------------
 
 ***---------------------------------------------------------------------------
+*' cumulation of carbon emissions until time t
+***---------------------------------------------------------------------------
+q_emiAllCum(t)..
+vm_emiAllCum(t) 
+  =e=
+  sum(ttot$(ttot.val < t.val AND ttot.val > 2010), vm_emiAllGlob(ttot,"co2") * sm_c_2_co2 * pm_ts(ttot))
+                          + vm_emiAllGlob(t,"co2") *sm_c_2_co2 * (pm_ts(t) * 0.5 + 0.5)
+                          + vm_emiAllGlob("2010","co2")*sm_c_2_co2 * 2
+;
+
+
+***---------------------------------------------------------------------------
 *' Fuel costs are associated with the use of exhaustible primary energy (fossils, uranium) and biomass.
 ***---------------------------------------------------------------------------
 q_costFu(t,regi)..
@@ -654,7 +666,10 @@ q_emiCdrAll(t,regi)..
   -  p_macBaseMagpieNegCo2(t,regi)
        !! negative emissions from the cdr module that are not stored geologically
        -       (vm_emiCdr(t,regi,"co2") + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf)))
-;
+*** add industry CCS with hydrocarbon fuels from biomass (industry BECCS) or synthetic origin 
+	+  sum( (entySe,entyFe,secInd37,emiMkt)$(NOT (entySeFos(entySe))),
+		pm_IndstCO2Captured(t,regi,entySe,entyFe,secInd37,emiMkt)) * pm_share_CCS_CCO2(t,regi)
+    ;
 
 
 ***------------------------------------------------------

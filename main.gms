@@ -85,7 +85,7 @@
 * 
 * Input data revision: 6.25
 * 
-* Last modification (input data): Wed Sep 29 17:41:06 2021
+* Last modification (input data): Mon Nov  1 18:18:26 2021
 * 
 *###################### R SECTION END (VERSION INFO) ###########################
 
@@ -140,7 +140,7 @@ option profile = 0;
 
 
 ***---------------------    Run name    -----------------------------------------
-$setGlobal c_expname  SSP2-4targets_3_500
+$setGlobal c_expname  SSP2-NDC
 
 ***------------------------------------------------------------------------------
 ***                           MODULES
@@ -197,7 +197,7 @@ $setglobal emicapregi  none           !! def = none
 ***---------------------    42_banking  -----------------------------------------
 $setglobal banking  off               !! def = off
 ***---------------------    45_carbonprice  -------------------------------------
-$setglobal carbonprice  diffCurvPhaseIn2Lin          !! def = none
+$setglobal carbonprice  NDC2018          !! def = none
 ***---------------------    47_regipol  -------------------------------------
 $setglobal regipol  none              !! def = none
 ***---------------------    50_damages    ---------------------------------------
@@ -303,7 +303,9 @@ c_target2050co2     "global co2 emission year target in 2050"
 c_target2100co2     "global co2 emission year target in 2100"
 c_target2050cdr     "global cdr emission year target in 2050"
 c_target2100cdr     "global cdr emission year target in 2100"
-
+!! Annes Switches for CRO
+cm_taxCRO           "interest rate for carbon debt"
+cm_budgetCRO        "Budget of carbon removal obligations, if exceeded interest rate on carbon debt is applied"
 
 
 cm_DiscRateScen          "Scenario for the implicit discount rate applied to the energy efficiency capital"
@@ -369,8 +371,8 @@ cm_nash_autoconverge   = 1;     !! def = 1
 $setglobal cm_MAgPIE_coupling  off     !! def = "off"
 
 cm_emiscen        = 9;         !! def = 1
-$setglobal cm_rcp_scen  rcp20   !! def = "none"
-cm_co2_tax_2020   = 200;        !! def = -1
+$setglobal cm_rcp_scen  rcp45   !! def = "none"
+cm_co2_tax_2020   = 1;        !! def = -1
 cm_co2_tax_growth = 1.05;      !! def = 1.05
 c_macscen         = 1;         !! def = 1
 
@@ -406,12 +408,12 @@ $setglobal c_GDPpcScen  SSP2     !! def = gdp_SSP2   (automatically adjusted by 
 cm_GDPcovid      = 0;            !! def = 0
 
 *AG* and *CB* for cm_startyear greater than 2005, you have to copy the fulldata.gdx (rename it to: input_ref.gdx) from the run you want to build your new run onto.
-cm_startyear      = 2025;      !! def = 2005 for a BAU, 2015 for policy runs
+cm_startyear      = 2015;      !! def = 2005 for a BAU, 2015 for policy runs
 c_start_budget    = 2100;      !! def = 2100
 
 cm_prtpScen         = 3;         !! def = 3
 cm_fetaxscen        = 3;         !! def = 3
-cm_multigasscen     = 2;         !! def = 2
+cm_multigasscen     = 3;         !! def = 2
 cm_permittradescen  = 1;         !! def = 1
 cm_limit_peur_scen  = 1;         !! def = 1
 $setGlobal cm_oil_scen  medOil         !! def = medOil
@@ -436,7 +438,7 @@ c_techAssumptScen     = 1;         !! def = 1
 c_ccsinjecratescen    = 1;         !! def = 1
 c_ccscapratescen      = 1;         !! def = 1
 c_export_tax_scen     = 0;         !! def = 0
-cm_iterative_target_adj  = 10;      !! def = 0
+cm_iterative_target_adj  = 3;      !! def = 0
 cm_gdximport_target      = 0;      !! def = 0
 $setglobal c_SSP_forcing_adjust  forcing_SSP2   !! def = forcing_SSP2
 $setglobal c_delayPolicy  SPA0           !! def = SPA0
@@ -447,11 +449,11 @@ cm_expoLinear_yearStart  = 2050;   !! def = 2050
 c_budgetCO2FFI           = 1000;   !! def = 1000
 c_abtrdy                 = 2010;   !! def = 2010
 c_abtcst                 = 1;      !! def = 1
-c_budgetCO2              = 900;   !! def = 1300
+c_budgetCO2              = 0;   !! def = 1300
 $setGlobal cm_regiCO2target  off   !! def = off
 cm_postTargetIncrease    = 2;      !! def = 2
 $setGlobal cm_quantity_regiCO2target  off !! def = off
-cm_peakBudgYr            = 2045;   !! def = 2050
+cm_peakBudgYr            = 2100;   !! def = 2050
 cm_taxCO2inc_after_peakBudgYr = 3; !! def = 2
 cm_CO2priceRegConvEndYr  = 2050;   !! def = 2050
 $setGlobal cm_emiMktETS  off       !! def = off
@@ -486,12 +488,15 @@ cm_frac_NetNegEmi    = 0;  !! def = 0.5
 
 !! Annes Switches for 4 target analysis
 c_frac_CDR_revenue   =0; !! def =1
-c_cap_CDR_revenue   = 10000; !!def =10000
-cm_seperateCDRco2price =1; !! def=1
-c_target2050co2     = 3; !! def = -1
-c_target2100co2     = 500; !! def = -1
-c_target2050cdr     = 3; !! def = -1
-c_target2100cdr     = 500; !! def = -1
+c_cap_CDR_revenue   = 0; !!def =10000
+cm_seperateCDRco2price =0; !! def=1
+c_target2050co2     = -1; !! def = -1
+c_target2100co2     = -1; !! def = -1
+c_target2050cdr     = -1; !! def = -1
+c_target2100cdr     = -1; !! def = -1
+!! Annes Switches for CRO
+cm_taxCRO           = 0; !!def =0
+cm_budgetCRO        = 0; !!def =0 
 
 cm_damages_BurkeLike_specification    = 0;     !! def = 0
 cm_damages_BurkeLike_persistenceTime  = 30;    !! def = 30
@@ -600,7 +605,7 @@ $SETGLOBAL cm_SlowConvergence  off        !! def = off
 $setGlobal cm_nash_mode  parallel      !! def = parallel
 $setGLobal cm_debug_preloop  off !! def = off
 $setGlobal c_EARLYRETIRE       on         !! def = on
-$setGlobal cm_OILRETIRE  on        !! def = on
+$setGlobal cm_OILRETIRE  off        !! def = on
 $setglobal cm_INCONV_PENALTY  on         !! def = on
 $setglobal cm_INCONV_PENALTY_bioSwitch  off !! def = off
 $setGlobal cm_so2_out_of_opt  on         !! def = on

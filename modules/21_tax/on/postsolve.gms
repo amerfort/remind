@@ -19,6 +19,7 @@ OPTION decimals =3;
 *JH* !!Warning!! The same allocation block exists in presolve.gms.
 ***                Do not forget to update the other file.
 p21_taxrevGHG0(ttot,regi) = ( pm_taxCO2eq(ttot,regi)  + pm_taxCO2eqSCC(ttot,regi) + pm_taxCO2eqHist(ttot,regi)) * (vm_co2eq.l(ttot,regi) + vm_emiCdrAll.l(ttot,regi)$(cm_seperateCDRco2price eq 1) - vm_emiMacSector.l(ttot,regi,"co2luc")$(cm_multigasscen ne 3));
+p21_taxrevCRO0(ttot,regi) = pm_taxCarbonDebtYears(ttot,regi) *cm_taxCRO * pm_taxCO2eq(ttot,regi) *(p_actualbudgetco2(ttot) - cm_budgetCRO);
 p21_taxrevCO2luc0(ttot,regi) = ( pm_taxCO2eq(ttot,regi) + pm_taxCO2eqSCC(ttot,regi) + pm_taxCO2eqHist(ttot,regi)) * cm_cprice_red_factor * vm_emiMacSector.l(ttot,regi,"co2luc")$(cm_multigasscen ne 3);
 p21_taxrevCCS0(ttot,regi) = cm_frac_CCS * pm_data(regi,"omf","ccsinje") * pm_inco0_t(ttot,regi,"ccsinje") 
                             * ( sum(teCCS2rlf(te,rlf), sum(ccs2te(ccsCO2(enty),enty2,te), vm_co2CCS.l(ttot,regi,enty,enty2,te,rlf) ) ) )
@@ -70,6 +71,7 @@ p21_implicitDiscRate_iter(iteration+1,ttot,regi) = v21_implicitDiscRate.l(ttot,r
 p21_taxrevFlex_iter(iteration+1,ttot,regi) = v21_taxrevFlex.l(ttot,regi);
 p21_taxrevBioImport_iter(iteration+1,ttot,regi) = v21_taxrevBioImport.l(ttot,regi);
 p21_taxrevCDR_iter(iteration+1, ttot, regi) = v21_taxrevCDR.l(ttot,regi);
+p21_taxrevCRO_iter(iteration+1, ttot, regi) = v21_taxrevCRO.l(ttot,regi);
 
 display p21_taxrevFE_iter;
 

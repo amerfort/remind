@@ -337,7 +337,8 @@ if(cm_iterative_target_adj eq 9,
                           + sum(regi, (vm_emiTe.l(t,regi,"co2") + vm_emiCdr.l(t,regi,"co2") + vm_emiMac.l(t,regi,"co2")))*sm_c_2_co2 * (pm_ts(t) * 0.5 + 0.5)
                           + sum(regi, (vm_emiTe.l("2010",regi,"co2") + vm_emiCdr.l("2010",regi,"co2") + vm_emiMac.l("2010",regi,"co2")))*sm_c_2_co2 * 2;
   s_actualbudgetco2 = smax(t$(t.val le cm_peakBudgYr),p_actualbudgetco2(t));
-  
+
+
   o_peakBudgYr_Itr(iteration) = cm_peakBudgYr;
                   
   display s_actualbudgetco2;  
@@ -405,6 +406,10 @@ if(cm_iterative_target_adj eq 9,
       );  
     ); !! if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND s_actualbudgetco2 > 0 AND abs(c_budgetCO2 - s_actualbudgetco2) ge 2,
     
+    pm_taxCarbonDebtYears(t,regi) = 0;
+    pm_taxCarbonDebtYears(t,regi) = 1$(vm_emiAllCum.l(t)>cm_budgetCRO);
+
+
     display pm_taxCO2eq, p_taxCO2eq_until2150;
 
 	
