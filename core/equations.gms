@@ -669,7 +669,7 @@ q_emiCdrAll(t,regi)..
 *** add industry CCS with hydrocarbon fuels from biomass (industry BECCS) or synthetic origin 
 	+  sum( (entySe,entyFe,secInd37,emiMkt)$(NOT (entySeFos(entySe))),
 		pm_IndstCO2Captured(t,regi,entySe,entyFe,secInd37,emiMkt)) * pm_share_CCS_CCO2(t,regi)
-    ;
+;
 
 
 ***------------------------------------------------------
