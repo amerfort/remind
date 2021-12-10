@@ -50,5 +50,7 @@ display pm_taxCO2eq;
 if(cm_seperateCDRco2price eq 1,
     pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi);
 );
+pm_CDRtaxincrafter2050(regi)= 0;
+pm_CO2taxincrafter2050(regi)= 0;
 
 *** EOF ./modules/45_carbonprice/diffPhaseIn2Constant/datainput.gms

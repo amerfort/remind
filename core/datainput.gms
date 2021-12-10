@@ -6,6 +6,12 @@
 *** |  Contact: remind@pik-potsdam.de
 *** SOF ./core/datainput.gms
 
+*** Anne
+Execute_Loadpoint 'input_ref' o37_demFeIndSub_SecCC = o37_demFeIndSub_SecCC;
+Execute_Loadpoint 'input_ref' o37_demFeIndSub = o37_demFeIndSub;
+vm_emiIndCCS.l(ttot,regi,emiInd37) = 0;
+v_IndstCDR.l(ttot,regi) = 0;
+
 *AJS* technical. initialize parameters so that they are read from gdx
 vm_co2eq.l(ttot,regi) = 0;
 vm_emiAll.l(ttot,regi,enty) = 0;

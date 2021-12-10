@@ -15,12 +15,12 @@
 ***---------------------------------------------------------------------------
 *' cumulation of carbon emissions until time t
 ***---------------------------------------------------------------------------
-q_emiAllCum(t)..
-vm_emiAllCum(t) 
+q_emiAllCum(t,regi)..
+vm_emiAllCum(t,regi) 
   =e=
-  sum(ttot$(ttot.val < t.val AND ttot.val > 2010), vm_emiAllGlob(ttot,"co2") * sm_c_2_co2 * pm_ts(ttot))
-                          + vm_emiAllGlob(t,"co2") *sm_c_2_co2 * (pm_ts(t) * 0.5 + 0.5)
-                          + vm_emiAllGlob("2010","co2")*sm_c_2_co2 * 2
+  sum(ttot$(ttot.val < t.val AND ttot.val > 2010), vm_emiAll(ttot,regi,"co2") * sm_c_2_co2 * pm_ts(ttot))
+                          + vm_emiAll(t,regi,"co2") *sm_c_2_co2 * (pm_ts(t) * 0.5 + 0.5)
+                          + vm_emiAll("2010",regi,"co2")*sm_c_2_co2 * 2
 ;
 
 
@@ -649,6 +649,22 @@ q_emiMac(t,regi,emiMac) ..
   )
 ;
 
+*** industry CDR
+q_IndstCDR(t,regi) .. 
+  v_IndstCDR(t,regi)
+  =e= 
+  sum(entyFe2Sector(entyFE,"indst"),
+  sum((se_co2neutralcarbs(entySE),te)$se2fe(entySE,entyFE,te),
+    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt))) * p37_fctEmi(entyFE)
+  /
+  sum(secInd37,vm_macBaseInd(t,regi,entyFE,secInd37) + sm_eps))
+  * sum(emiInd37_fuel , vm_emiIndCCS(t,regi,emiInd37_fuel))
+  !! scaled by the fraction that gets stored geologically
+  * (sum(teCCS2rlf(te,rlf),
+        vm_co2CCS(t,regi,"cco2","ico2",te,rlf)) /
+  (sum(teCCS2rlf(te,rlf),
+        vm_co2capture(t,regi,"cco2","ico2","ccsinje",rlf))+sm_eps))
+  ;
 ***--------------------------------------------------
 *' All CDR emissions summed up
 ***--------------------------------------------------
@@ -667,8 +683,7 @@ q_emiCdrAll(t,regi)..
        !! negative emissions from the cdr module that are not stored geologically
        -       (vm_emiCdr(t,regi,"co2") + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf)))
 *** add industry CCS with hydrocarbon fuels from biomass (industry BECCS) or synthetic origin 
-	+  sum( (entySe,entyFe,secInd37,emiMkt)$(NOT (entySeFos(entySe))),
-		pm_IndstCO2Captured(t,regi,entySe,entyFe,secInd37,emiMkt)) * pm_share_CCS_CCO2(t,regi)
+	+  v_IndstCDR(t,regi)
 ;
 
 

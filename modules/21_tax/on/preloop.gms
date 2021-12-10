@@ -14,9 +14,29 @@ pm_taxCO2eq("2005",regi)=0;
 pm_taxCO2eq("2010",regi)=0;
 
 *** initialise parameters needed for carbon removal obligation taxation
-p_actualbudgetco2(t)=0;
-pm_taxCarbonDebtYears(t,regi)=0;
+p_actualbudgetco2(t) = 0;
 
+Execute_Loadpoint '/p/tmp/amerfort/remind_CRO/output/SSP2-PkBudg900_2021-11-24_11.31.01/fulldata.gdx' vm_emiAll = vm_emiAll;
+pm_budgetCRO(regi)$(cm_budgetCRO gt 0) = cm_budgetCRO * 
+                  sum(ttot$(ttot.val < 2100 AND ttot.val > 2010), vm_emiAll.l(ttot,regi,"co2") * pm_ts(ttot)) /
+                  sum(ttot$(ttot.val < 2100 AND ttot.val > 2010), (sum(regi2, vm_emiAll.l(ttot,regi2,"co2")) * pm_ts(ttot)));
+
+display "Disaggregated carbon budget for CRO";
+display pm_budgetCRO;
+***abort "display CRO with SSP2 PkBudg budget";
+
+***pm_budgetCRO(regi)$(sameas(regi,"LAM")) = 14.859;
+***pm_budgetCRO(regi)$(sameas(regi,"OAS")) = 101.11;
+***pm_budgetCRO(regi)$(sameas(regi,"SSA")) = 36.844;
+***pm_budgetCRO(regi)$(sameas(regi,"EUR")) = 61.819;
+***pm_budgetCRO(regi)$(sameas(regi,"NEU")) = 10.601;
+***pm_budgetCRO(regi)$(sameas(regi,"MEA")) = 100.476;
+***pm_budgetCRO(regi)$(sameas(regi,"REF")) = 25.123;
+***pm_budgetCRO(regi)$(sameas(regi,"CAZ")) = 16.754;
+***pm_budgetCRO(regi)$(sameas(regi,"CHA")) = 133.566;
+***pm_budgetCRO(regi)$(sameas(regi,"IND")) = 91.732;
+***pm_budgetCRO(regi)$(sameas(regi,"JPN")) = 17.133;
+***pm_budgetCRO(regi)$(sameas(regi,"USA")) = 89.984;
 
 ***-------------------------------------------------------------------
 ***           overwrite default targets with gdx values
@@ -159,5 +179,8 @@ pm_pvp(ttot,"good")$(pm_pvp(ttot,"good") = 0) = sm_eps;
 
 *AM initialize CDR tax
 v21_taxrevCDR.l(ttot,regi) = 0;
+
+*AM initialize variable needed for CRO, interest on carbon debt 
+v21_emiAllCumCarbonDebt.l(ttot,regi) = 0;
 
 *** EOF ./modules/21_tax/on/preloop.gms

@@ -2434,6 +2434,26 @@ fe2ue(all_enty,all_enty,all_te)    "map FE carriers to ES via appliances"
 
 fe2es(all_enty,all_esty,all_teEs)    "map FE carriers to ES via ES technologies"
 //
+*** Anne
+se_co2neutralcarbs(entySE)
+/
+        segabio
+        segasyn
+        seliqbio
+        seliqsyn
+        sesobio
+/
+se_carbs(entySE)
+/
+        segabio
+        segasyn
+        segafos
+        seliqbio
+        seliqsyn
+        seliqfos
+        sesobio
+        sesofos
+/
 
 pc2te(all_enty,all_enty,all_te,all_enty)    "mapping for own consumption of technologies"
 /

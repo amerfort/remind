@@ -99,12 +99,14 @@ v21_implicitDiscRate(ttot,all_regi)           "implicit tax on energy efficient 
 v21_taxemiMkt(ttot,all_regi,all_emiMkt)      "tax on greenhouse gas emissions"
 v21_taxrevBioImport(ttot,all_regi)           "bioenergy import tax"
 v21_taxrevCDR(ttot,all_regi)                 "tax which reduces CDR revenues as fraction of CO2 price"
-v21_taxrevCRO(ttot,all_regi)                 "interest payments on carbon debt, i.e. carbon emissions exceeding the given CRO budget"
+v21_taxrevCRO(ttot,all_regi)                 "tax which represents interest payments on carbon debt, i.e. carbon emissions exceeding the given CRO budget"
 ;
 
 Positive Variable
 v21_emiALLco2neg(ttot,all_regi)             "negative part of total CO2 emissions"
 v21_emiALLco2neg_slack(ttot,all_regi)       "dummy variable to extract negatice CO2 emissions from emiAll"
+v21_emiAllCumCarbonDebt(ttot,all_regi)               "cumulated overshoot emissions exceeding the carbon budget cm_budgetCRO, for which Carbon Removal Obligations are issued"
+v21_emiAllCumCarbonDebt_slack(ttot,all_regi)         "dummy variable to extract the cumulated overshoot emissions from vm_emiAllCum"
 ;
 
 equations 
@@ -128,6 +130,7 @@ q21_taxemiMkt(ttot,all_regi,all_emiMkt)      "calculation of specific emission m
 q21_taxrevBioImport(ttot,all_regi)           "calculation of bioenergy import tax"
 q21_taxrevCDR(ttot,all_regi)                 "calculation of tax which reduces CDR revenues as fraction of CO2 price"
 q21_taxrevCRO(ttot,all_regi)                 "calculation of interest payments on carbon debt, i.e. carbon emissions exceeding the given CRO budget"
+q21_emiAllCumCarbonDebt(ttot,all_regi)                "calculate cumulated overshoot emissions exceeding the carbon budget cm_budgetCRO"
 ;   
 
 *** EOF ./modules/21_tax/on/declarations.gms

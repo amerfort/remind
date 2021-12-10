@@ -60,12 +60,24 @@ q21_taxrevGHG(t,regi)$(t.val ge max(2010,cm_startyear))..
 v21_taxrevGHG(t,regi) =e= ( pm_taxCO2eq(t,regi)  + pm_taxCO2eqSCC(t,regi) + pm_taxCO2eqHist(t,regi)) * (vm_co2eq(t,regi) + vm_emiCdrAll(t,regi)$(cm_seperateCDRco2price eq 1) - vm_emiMacSector(t,regi,"co2luc")$(cm_multigasscen ne 3))
                            - p21_taxrevGHG0(t,regi);
 
+
+
+
+***---------------------------------------------------------------------------
+*'  Auxiliary calculation of Carbon Debt: 
+*'  v21_emiAllCumCarbonDebt and v21_emiAllCumCarbonDebt_slack are defined as positive variables
+*'  so as long as vm_emiAllCum is below the given Carbon Budget cm_budgetCRO, v21_emiAllCumCarbonDebt_slack adjusts so that sum is zero
+*'  if vm_emiAllCum(t) - cm_budgetCRO is positive, v21_emiAllco2neg_slack becomes zero in order to minimize tax 
+***---------------------------------------------------------------------------
+q21_emiAllCumCarbonDebt(t,regi)$((t.val ge max(2010,cm_startyear)) AND cm_taxCRO gt 0)..
+v21_emiAllCumCarbonDebt(t,regi) =e= (vm_emiAllCum(t,regi) - pm_budgetCRO(regi)) + v21_emiAllCumCarbonDebt_slack(t,regi);
+
 ***---------------------------------------------------------------------------
 *'  Calculation of Carbon Dioxide Removal Obligation (Bednar et al. 2021) interest on overshooting the budget, i.e. carbon debt
 *'  Documentation of overall tax approach is above at q21_taxrev.
 ***---------------------------------------------------------------------------
-q21_taxrevCRO(t,regi)..
-v21_taxrevCRO(t,regi) =e= pm_taxCarbonDebtYears(t,regi) * cm_taxCRO * pm_taxCO2eq(t,regi) * (vm_emiAllCum(t) - cm_budgetCRO)
+q21_taxrevCRO(t,regi)$((t.val ge max(2010,cm_startyear)) AND cm_taxCRO gt 0)..
+v21_taxrevCRO(t,regi) =e= cm_taxCRO * pm_taxCO2eq(t,regi) * v21_emiAllCumCarbonDebt(t,regi) * pm_ts(t) /  sm_c_2_co2
                                  - p21_taxrevCRO0(t,regi);
 
 ***---------------------------------------------------------------------------

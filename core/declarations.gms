@@ -75,7 +75,7 @@ o_taxCDR_iterDiff_Itr(iteration,all_regi)                                 "outpu
 pm_CDRtaxincrafter2050(all_regi)                      "slope of linear CDR revenues for 2055-2100"
 pm_CO2taxincrafter2050(all_regi)                      "slope of linear CO2 tax for 2055-2100"
 *** Anne CRO
-pm_taxCarbonDebtYears(ttot,all_regi)                  "Parameter that indicates years with carbon debt, i.e. were the CRO budget is exceeded"
+pm_budgetCRO(all_regi)                               "regionally disaggregated carbon budget. If exceeded, interest payments on Carbon Debt have to be paid"
 
 pm_emiExog(tall,all_regi,all_enty)                   "exogenous emissions"
 p_macBaseMagpie(tall,all_regi,all_enty)              "baseline emissions from MAgPIE (type emiMacMagpie)"
@@ -278,7 +278,8 @@ p_teAnnuity(all_te)                                  "Annuity factor of a techno
 ***                                   VARIABLES
 ***----------------------------------------------------------------------------------------
 variables
-vm_emiAllCum(ttot)                                   "cumulated emissions at time t"
+vm_emiAllCum(ttot,all_regi)                                   "cumulated emissions at time t"
+v_IndstCDR(ttot,all_regi)                            "Industry CDR"
 
 ***----------------------------------------------------------------------------------------
 ***--------------------------------------------------MACRO module--------------------------
@@ -323,6 +324,8 @@ vm_taxrevimplFETax(ttot,all_regi)                    "implicit efficiency direct
 ***                                   POSITIVE VARIABLES
 ***----------------------------------------------------------------------------------------
 positive variables
+*** Anne
+
 ***----------------------------------------------------------------------------------------
 ***-------------------------------------------------MACRO module---------------------------
 vm_enerSerAdj(tall,all_regi,all_in)                  "adjustment costs for energy service transformations"
@@ -387,7 +390,8 @@ vm_costCESMkup(ttot,all_regi,all_in)                                   "CES mark
 ***----------------------------------------------------------------------------------------
 equations
 ***---------------- Anne
-q_emiAllCum(ttot)                                    "equation to calculate cumulative carbon emissions in time t"
+q_emiAllCum(ttot,all_regi)                                    "equation to calculate cumulative carbon emissions in time t"
+q_IndstCDR(ttot,all_regi)                            "Calculation of Industry CDR (CCS from synfuels and biofuels)"
 ***----------------------------------------------------------------------------------------
 ***------------------------------------------------MACRO module----------------------------
 q_limitSeel2fehes(ttot,all_regi)                     "equation to limit the share of electricity that can be used for fehes"
