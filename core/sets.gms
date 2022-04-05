@@ -1988,6 +1988,27 @@ entyFe2Sector(all_enty,emi_sectors) "final energy (stationary and transportation
 		fehes.cdr
                 fegas.cdr
                 feh2s.cdr
+                fedie.cdr
+/
+
+se_co2neutralcarbs(entySE)
+/
+        segabio
+        segasyn
+        seliqbio
+        seliqsyn
+        sesobio
+/
+se_carbs(entySE)
+/
+        segabio
+        segasyn
+        segafos
+        seliqbio
+        seliqsyn
+        seliqfos
+        sesobio
+        sesofos
 /
 
 ppfEn2Sector(all_in,emi_sectors) "primary energy production factors mapping to sectors"

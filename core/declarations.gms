@@ -28,6 +28,10 @@ pm_share_trans(tall,all_regi)                        "transportation share"
 pm_gdp_gdx(tall,all_regi)                            "GDP path from gdx, updated iteratively."
 p_inv_gdx(tall,all_regi)                             "macro-investments path from gdx, updated iteratively."
 pm_taxCO2eq(ttot,all_regi)                           "CO2 tax path in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
+pm_taxCDR(ttot,all_regi)                             "CDR tax path in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
+p_taxcdr_iterationdiff(ttot,all_regi)                "helper parameter for cdr revenue level adjustment"
+o_taxCDR_iterDiff_Itr(iteration,all_regi)            "output parameter for manual checking of CDR revenue development"
+
 pm_taxCO2eqRegi(tall,all_regi)                       "additional regional CO2 tax path in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
 pm_taxCO2eqHist(ttot,all_regi)                       "Historic CO2 tax path in 2010 and 2015 (also in BAU!) in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
 pm_taxCO2eqSum(tall,all_regi)                        "sum of pm_taxCO2eq, pm_taxCO2eqRegi, pm_taxCO2eqHist, pm_taxCO2eqSCC in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
@@ -378,6 +382,11 @@ v_prodEs(ttot,all_regi,all_enty,all_esty,all_teEs)          "Energy services (un
 *** CES markup to represent end-use technology cost
 vm_costCESMkup(ttot,all_regi,all_in)                                   "CES markup cost to represent demand-side technology cost of end-use transformation [trUSD/TWa]"
 
+*** Industry CDR
+v_IndstCDR(ttot,all_regi)                            "Industry CDR"
+v_IndstShareco2neutrcarbs(ttot,all_regi)            "for debugging"
+v_FracCCS(ttot,all_regi)                             "for debugging"
+
 ;
 ***----------------------------------------------------------------------------------------
 ***                                   EQUATIONS
@@ -487,6 +496,10 @@ q_shbiofe_lo(ttot,all_regi,all_enty,emi_sectors,all_emiMkt) "share of biomass pe
 q_capH2BI(ttot,all_regi)                                  "H2 infrastructure capacities of buildings and industry need to add up to the total infrastructure of the stationary sector"
 q_limitCapFeH2BI(ttot,all_regi,emi_sectors)               "capacity limit equation for H2 infrastructure capacities of buildings and industry"
 
+*** Industry CDR
+q_IndstCDR(ttot,all_regi)                            "Calculation of Industry CDR (CCS from synfuels and biofuels)"
+q_FracCCS(ttot,all_regi)                             "for debugging"
+q_IndstShareco2neutrcarbs(ttot,all_regi)              "for debugging"
 
 $IFTHEN.sehe_upper not "%cm_INNOPATHS_sehe_upper%" == "off"
 q_heat_limit(ttot,all_regi)  "equation to limit maximum level of secondary energy district heating and heat pumps use"
@@ -555,6 +568,9 @@ p_emi_budget1_gdx                                     "budget for global energy-
 
 s_actualbudgetco2                                     "actual level of 2020-2100 cumulated emissions, including all CO2 for last iteration"
 s_actualbudgetco2_last                                "actual level of 2020-2100 cumulated emissions for previous iteration" /0/
+
+s_actual2050co2                                       "current iterations actual global co2 emissions in 2050 needed to adjust co2 tax until 2050"
+s_actual2050cdr                                       "current iterations actual global cdr amount in 2050 needed to adjust cdr revenues until 2050"
 
 sm_globalBudget_dev                                   "actual level of global cumulated emissions budget divided by target budget"
 
