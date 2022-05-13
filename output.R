@@ -138,18 +138,18 @@ choose_mode <- function(title = "Please choose the output mode") {
 }
 
 choose_slurmConfig_priority_standby <- function(title = "Please enter the slurm mode, uses priority if empty") {
-  slurm_options <- c("priority", "short", "standby", "priority --mem=8000", "priority --mem=32000")
+  slurm_options <- c("--qos=priority", "--qos=short", "--qos=standby", "--qos=priority --mem=8000", "--qos=priority --mem=32000", "direct")
   cat("\n\n", title, ":\n\n")
-  cat(paste(seq_along(slurm_options), slurm_options, sep = ": "), sep = "\n")
+  cat(paste(seq_along(slurm_options), gsub("qos=", "", gsub("--", "", slurm_options)), sep = ": "), sep = "\n")
   cat("\nNumber: ")
   identifier <- get_line()
   if (identifier == "") {
     identifier <- 1
   }
   if (!identifier %in% seq(length(slurm_options))) {
-    stop("This slurm mode is invalid. Please choose a valid mode.")
+    return(choose_slurmConfig_priority_standby(title= "This slurm mode is invalid. Please choose a valid mode"))
   }
-  return(paste0("--qos=", slurm_options[as.numeric(identifier)]))
+  return(slurm_options[as.numeric(identifier)])
 }
 
 choose_filename_prefix <- function(modules, title = "") {
@@ -276,7 +276,8 @@ if (comp == TRUE) {
     # if this script is not being sourced by another script but called from the command line via Rscript let the user
     # choose the slurm options
     if (! exists("slurmConfig")) {
-      slurmConfig <- paste0(choose_slurmConfig_priority_standby(), " --nodes=1 --tasks-per-node=1")
+      slurmConfig <- choose_slurmConfig_priority_standby()
+      if (slurmConfig != "direct") slurmConfig <- paste(slurmConfig, "--nodes=1 --tasks-per-node=1")
     }
     if (slurmConfig %in% c("priority", "short", "standby")) {
       slurmConfig <- paste0("--qos=", slurmConfig, " --nodes=1 --tasks-per-node=1")
@@ -300,7 +301,7 @@ if (comp == TRUE) {
     # Get values of config if output.R is called standalone
     if (!exists("source_include")) {
       magpie_folder <- getwd()
-      print(file.path(outputdir, "config.Rdata"))
+      message("Load data from ", file.path(outputdir, "config.Rdata"))
       if (file.exists(file.path(outputdir, "config.Rdata"))) {
         load(file.path(outputdir, "config.Rdata"))
         title <- cfg$title
@@ -322,7 +323,7 @@ if (comp == TRUE) {
     # included as source (instead of a load from command line)
     source_include <- TRUE
 
-    cat(paste("\nStarting output generation for", outputdir, "\n\n"))
+    message("\nStarting output generation for ", outputdir, "\n")
 
     ###################################################################################
     # Execute R scripts
@@ -348,17 +349,18 @@ if (comp == TRUE) {
             }
           } else {
             # send the output script to slurm
-            slurmcmd <- paste0("sbatch ", slurmConfig, " --job-name=", outputdir, " --output=", outputdir,
-                               ".txt --mail-type=END --comment=REMIND --wrap=\"Rscript scripts/output/single/", rout,
+            logfile <- paste0(outputdir, "/log_", rout, ".txt")
+            slurmcmd <- paste0("sbatch ", slurmConfig, " --job-name=", logfile, " --output=", logfile,
+                               " --mail-type=END --comment=REMIND --wrap=\"Rscript scripts/output/single/", rout,
                                ".R  outputdir=", outputdir, "\"")
-            message("Sending to slurm: ", name)
+            message("Sending to slurm: ", name, ". Find log in ", logfile)
             system(slurmcmd)
             Sys.sleep(1)
           }
         }
       }
       # finished
-      message("\nFinished ", ifelse(slurmConfig == "direct", "", "starting "), "output generation for ", outputdir, "!\n")
+      message("\nFinished ", ifelse(slurmConfig == "direct", "", "starting jobs for "), "output generation for ", outputdir, "!\n")
     }
 
     rm(source_include)
