@@ -2022,18 +2022,6 @@ se_carbs(entySE)
         sesofos
 /
 
-map_eqCarbCont(entySE,entySe2,entyFE)
-/
-        segabio.segafos.fegas
-        segasyn.segafos.fegas
-        segafos.segafos.fegas
-        seliqbio.seliqfos.fehos
-        seliqsyn.seliqfos.fehos
-        seliqfos.seliqfos.fehos
-        sesobio.sesofos.fesos
-        sesofos.sesofos.fesos
-/
-
 ppfEn2Sector(all_in,emi_sectors) "primary energy production factors mapping to sectors"
 /
 		fegab.build
@@ -2663,6 +2651,18 @@ $endif
         sesofos.fesos.tdfossos.co2
         seliqfos.fepet.tdfospet.co2
         seliqfos.fedie.tdfosdie.co2
+/
+
+map_eqCarbCont(all_enty,all_enty,all_enty,all_te) "map hydrocarbon fuels from fossil or atm. origin to same carbon content"
+/
+        segabio.segafos.fegas.tdfosgas
+        segasyn.segafos.fegas.tdfosgas
+        segafos.segafos.fegas.tdfosgas
+        seliqbio.seliqfos.fehos.tdfoshos
+        seliqsyn.seliqfos.fehos.tdfoshos
+        seliqfos.seliqfos.fehos.tdfoshos
+        sesobio.sesofos.fesos.tdfossos
+        sesofos.sesofos.fesos.tdfossos
 /
 
 emi2fuel(all_enty,all_enty) "map emissions to fuel extraction"

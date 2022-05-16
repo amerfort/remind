@@ -667,10 +667,10 @@ q_IndstShareco2neutrcarbs(t,regi)..
   v_IndstShareco2neutrcarbs(t,regi)
   =e=
   sum(map_eqCarbCont(entySE,entySe2,entyFE,te)$(se_co2neutralcarbs(entySE)),
-    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te))
+    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te,"co2"))
   /
   (sum(map_eqCarbCont(entySE,entySe2,entyFE,te)$(se_carbs(entySE)),
-    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te))
+    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te,"co2"))
     + sm_eps)
 ;
 
@@ -709,7 +709,7 @@ q_emiCdrAll(t,regi)..
   !! - fossil CCS from DAC with fegas
   - (1 / pm_eta_conv(t,regi,"gash2c")) * fm_dataemiglob("pegas","seh2","gash2c","cco2") * vm_otherFEdemand(t,regi,"fegas"))
   !! scaled by the fraction that gets stored geologically
-  * v_FracCCS
+  * v_FracCCS(t,regi)
   !! net negative emissions from co2luc
   -  p_macBaseMagpieNegCo2(t,regi)
   !! negative emissions from the cdr module that are not stored geologically

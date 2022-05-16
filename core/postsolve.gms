@@ -518,9 +518,8 @@ $if not setglobal test_TS     + sum(regi, (vm_emiTe.l("2100",regi,"co2") + vm_em
 p_actualbudgetco2(t) =           sum(ttot$(ttot.val < t.val AND ttot.val > 2010), (sum(regi, (vm_emiTe.l(ttot,regi,"co2") + vm_emiCdr.l(ttot,regi,"co2") + vm_emiMac.l(ttot,regi,"co2"))) * sm_c_2_co2 * pm_ts(ttot)))
                               + sum(regi, (vm_emiTe.l(t,regi,"co2") + vm_emiCdr.l(t,regi,"co2") + vm_emiMac.l(t,regi,"co2")))*sm_c_2_co2 * (pm_ts(t) * 0.5 + 0.5)
                               + sum(regi, (vm_emiTe.l("2010",regi,"co2") + vm_emiCdr.l("2010",regi,"co2") + vm_emiMac.l("2010",regi,"co2")))*sm_c_2_co2 * 2;
-s_actualpeakbudgetco2 = smax(t,p_actualbudgetco2(t));							  
 display s_actualbudgetco2;
-    display s_actualbudgetco2, s_actualpeakbudgetco2, s_actual2050co2, s_actual2050cdr;
+    display s_actualbudgetco2, s_actual2050co2, s_actual2050cdr;
     !! Target 2050 CO2 
     if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(c_target2050co2 - s_actual2050co2) ge 0.3 AND c_target2050co2 gt 0,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
       pm_taxCO2eq_iterationdiff(t,regi)$(t.val le 2050) = pm_taxCO2eq(t,regi)$(t.val le 2050) * min(max((s_actual2050co2/(c_target2050co2))** (10/(2 * iteration.val + 23)),0.5+iteration.val/208),2 - iteration.val/102)  - pm_taxCO2eq(t,regi)$(t.val le 2050);
