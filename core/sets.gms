@@ -2022,6 +2022,18 @@ se_carbs(entySE)
         sesofos
 /
 
+map_eqCarbCont(entySE,entySe2,entyFE)
+/
+        segabio.segafos.fegas
+        segasyn.segafos.fegas
+        segafos.segafos.fegas
+        seliqbio.seliqfos.fehos
+        seliqsyn.seliqfos.fehos
+        seliqfos.seliqfos.fehos
+        sesobio.sesofos.fesos
+        sesofos.sesofos.fesos
+/
+
 ppfEn2Sector(all_in,emi_sectors) "primary energy production factors mapping to sectors"
 /
 		fegab.build

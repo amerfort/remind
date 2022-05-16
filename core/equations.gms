@@ -666,11 +666,11 @@ q_emiMac(t,regi,emiMac) ..
 q_IndstShareco2neutrcarbs(t,regi)..
   v_IndstShareco2neutrcarbs(t,regi)
   =e=
-  sum(se2fe(entySE,entyFE,te)$(se_co2neutralcarbs(entySE)),
-    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * p37_fctEmi(entyFE))
+  sum(map_eqCarbCont(entySE,entySe2,entyFE,te)$(se_co2neutralcarbs(entySE)),
+    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te))
   /
-  (sum(se2fe(entySE,entyFE,te)$(se_carbs(entySE)),
-    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * p37_fctEmi(entyFE))
+  (sum(map_eqCarbCont(entySE,entySe2,entyFE,te)$(se_carbs(entySE)),
+    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te))
     + sm_eps)
 ;
 
