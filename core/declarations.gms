@@ -1,4 +1,4 @@
-*** |  (C) 2006-2020 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -116,6 +116,8 @@ pm_budgetCO2eq(all_regi)                             "budget for regional energy
 p_actualbudgetco2(tall)                              "actual level of cumulated emissions starting from 2020 [GtCO2]"
 
 pm_dataccs(all_regi,char,rlf)                               "maximum CO2 storage capacity using CCS technology. [GtC]"
+pm_ccsinjecrate(all_regi)                                   "Regional CCS injection rate factor. 1/a."
+p_extRegiccsinjecrateRegi(ext_regi)                         "Regional CCS injection rate factor. 1/a. (extended regions)"
 pm_dataeta(tall,all_regi,all_te)                            "regional eta data"
 p_emi_quan_conv_ar4(all_enty)                               "conversion factor for various gases to GtCeq"
 pm_emifac(tall,all_regi,all_enty,all_enty,all_te,all_enty)  "emission factor by technology for all types of emissions in emiTe"
@@ -216,9 +218,10 @@ pm_share_CCS_CCO2(ttot,all_regi)                      "share of stored CO2 from 
 pm_delta_histCap(tall,all_regi,all_te)                "parameter to store data of historic capacity additions [TW/yr]"
 
 * Fuel Prices
-pm_FEPrice(ttot,all_regi,all_enty,sector,emiMkt)      "parameter to capture all FE prices across sectors and markets (tr$2005/TWa)"
-pm_SEPrice(ttot,all_regi,all_enty)                    "parameter to capture all SE prices (tr$2005/TWa)"
-pm_PEPrice(ttot,all_regi,all_enty)                    "parameter to capture all PE prices (tr$2005/TWa)"
+pm_FEPrice(ttot,all_regi,all_enty,sector,emiMkt)                "parameter to capture all FE prices across sectors and markets (tr$2005/TWa)"
+pm_FEPrice_iter(iteration,ttot,all_regi,all_enty,sector,emiMkt) "parameter to capture all FE prices across sectors and markets (tr$2005/TWa) across iterations"
+pm_SEPrice(ttot,all_regi,all_enty)                              "parameter to capture all SE prices (tr$2005/TWa)"
+pm_PEPrice(ttot,all_regi,all_enty)                              "parameter to capture all PE prices (tr$2005/TWa)"
 
 pm_tau_fe_tax(ttot,all_regi,emi_sectors,all_enty)    "tax path for final energy"
 pm_tau_fe_sub(ttot,all_regi,emi_sectors,all_enty)    "subsidy path for final energy"
@@ -334,6 +337,7 @@ vm_costEnergySys(ttot,all_regi)                      "energy system costs"
 
 vm_cap(tall,all_regi,all_te,rlf)                     "net total capacities"
 vm_capDistr(tall,all_regi,all_te,rlf)                "net capacities, distributed to the different grades for renewables"
+vm_capTotal(ttot,all_regi,all_enty,all_enty)         "total capacity without technology differentation for technologies where there exists differentation [TW]"
 vm_capFac(ttot,all_regi,all_te)                      "capacity factor of conversion technologies"
 vm_deltaCap(tall,all_regi,all_te,rlf)                "capacity additions"
 vm_capCum(tall,all_regi,all_te)                      "gross capacities (=capacities cumulated over time)"
@@ -407,6 +411,7 @@ q_costInv(ttot,all_regi)                             "costs of investment"
 
 q_cap(tall,all_regi,all_te,rlf)                      "definition of available capacities"
 q_capDistr(tall,all_regi,all_te)                     "distribute available capacities across grades"
+q_capTotal(ttot,all_regi,all_enty,all_enty)          "calculation of vm_capTotal as total capacity without technology differentation for technologies where there exists differentation"
 
 $IFTHEN.WindOff %cm_wind_offshore% == "1"
 q_windoff_low(tall,all_regi)                         "semi-endogenous offshore wind power generation as a share of onshore wind energy, which is proportional to more than half of maxprod ratio"
@@ -558,7 +563,7 @@ sm_DptCO2_2_TDpGtC                                    "Conversion multiplier to 
 s_co2pipe_leakage                                     "Leakage rate of CO2 pipelines. [0..1]"
 s_tau_cement                                          "range of per capita investments for switching from short-term to long-term behavior in CO2 cement emissions"                / 12000 /
 s_c_so2                                               "constant, see S. Smith, 2004, Future Sulfur Dioxide Emissions"    /4.39445/
-sm_ccsinjecrate                                       "CCS injection rate factor. [1/a]"
+s_ccsinjecrate                                        "CCS injection rate factor. [1/a]"
 
 s_t_start                                             "start year of emission budget"
 cm_peakBudgYr                                         "date of net-zero CO2 emissions for peak budget runs without overshoot"

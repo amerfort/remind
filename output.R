@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# |  (C) 2006-2021 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -121,7 +121,7 @@ choose_module <- function(Rfolder, title = "Please choose an outputmodule") {
 }
 
 choose_mode <- function(title = "Please choose the output mode") {
-  modes <- c("Output for single run ", "Comparison across runs")
+  modes <- c("Output for single run ", "Comparison across runs", "Exit")
   cat("\n\n", title, ":\n\n")
   cat(paste(seq_along(modes), modes, sep = ": "), sep = "\n")
   cat("\nNumber: ")
@@ -131,14 +131,23 @@ choose_mode <- function(title = "Please choose the output mode") {
     comp <- FALSE
   } else if (identifier == 2) {
     comp <- TRUE
+  } else if (identifier == 3) {
+    comp <- "Exit"
   } else {
     stop("This mode is invalid. Please choose a valid mode.")
   }
   return(comp)
 }
 
-choose_slurmConfig_priority_standby <- function(title = "Please enter the slurm mode, uses priority if empty") {
-  slurm_options <- c("--qos=priority", "--qos=short", "--qos=standby", "--qos=priority --mem=8000", "--qos=priority --mem=32000", "direct")
+choose_slurmConfig_priority_standby <- function(title = "Please enter the slurm mode, uses the first option if empty",
+                                                slurmExceptions = NULL) {
+  slurm_options <- c("--qos=priority", "--qos=short", "--qos=standby",
+                     "--qos=priority --mem=8000", "--qos=short --mem=8000",
+                     "--qos=standby --mem=8000", "--qos=priority --mem=32000", "direct")
+  if (!is.null(slurmExceptions)) {
+    slurm_options <- unique(c(grep(slurmExceptions, slurm_options, value = TRUE), "direct"))
+  }
+  if (length(slurm_options) == 1) return(slurm_options[[1]])
   cat("\n\n", title, ":\n\n")
   cat(paste(seq_along(slurm_options), gsub("qos=", "", gsub("--", "", slurm_options)), sep = ": "), sep = "\n")
   cat("\nNumber: ")
@@ -168,7 +177,9 @@ if (exists("source_include")) {
   comp <- choose_mode("Please choose the output mode")
 }
 
-if (comp == TRUE) {
+if (comp == "Exit") {
+  q()
+} else if (comp == TRUE) {
   print("comparison")
   # Select output modules if not defined by readArgs
   if (!exists("output")) {
@@ -273,10 +284,16 @@ if (comp == TRUE) {
 
   # define slurm class or direct execution
   if (! exists("source_include")) {
+    # for selected output scripts, only slurm configurations matching these regex are available
+    slurmExceptions <- switch(output,
+      reporting      = "--mem=[0-9]*[0-9]{3}",
+      plotIterations = "^direct",
+      NULL
+    )
     # if this script is not being sourced by another script but called from the command line via Rscript let the user
     # choose the slurm options
-    if (! exists("slurmConfig")) {
-      slurmConfig <- choose_slurmConfig_priority_standby()
+    if (!exists("slurmConfig")) {
+      slurmConfig <- choose_slurmConfig_priority_standby(slurmExceptions = slurmExceptions)
       if (slurmConfig != "direct") slurmConfig <- paste(slurmConfig, "--nodes=1 --tasks-per-node=1")
     }
     if (slurmConfig %in% c("priority", "short", "standby")) {
@@ -293,7 +310,6 @@ if (comp == TRUE) {
     if (exists("cfg")) {
       title <- cfg$title
       gms <- cfg$gms
-      input <- cfg$input
       revision <- cfg$inputRevision
       magpie_folder <- cfg$magpie_folder
     }
@@ -306,7 +322,6 @@ if (comp == TRUE) {
         load(file.path(outputdir, "config.Rdata"))
         title <- cfg$title
         gms <- cfg$gms
-        input <- cfg$input
         revision <- cfg$inputRevision
       } else {
         config <- grep("\\.cfg$", list.files(outputdir), value = TRUE)
@@ -314,7 +329,6 @@ if (comp == TRUE) {
         title <- strsplit(grep("(cfg\\$|)title +<-", l, value = TRUE), "\"")[[1]][2]
         gms <- list()
         gms$scenarios <- strsplit(grep("(cfg\\$|)gms\\$scenarios +<-", l, value = TRUE), "\"")[[1]][2]
-        input <- strsplit(grep("(cfg\\$|)input +<-", l, value = TRUE), "\"")[[1]][2]
         revision <- as.numeric(unlist(strsplit(grep("(cfg\\$|)inputRevision +<-", l, value = TRUE), "<-[ \t]*"))[2])
       }
     }

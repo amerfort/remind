@@ -1,4 +1,4 @@
-*** |  (C) 2006-2020 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -180,6 +180,7 @@ $endif
         bioigcc         "integrated biomass gasification combined cycle"
         bioigccc        "integrated biomass gasification combined cycle with CCS"
         biogas          "gasification of biomass"
+        biogasc         "gasification of biomass with capture"
         bioftrec        "biomass based fischer-tropsch recycle"
         bioftcrec       "biomass based fischer-tropsch with capture recycle"
         bioh2           "biomass to hydrogen"
@@ -303,23 +304,23 @@ $ENDIF.WindOff
         tdh2i   "helper technologies (without cost) to avoid sudden H2 use switching in buildings and industry"
         tdh2b   "helper technologies (without cost) to avoid sudden H2 use switching in buildings and industry"
 *** PCV: technologies related to trading
-        pipe_gas    'Pipelines transporting natural gas'
-        termX_lng   'Export terminals for LNG (liquification)'
-        termM_lng   'Import terminals for LNG (regasification)'
-        vess_lng    'Vessels transporting LNG'
-        vess_coal   'Vessels transporting coal'
-        pipe_oil    'Pipelines transporting oil'
-        vess_oil    'Vessels transporting oil'
-        pipe_h2     'Pipelines transporting hydrogen'
-        termX_lh2   'Export terminals for liquid hydrogen (liquification)'
-        termM_lh2   'Import terminals for liquid hydrogen (regasification)'
-        vess_lh2    'Vessels transporting liquid hydrogen'
-        termX_lohc  'Export terminals for liquid hydrogen (liquification)'
-        termM_lohc  'Import terminals for liquid hydrogen (regasification)'
-        vess_lohc   'Vessels transporting liquid hydrogen'
-        termX_nh3   'Export terminals for liquid hydrogen (liquification)'
-        termM_nh3   'Import terminals for liquid hydrogen (regasification)'
-        vess_nh3    'Vessels transporting liquid hydrogen'
+        pipe_gas    "Pipelines transporting natural gas"
+        termX_lng   "Export terminals for LNG (liquification)"
+        termM_lng   "Import terminals for LNG (regasification)"
+        vess_lng    "Vessels transporting LNG"
+        vess_coal   "Vessels transporting coal"
+        pipe_oil    "Pipelines transporting oil"
+        vess_oil    "Vessels transporting oil"
+        pipe_h2     "Pipelines transporting hydrogen"
+        termX_lh2   "Export terminals for liquid hydrogen (liquification)"
+        termM_lh2   "Import terminals for liquid hydrogen (regasification)"
+        vess_lh2    "Vessels transporting liquid hydrogen"
+        termX_lohc  "Export terminals for liquid organic hydrogen carriers (liquification)"
+        termM_lohc  "Import terminals for liquid organic hydrogen carriers (regasification)"
+        vess_lohc   "Vessels transporting liquid organic hydrogen carriers"
+        termX_nh3   "Export terminals for liquid ammonia (liquification)"
+        termM_nh3   "Import terminals for liquid ammonia (regasification)"
+        vess_nh3    "Vessels transporting liquid ammonia"
 /
 
 all_enty             "all types of quantities"
@@ -1151,6 +1152,7 @@ $endif
         bioigcc         "integrated biomass gasification combined cycle"
         bioigccc        "integrated biomass gasification combined cycle with CCS"
         biogas          "gasification of biomass"
+        biogasc         "gasification of biomass with capture"
         bioftrec        "biomass based fischer-tropsch recycle"
         bioftcrec       "biomass based fischer-tropsch with capture recycle"
         bioh2           "biomass to hydrogen"
@@ -1259,6 +1261,7 @@ $endif
   bioigcc         "integrated biomass gasification combined cycle"
   bioigccc        "integrated biomass gasification combined cycle with CCS"
   biogas          "gasification of biomass"
+  biogasc         "gasification of biomass with capture"
   bioftrec        "biomass based fischer-tropsch recycle"
   bioftcrec       "biomass based fischer-tropsch with capture recycle"
   bioh2           "biomass to hydrogen"
@@ -1357,6 +1360,7 @@ $ifthen setGlobal cm_ccsfosall
 $endif
   coalftcrec  "coal based fischer-tropsch with capture recycle"
   coalh2c     "coal to hydrogen with capture"
+  biogasc     "gasification of biomass with capture"
   bioftcrec   "biomass based fischer-tropsch with capture recycle"
   bioh2c      "biomass to hydrogen with capture"
   bioigccc    "integrated biomass gasification combined cycle with CCS"
@@ -1375,6 +1379,7 @@ teBio(all_te)      "biomass energy systems technologies"
         bioigcc     "integrated biomass gasification combined cycle"
         bioigccc    "integrated biomass gasification combined cycle with CCS"
         biogas      "gasification of biomass"
+        biogasc     "gasification of biomass with capture"
         bioftrec    "biomass based fischer-tropsch recycle"
         bioftcrec   "biomass based fischer-tropsch with capture recycle"
         bioh2       "biomass to hydrogen"
@@ -1392,6 +1397,7 @@ teRe(all_te)     "renewable technologies including biomass"
         bioigcc     "integrated biomass gasification combined cycle"
         bioigccc    "integrated biomass gasification combined cycle with CCS"
         biogas      "gasification of biomass"
+        biogasc     "gasification of biomass with capture"
         bioftrec    "biomass based fischer-tropsch recycle"
         bioftcrec   "biomass based fischer-tropsch with capture recycle"
         bioh2       "biomass to hydrogen"
@@ -1509,6 +1515,7 @@ teBioPebiolc(all_te)      "biomass technologies using pebiolc"
         bioigcc
         bioigccc
         biogas
+        biogasc
         bioftrec
         bioftcrec
         bioh2
@@ -2403,6 +2410,7 @@ $endif
         pebiolc.sesobio.biotr
         pebiolc.sesobio.biotrmod
         pebiolc.segabio.biogas
+        pebiolc.segabio.biogasc
         pegeo.seel.geohdr
         pegeo.sehe.geohe
         pehyd.seel.hydro
@@ -2434,6 +2442,13 @@ seAgg2se(all_enty,all_enty) "map secondary energy aggregation to se"
 	all_sega.segabio
 	all_sega.segafos
         all_sega.segasyn
+/
+
+capTotal(all_enty,all_enty)    "mapping of input to output carriers for calculating total capacities without technology differentiation vm_capTotal"
+/       
+        pecoal.seel
+        pegas.seel
+        pebiolc.seel
 /
 
 *RP* mappings for storage technologies
@@ -2636,6 +2651,9 @@ $endif
         pebiolc.seel.bioigccc.n2o
         pebiolc.seel.bioigcc.n2o
         pebiolc.segabio.biogas.n2o
+        pebiolc.segabio.biogasc.co2
+        pebiolc.segabio.biogasc.cco2
+        pebiolc.segabio.biogasc.n2o
         segabio.fegas.tdbiogas.ch4
         segafos.fegas.tdfosgas.ch4
 *        cco2.pco2.ccscomp.co2
@@ -2802,7 +2820,7 @@ $IFTHEN.WindOff %cm_wind_offshore% == "1"
 $ENDIF.WindOff
         spv,csp,refliq,hydro,geohe,geohdr,solhe,ngcc,ngccc,ngt,gaschp,gashp,gash2,gash2c,gastr,gasftrec,gasftcrec,dot,
        igcc,igccc,pc,coaltr,coalgas,coalh2,coalh2c,coalchp,coalhp,coalftrec,coalftcrec,
-       biotr,biotrmod,biogas,bioftrec,bioftcrec,bioh2,bioh2c,biohp,biochp,bioigcc,bioigccc,
+       biotr,biotrmod,biogas,biogasc,bioftrec,bioftcrec,bioh2,bioh2c,biohp,biochp,bioigcc,bioigccc,
        elh2,h2turb,elh2VRE,h2turbVRE,bioethl,bioeths,biodiesel,tnrs,fnrs
 $ifthen setGlobal cm_ccsfosall
        pcc, pco

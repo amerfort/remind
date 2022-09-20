@@ -1,4 +1,4 @@
-*** |  (C) 2006-2020 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -42,6 +42,10 @@ Scalars
   s05_aux_tot_prod         "auxiliary calculation parameter for the capacities in different grades: total production as resulting from initialcap2"
   s05_aux_prod_remaining   "auxiliary calculation parameter for the capacities in different grades: production that still has to be distributed to a grade"
 ;
+
+File report_capini;            
+File check_INIdemEn0 / check_INIdemEn0.csv /; 
+
 
 *** EOF ./modules/05_initialCap/on/declarations.gms
 
