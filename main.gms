@@ -308,6 +308,9 @@ parameters
   cm_carbonprice_temperatureLimit "not-to-exceed temperature target in degree above pre-industrial"
   cm_frac_CCS          "tax on CCS to reflect risk of leakage, formulated as fraction of ccs O&M costs"
   cm_frac_NetNegEmi    "tax on CDR to reflect risk of overshooting, formulated as fraction of carbon price"
+
+  c_target2050co2     "global co2 emission year target in 2050"
+  c_target2050cdr     "global cdr emission year target in 2050"
   
   cm_DiscRateScen          "Scenario for the implicit discount rate applied to the energy efficiency capital"
   cm_noReboundEffect      "Switch for allowing a rebound effect when closing the efficiency gap (cm_DiscRateScen)"
@@ -495,6 +498,9 @@ cm_trdcst            = 1.5;  !! def = 1.5
 c_refcapbnd          = 0;    !! def = 0
 cm_frac_CCS          = 10;   !! def = 10
 cm_frac_NetNegEmi    = 0.5;  !! def = 0.5
+
+c_target2050co2     = -1; !! def = -1
+c_target2050cdr     = -1; !! def = -1
 
 cm_damages_BurkeLike_specification    = 0;     !! def = 0
 cm_damages_BurkeLike_persistenceTime  = 30;    !! def = 30

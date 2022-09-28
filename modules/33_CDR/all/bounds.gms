@@ -7,7 +7,8 @@
 *** SOF ./modules/33_CDR/all/bounds.gms
 vm_emiCdr.fx(t,regi,emi)$(not sameas(emi,"co2")) = 0.0;
 v33_grindrock_onfield_tot.up(t,regi,rlf,rlf2) = s33_step;
-v33_grindrock_onfield_tot.fx("2005",regi,rlf,rlf2) = 0.0;
+v33_grindrock_onfield_tot.fx(ttot,regi,rlf,rlf2)$(ttot.val le 2020 AND ttot.val ge 2005) = 0.0;
+v33_grindrock_onfield.fx(ttot,regi,rlf,rlf2)$(ttot.val le 2020 AND ttot.val ge 2005) = 0.0;
 v33_grindrock_onfield.fx(t,regi,rlf,rlf2)$(rlf2.val gt 10) = 0;
 v33_grindrock_onfield_tot.fx(t,regi,rlf,rlf2)$(rlf2.val gt 10) = 0;
 vm_emiCdr.up(t,regi,"co2")$(t.val gt 2015) = -0.0001;

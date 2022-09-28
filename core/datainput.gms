@@ -1503,5 +1503,8 @@ $endif.cm_rcp_scen_build
 *** initialize global target deviation scalar
 sm_globalBudget_dev = 1;
 
+*** initialise separate price for CDR 
+pm_taxCDR(t,regi) = 0;
+
 *** EOF ./core/datainput.gms
 

@@ -61,6 +61,15 @@ p45_regCO2priceFactor(ttot,regi)$(ttot.val ge cm_CO2priceRegConvEndYr) = 1;
 *** transition to global price - starting point depends on GDP/cap
 pm_taxCO2eq(t,regi) = p45_regCO2priceFactor(t,regi) * p45_CO2priceTrajDeveloped(t);
 
+if(cm_iterative_target_adj eq 13,
+  pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi);
+)
+if((c_target2050cdr eq 0 AND c_target2050co2 gt 0),
+  pm_taxCDR(t,regi) = 0;
+  );    
+if((c_target2050co2 eq 0 AND c_target2050cdr gt 0),
+  pm_taxCO2eq(t,regi) = 0;
+);  
 
 display p45_regCO2priceFactor, p45_CO2priceTrajDeveloped, pm_taxCO2eq;
 
