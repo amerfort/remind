@@ -24,8 +24,8 @@ path_settings_coupled <- paste0(path_remind, "config/scenario_config_coupled_NGF
 path_settings_remind  <- sub("scenario_config_coupled", "scenario_config", path_settings_coupled)
                          # paste0(path_remind, "config/scenario_config.csv")
 # Annes analysis
-path_settings_coupled <- paste0(path_remind,"config/scenario_config_coupled_Anne.csv")
-path_settings_remind  <- paste0(path_remind,"config/scenario_config_Anne.csv")                  
+path_settings_coupled <- paste0(path_remind,"config/scenario_config_coupled_first_paper.csv")
+path_settings_remind  <- paste0(path_remind,"config/scenario_config_first_paper.csv")                  
 
 # You can put a prefix in front of the names of your runs, this will turn e.g. "SSP2-Base" into "prefix_SSP2-Base".
 # This allows storing results of multiple coupled runs (which have the same scenario names) in the same MAgPIE and REMIND output folders.

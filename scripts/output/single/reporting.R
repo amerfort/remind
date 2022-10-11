@@ -7,7 +7,7 @@
 
 library(magclass)
 library(devtools)
-load_all("/p/tmp/amerfort/netNeutr/coupling/remind2")
+load_all("/p/tmp/amerfort/first_paper/remind2")
 #library(remind2)
 library(lucode2)
 library(gms)
@@ -78,12 +78,13 @@ message("end generation of EDGE-T reporting")
 message("### end generation of mif files at ", Sys.time())
 
 ## produce REMIND LCOE reporting *.csv based on gdx information
-message("start generation of LCOE reporting")
-tmp <- try(convGDX2CSV_LCOE(gdx,file=LCOE_reporting_file,scen=scenario)) # execute convGDX2MIF_LCOE
-message("end generation of LCOE reporting")
+message("skip generation of LCOE reporting")
+#message("start generation of LCOE reporting")
+#tmp <- try(convGDX2CSV_LCOE(gdx,file=LCOE_reporting_file,scen=scenario)) # execute convGDX2MIF_LCOE
+#message("end generation of LCOE reporting")
 
 ## generate DIETER reporting if it is needed
-## the reporting is appended to REMIND_generic_<scenario>.MIF in "DIETER" Sub Directory 
+## the reporting is appended to REMIND_generic_<scenario>.MIF in "DIETER" Sub Directory
 DIETERGDX <- "report_DIETER.gdx"
 if(file.exists(file.path(outputdir, DIETERGDX))){
   message("start generation of DIETER reporting")
