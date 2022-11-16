@@ -577,6 +577,8 @@ s_actualbudgetco2_last                                "actual level of 2020-2100
 
 s_actual2050co2                                       "current iterations actual global co2 emissions in 2050 needed to adjust co2 tax until 2050"
 s_actual2050cdr                                       "current iterations actual global cdr amount in 2050 needed to adjust cdr revenues until 2050"
+s_actual2050budget                                    "current iterations cumulated emissions from 2020 until 2050 needed to adjust s_cprice_growthrate in separate co2 and cdr markets"
+sm_co2_tax_growth                                     "carbon price trajectories growth rate to match 2050 budgets with separate co2 and cdr markets"
 
 sm_globalBudget_dev                                   "actual level of global cumulated emissions budget divided by target budget"
 
