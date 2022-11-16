@@ -1503,8 +1503,12 @@ $endif.cm_rcp_scen_build
 *** initialize global target deviation scalar
 sm_globalBudget_dev = 1;
 
+*** ACM
 *** initialise separate price for CDR 
 pm_taxCDR(t,regi) = 0;
+*** initial carbon tax growth rate
+sm_co2_tax_growth = cm_co2_tax_growth;
+
 
 *** EOF ./core/datainput.gms
 

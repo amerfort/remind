@@ -613,8 +613,8 @@ if(mod(iteration.val,2),
 if(mod((iteration.val+1),2),
     if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(c_target2050budget - s_actual2050budget) ge 5 AND c_target2050budget gt 0,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
       sm_co2_tax_growth = sm_co2_tax_growth + ((c_target2050budget/s_actual2050budget) -1)/10;
-      pm_taxCO2eq(t,regi)$(t.val le 2050) = pm_taxCO2eq(2050,regi)*power(sm_co2_tax_growth,(t.val - 2050));
-      pm_taxCDR(t,regi)$(t.val le 2050) = pm_taxCDR(2050,regi)*power(sm_co2_tax_growth,(t.val - 2050));
+      pm_taxCO2eq(t,regi)$(t.val le 2050) = pm_taxCO2eq("2050",regi)*power(sm_co2_tax_growth,(t.val - 2050));
+      pm_taxCDR(t,regi)$(t.val le 2050) = pm_taxCDR("2050",regi)*power(sm_co2_tax_growth,(t.val - 2050));
     );	
     pm_taxCDR(t,regi)$(t.val gt 2050) = pm_taxCDR("2050",regi); !! Prices are constant after 2050 (year of net carbon neutrality)
     display pm_taxCDR;
