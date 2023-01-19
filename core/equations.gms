@@ -678,13 +678,32 @@ q_emiMac(t,regi,emiMac) ..
 ;
 
 ***--------------------------------------------------
-*' Share of carbon from biofuels and synfuels in industry
+*' Share of atmospheric carbon in captured carbon
+***--------------------------------------------------
+q_ShareAtmCO2inSynfuels(t,regi)..
+  v_shareAtmCO2inSynfuels(t,regi)
+  =e=
+  !!Atmospheric CO2 
+  (sum(emiBECCS2te(enty,enty2,te,enty3),vm_emiTeDetail(t,regi,enty,enty2,te,enty3)) !!BECC
+  + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf))  !!DACC
+  !! - excluding carbon from fossil and synthetic fegas from DAC heating
+  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFEsector(t,regi,"segafos","fegas","CDR","ETS")
+  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFEsector(t,regi,"segasyn","fegas","CDR","ETS"))
+  /
+  !! Divided by all captured CO2 (TODO: To be accurate exclude captured carbon from synfuels in DAC and Industry)
+    (sum(teCCS2rlf(te,rlf),
+        vm_co2capture(t,regi,"cco2","ico2","ccsinje",rlf))+sm_eps
+    )
+    ;
+
+***--------------------------------------------------
+*' Share of atmospheric carbon in industry fuels
 ***--------------------------------------------------
 q_IndstShareco2neutrcarbs(t,regi)..
   v_IndstShareco2neutrcarbs(t,regi)
   =e=
   sum(map_eqCarbCont(entySE,entySe2,entyFE,te)$(se_co2neutralcarbs(entySE)),
-    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te,"co2"))
+    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te,"co2") * v_shareAtmCO2inSynfuels(t,regi)$((sameas(entySE,"seliqsyn")) OR (sameas(entySE,"segasyn"))))
   /
   (sum(map_eqCarbCont(entySE,entySe2,entyFE,te)$(se_carbs(entySE)),
     sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te,"co2"))
@@ -704,7 +723,7 @@ q_FracCCS(t,regi)..
 ;
 
 ***--------------------------------------------------
-*' Industry CDR (CCS from carbon neutral fuels, i.e., biofuels or synfuels)
+*' Industry CDR (CCS from carbon neutral fuels, i.e., biofuels or atmospheric part of synfuels)
 ***--------------------------------------------------
 q_IndstCDR(t,regi) .. 
   v_IndstCDR(t,regi)
@@ -724,7 +743,7 @@ q_emiCdrAll(t,regi)..
   !! + DACC
   + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf))
   !! - fossil CCS from DAC with fegas
-  - (1 / pm_eta_conv(t,regi,"gash2c")) * fm_dataemiglob("pegas","seh2","gash2c","cco2") * vm_otherFEdemand(t,regi,"fegas"))
+  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFEsector(t,regi,"segafos","fegas","CDR","ETS"))
   !! scaled by the fraction that gets stored geologically
   * v_FracCCS(t,regi)
   !! net negative emissions from co2luc

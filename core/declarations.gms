@@ -389,8 +389,9 @@ vm_costCESMkup(ttot,all_regi,all_in)                                   "CES mark
 
 *** Industry CDR
 v_IndstCDR(ttot,all_regi)                            "Industry CDR"
-v_IndstShareco2neutrcarbs(ttot,all_regi)            "for debugging"
-v_FracCCS(ttot,all_regi)                             "for debugging"
+v_IndstShareco2neutrcarbs(ttot,all_regi)             "Share of hydrocarbon fuels with atmospheric carbon in Industry FE demand"
+v_FracCCS(ttot,all_regi)                             "share of geologically stored co2 from captured co2"
+v_shareAtmCO2inSynfuels(ttot,all_regi)               "Share of atmospheric co2 from all captured co2"
 
 ;
 ***----------------------------------------------------------------------------------------
@@ -503,9 +504,10 @@ q_capH2BI(ttot,all_regi)                                  "H2 infrastructure cap
 q_limitCapFeH2BI(ttot,all_regi,emi_sectors)               "capacity limit equation for H2 infrastructure capacities of buildings and industry"
 
 *** Industry CDR
-q_IndstCDR(ttot,all_regi)                            "Calculation of Industry CDR (CCS from synfuels and biofuels)"
-q_FracCCS(ttot,all_regi)                             "for debugging"
-q_IndstShareco2neutrcarbs(ttot,all_regi)              "for debugging"
+q_IndstCDR(ttot,all_regi)                            "Industry CDR"
+q_IndstShareco2neutrcarbs(ttot,all_regi)             "Share of hydrocarbon fuels with atmospheric carbon in Industry FE demand"
+q_FracCCS(ttot,all_regi)                             "share of geologically stored co2 from captured co2"
+q_shareAtmCO2inSynfuels(ttot,all_regi)               "Share of atmospheric co2 from all captured co2"
 
 $IFTHEN.sehe_upper not "%cm_INNOPATHS_sehe_upper%" == "off"
 q_heat_limit(ttot,all_regi)  "equation to limit maximum level of secondary energy district heating and heat pumps use"
@@ -577,6 +579,7 @@ s_actualbudgetco2_last                                "actual level of 2020-2100
 
 s_actual2050co2                                       "current iterations actual global co2 emissions in 2050 needed to adjust co2 tax until 2050"
 s_actual2050cdr                                       "current iterations actual global cdr amount in 2050 needed to adjust cdr revenues until 2050"
+s_actual2050net                                       "current iterations global net co2 emissions in 2050"
 s_actual2050budget                                    "current iterations cumulated emissions from 2020 until 2050 needed to adjust s_cprice_growthrate in separate co2 and cdr markets"
 sm_co2_tax_growth                                     "carbon price trajectories growth rate to match 2050 budgets with separate co2 and cdr markets"
 

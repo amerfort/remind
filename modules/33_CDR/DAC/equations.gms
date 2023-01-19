@@ -23,7 +23,7 @@ q33_capconst_dac(t,regi)..
 	v33_emiDAC(t,regi)
 	=e=
 	- sum(teNoTransform2rlf_dyn33("dac",rlf2), vm_capFac(t,regi,"dac") * vm_cap(t,regi,"dac",rlf2))
-	-  (1 / pm_eta_conv(t,regi,"gash2c")) * fm_dataemiglob("pegas","seh2","gash2c","cco2") * vm_otherFEdemand(t,regi,"fegas")
+	-  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_otherFEdemand(t,regi,"fegas")	
 	;
 
 ***---------------------------------------------------------------------------
