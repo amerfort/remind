@@ -21,12 +21,12 @@ elseif cm_co2_tax_2020 ge 0,
 pm_taxCO2eq("2025",regi)= cm_co2_tax_2020 * sm_DptCO2_2_TDpGtC;
 );
 
-pm_taxCO2eq(ttot,regi)$(ttot.val ge 2025 AND ttot.val le 2050) = pm_taxCO2eq("2025",regi)*cm_co2_tax_growth**(ttot.val-2025);
-pm_taxCO2eq(ttot,regi)$(ttot.val gt 2050) = pm_taxCO2eq("2050",regi); !! keep taxes constant after 2050
+pm_taxCO2eq(ttot,regi)$(ttot.val ge 2025 AND ttot.val le cm_peakBudgYr) = pm_taxCO2eq("2025",regi)*cm_co2_tax_growth**(ttot.val-2025);
+pm_taxCO2eq(ttot,regi)$(ttot.val gt cm_peakBudgYr) =sum(t$(t.val eq cm_peakBudgYr),pm_taxCO2eq(t,regi)); !! keep taxes constant after cm_peakBudgYr
 sm_co2_tax_growth = cm_co2_tax_growth;
 
-pm_taxCDR(ttot,regi)$(ttot.val ge 2025 AND ttot.val le 2050) = pm_taxCO2eq("2025",regi)*cm_cdr_tax_growth**(ttot.val-2025);
-pm_taxCDR(ttot,regi)$(ttot.val gt 2050) = pm_taxCDR("2050",regi); !! keep taxes constant after 2050
+pm_taxCDR(ttot,regi)$(ttot.val ge 2025 AND ttot.val le cm_peakBudgYr) = pm_taxCO2eq("2025",regi)*cm_cdr_tax_growth**(ttot.val-2025);
+pm_taxCDR(ttot,regi)$(ttot.val gt cm_peakBudgYr) =sum(t$(t.val eq cm_peakBudgYr),pm_taxCDR(t,regi)); !! keep taxes constant after cm_peakBudgYr
 
 display pm_taxCDR, pm_taxCO2eq;
 

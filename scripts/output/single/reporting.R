@@ -7,7 +7,7 @@
 
 library(magclass)
 library(devtools)
-load_all("/p/tmp/amerfort/SepMark_sameBudget/remind2")
+load_all("/p/tmp/amerfort/fresh_SepMark/remind2")
 #library(remind2)
 library(lucode2)
 library(gms)
