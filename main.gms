@@ -313,6 +313,7 @@ parameters
   c_target2050co2     "global co2 emission year target in 2050"
   c_target2050cdr     "global cdr emission year target in 2050"
   c_target2050budget  "global emissions budget from 2020 until 2050 for separate co2 and cdr markets"
+  cm_cdr2co2_price_ratio "Ratio of CDR to CO2 price to be defined in separate market scenarios with fixed budgets but free timing of net-zero"
 
   cm_DiscRateScen          "Scenario for the implicit discount rate applied to the energy efficiency capital"
   cm_noReboundEffect      "Switch for allowing a rebound effect when closing the efficiency gap (cm_DiscRateScen)"
@@ -505,6 +506,7 @@ cm_frac_NetNegEmi    = 0.5;  !! def = 0.5
 c_target2050co2     = 0; !! def = -1
 c_target2050cdr     = 0; !! def = -1
 c_target2050budget  = -1; !! def = -1
+cm_cdr2co2_price_ratio = 1; !! def = 1
 
 cm_damages_BurkeLike_specification    = 0;     !! def = 0
 cm_damages_BurkeLike_persistenceTime  = 30;    !! def = 30

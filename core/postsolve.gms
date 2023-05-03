@@ -359,6 +359,7 @@ if(cm_iterative_target_adj eq 9,
       pm_taxCO2eq_iterationdiff(t,regi) = max(1* sm_DptCO2_2_TDpGtC, pm_taxCO2eq(t,regi) * p_factorRescale_taxCO2_Funneled(iteration) ) - pm_taxCO2eq(t,regi);
       p_taxCO2eq_until2150(t,regi) = max(1* sm_DptCO2_2_TDpGtC, p_taxCO2eq_until2150(t,regi) * p_factorRescale_taxCO2_Funneled(iteration) );
       pm_taxCO2eq(t,regi) = max(1* sm_DptCO2_2_TDpGtC, pm_taxCO2eq(t,regi) * p_factorRescale_taxCO2_Funneled(iteration) );  !! rescale co2tax
+
       loop(t2$(t2.val eq cm_peakBudgYr),
 	    pm_taxCO2eq(t,regi)$(t.val gt cm_peakBudgYr) = p_taxCO2eq_until2150(t2,regi) + (t.val - t2.val) * cm_taxCO2inc_after_peakBudgYr * sm_DptCO2_2_TDpGtC;  !! increase by cm_taxCO2inc_after_peakBudgYr per year
 	  );
@@ -502,6 +503,95 @@ if(cm_iterative_target_adj eq 9,
     display o_delay_increase_peakBudgYear, o_reached_until2150pricepath, pm_taxCO2eq, o_peakBudgYr_Itr, o_taxCO2eq_afterPeakShiftLoop_Itr_1regi, o_pkBudgYr_flipflop;
   ); !! if cm_emiscen eq 9,
 );   !! if cm_iterative_target_adj eq 9,
+
+
+
+*** Anne
+*** ---------------------------------------------------------------------------------------------------------------
+*** Peak Budgets with separate prices for emissions and removals (price scaling factor between both has to be provided as an input)
+*** ---------------------------------------------------------------------------------------------------------------
+
+if(cm_iterative_target_adj eq 11,
+*KK* p_actualbudgetco2 for ttot > 2020. It includes emissions from 2020 to ttot (including ttot).
+*** (ttot.val - (ttot - 1).val)/2 and pm_ts("2020")/2 are the time periods that haven't been taken into account in the sum over ttot2.
+*** 0.5 year of emissions is added for the two boundaries, such that the budget includes emissions in ttot.
+  p_actualbudgetco2(ttot)$(ttot.val > 2020) = sum(ttot2$(ttot2.val < ttot.val AND ttot2.val > 2020), (sum(regi, (vm_emiTe.l(ttot2,regi,"co2") + vm_emiCdr.l(ttot2,regi,"co2") + vm_emiMac.l(ttot2,regi,"co2"))) * sm_c_2_co2 * pm_ts(ttot2)))
+                       + sum(regi, (vm_emiTe.l(ttot,regi,"co2") + vm_emiCdr.l(ttot,regi,"co2") + vm_emiMac.l(ttot,regi,"co2"))) * sm_c_2_co2 * ((pm_ttot_val(ttot)-pm_ttot_val(ttot-1))/2 + 0.5)
+                       + sum(regi, (vm_emiTe.l("2020",regi,"co2") + vm_emiCdr.l("2020",regi,"co2") + vm_emiMac.l("2020",regi,"co2"))) * sm_c_2_co2 * (pm_ts("2020")/2 + 0.5);
+  s_actualbudgetco2 = smax(t$(t.val le cm_peakBudgYr),p_actualbudgetco2(t));
+  loop(ttot$(p_actualbudgetco2(ttot) eq s_actualbudgetco2),
+    cm_peakBudgYr = ttot.val;
+    s_peakBudgYr_plus_one = cm_peakBudgYr + sum(ttot2$(ttot2.val eq cm_peakBudgYr), pm_ts(ttot2));
+  );
+  s_emi_pre_peak = sum(ttot$(ttot.val eq cm_peakBudgYr),vm_emiAllGlob.l(ttot,"co2"));
+  s_emi_post_peak = sum(ttot$(ttot.val eq s_peakBudgYr_plus_one),vm_emiAllGlob.l(ttot,"co2"));
+  s_netzeroCO2year_delta = - s_emi_pre_peak * sum(ttot2$(ttot2.val eq cm_peakBudgYr), pm_ts(ttot2)) / (s_emi_post_peak - s_emi_pre_peak);
+
+
+  o_peakBudgYr_Itr(iteration) = cm_peakBudgYr;
+                  
+  display s_actualbudgetco2;  
+  display p_actualbudgetco2;
+  display cm_peakBudgYr;
+
+  if(cm_emiscen eq 9,
+  
+*** -------- calculate the new CO2 price path,  the CO2 tax rescale factor----------------------------------------------------------  
+  
+    if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND s_actualbudgetco2 > 0 AND abs(c_budgetCO2from2020 - s_actualbudgetco2) ge 2,   !!only for optimal iterations, and not after the last one, and only if budget still possitive, and only if target not yet reached
+      display pm_taxCO2eq;
+
+*** --------calculate the CO2 tax rescale factor
+
+      if(iteration.val lt 10,
+        p_factorRescale_taxCO2(iteration) = max(0.1, (s_actualbudgetco2/c_budgetCO2from2020) ) ** 3;
+      else
+        p_factorRescale_taxCO2(iteration) = max(0.1, (s_actualbudgetco2/c_budgetCO2from2020) ) ** 2;
+      );
+      p_factorRescale_taxCO2_Funneled(iteration) =
+                max(min( 2 * EXP( -0.15 * iteration.val ) + 1.01 ,p_factorRescale_taxCO2(iteration)),
+                        1/ ( 2 * EXP( -0.15 * iteration.val ) + 1.01)
+                );
+
+      pm_taxCO2eq_iterationdiff(t,regi) = max(1* sm_DptCO2_2_TDpGtC, pm_taxCO2eq(t,regi) * p_factorRescale_taxCO2_Funneled(iteration) ) - pm_taxCO2eq(t,regi);
+      p_taxCO2eq_until2150(t,regi) = max(1* sm_DptCO2_2_TDpGtC, p_taxCO2eq_until2150(t,regi) * p_factorRescale_taxCO2_Funneled(iteration) );
+      pm_taxCO2eq(t,regi) = max(1* sm_DptCO2_2_TDpGtC, pm_taxCO2eq(t,regi) * p_factorRescale_taxCO2_Funneled(iteration) );  !! rescale co2tax
+      
+      loop(t2$(t2.val eq cm_peakBudgYr),
+      !! Anne hier die Approximation des net-zero/peak year Zeitpunkts zwischen den Zeitschritten einbauen 
+	    pm_taxCO2eq(t,regi)$(t.val gt cm_peakBudgYr) = (p_taxCO2eq_until2150(t2,regi) * cm_co2_tax_growth**s_netzeroCO2year_delta) + (t.val - t2.val) * cm_taxCO2inc_after_peakBudgYr * sm_DptCO2_2_TDpGtC;  !! increase by cm_taxCO2inc_after_peakBudgYr per year
+	  );
+
+      display p_factorRescale_taxCO2, p_factorRescale_taxCO2_Funneled;
+
+      o_taxCO2eq_iterDiff_Itr(iteration,regi) = pm_taxCO2eq_iterationdiff("2030",regi);
+      loop(regi, !! not a nice solution to having only the price of one regi display (for better visibility), but this way it overwrites again and again until the value from the last regi remain
+	    o_taxCO2eq_Itr_1regi(t,iteration+1) = pm_taxCO2eq(t,regi); 
+	  );
+    
+      display o_taxCO2eq_iterDiff_Itr, o_taxCO2eq_Itr_1regi;
+	  
+  
+    else !! if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND s_actualbudgetco2 > 0 AND abs(c_budgetCO2from2020 ))
+      if(s_actualbudgetco2 > 0 or abs(c_budgetCO2from2020 - s_actualbudgetco2) < 2, !! if model was not optimal, or if budget already reached, keep tax constant
+        p_factorRescale_taxCO2(iteration)          = 1;
+        p_factorRescale_taxCO2_Funneled(iteration) = 1;
+        p_taxCO2eq_until2150(t,regi) = p_taxCO2eq_until2150(t,regi); !! nothing changes
+      else
+*** if budget has turned negative, reduce CO2 price by 20%
+      p_factorRescale_taxCO2(iteration) = 0.8;
+	  p_factorRescale_taxCO2_Funneled(iteration) = p_factorRescale_taxCO2(iteration);
+	  
+      p_taxCO2eq_until2150(t,regi) = p_factorRescale_taxCO2(iteration) * p_taxCO2eq_until2150(t,regi);
+      pm_taxCO2eq(t,regi) = p_factorRescale_taxCO2(iteration) * pm_taxCO2eq(t,regi);
+      );  
+    ); !! if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND s_actualbudgetco2 > 0 AND abs(c_budgetCO2from2020 - s_actualbudgetco2) ge 2,
+    !! introduce separate markets by enforcing a price split between emissions and removals
+    pm_taxCDR(t,regi) = pm_taxCO2eq(t,regi) * cm_cdr2co2_price_ratio;
+    display pm_taxCO2eq, p_taxCO2eq_until2150;
+  ); !! end of emiscen = 9 condition (climate targets are met through modification of tax between iterations)
+); !! end of cm_iterative_target_adj eq 11, peak budget adjustment for separate markets
+
 
 *Anne* global cumulated emissions stay within c_budgetCO2from2020 in 2050 
 if(cm_iterative_target_adj eq 12,

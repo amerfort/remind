@@ -21,7 +21,7 @@ pm_taxCO2eqSum(ttot,regi) = pm_taxCO2eq(ttot,regi) + pm_taxCO2eqRegi(ttot,regi) 
 *GL* save reference level value of taxes for revenue recycling
 *JH* !!Warning!! The same allocation block exists in presolve.gms.
 ***                Do not forget to update the other file.
-p21_taxrevGHG0(ttot,regi) = pm_taxCO2eqSum(ttot,regi) * (vm_co2eq.l(ttot,regi) + vm_emiCdrAll.l(ttot,regi)$(cm_iterative_target_adj eq 13)- vm_emiMacSector.l(ttot,regi,"co2luc")$(cm_multigasscen ne 3));
+p21_taxrevGHG0(ttot,regi) = pm_taxCO2eqSum(ttot,regi) * (vm_co2eq.l(ttot,regi) + vm_emiCdrAll.l(ttot,regi)$((cm_iterative_target_adj eq 13) OR (cm_iterative_target_adj eq 11))- vm_emiMacSector.l(ttot,regi,"co2luc")$(cm_multigasscen ne 3));
 p21_taxrevCO2Sector0(ttot,regi,emi_sectors) = p21_CO2TaxSectorMarkup(regi,emi_sectors) * pm_taxCO2eqSum(ttot,regi) * vm_emiCO2Sector.l(ttot,regi,emi_sectors);
 p21_taxrevCO2luc0(ttot,regi) = pm_taxCO2eqSum(ttot,regi) * cm_cprice_red_factor * vm_emiMacSector.l(ttot,regi,"co2luc")$(cm_multigasscen ne 3);
 p21_taxrevCCS0(ttot,regi) = cm_frac_CCS * pm_data(regi,"omf","ccsinje") * pm_inco0_t(ttot,regi,"ccsinje") 

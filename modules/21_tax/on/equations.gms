@@ -29,7 +29,7 @@
     vm_taxrev(t,regi)
     =e=
       v21_taxrevGHG(t,regi)
-    - v21_taxrevCDR(t,regi)$(cm_iterative_target_adj eq 13)
+    - v21_taxrevCDR(t,regi)$((cm_iterative_target_adj eq 13) OR (cm_iterative_target_adj eq 11)) 
     + sum(emi_sectors, v21_taxrevCO2Sector(t,regi,emi_sectors))
     + v21_taxrevCO2luc(t,regi)
     + v21_taxrevCCS(t,regi) 
@@ -58,7 +58,7 @@ $endif.cm_implicitFE
 *'  Documentation of overall tax approach is above at q21_taxrev.
 ***---------------------------------------------------------------------------
 q21_taxrevGHG(t,regi)$(t.val ge max(2010,cm_startyear))..
-v21_taxrevGHG(t,regi) =e= pm_taxCO2eqSum(t,regi) * (vm_co2eq(t,regi) + vm_emiCdrAll(t,regi)$(cm_iterative_target_adj eq 13) - vm_emiMacSector(t,regi,"co2luc")$(cm_multigasscen ne 3))
+v21_taxrevGHG(t,regi) =e= pm_taxCO2eqSum(t,regi) * (vm_co2eq(t,regi) + vm_emiCdrAll(t,regi)$((cm_iterative_target_adj eq 13) OR (cm_iterative_target_adj eq 11)) - vm_emiMacSector(t,regi,"co2luc")$(cm_multigasscen ne 3))
                            - p21_taxrevGHG0(t,regi);
 
 ***---------------------------------------------------------------------------
