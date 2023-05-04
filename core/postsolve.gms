@@ -518,7 +518,8 @@ if(cm_iterative_target_adj eq 11,
   p_actualbudgetco2(ttot)$(ttot.val > 2020) = sum(ttot2$(ttot2.val < ttot.val AND ttot2.val > 2020), (sum(regi, (vm_emiTe.l(ttot2,regi,"co2") + vm_emiCdr.l(ttot2,regi,"co2") + vm_emiMac.l(ttot2,regi,"co2"))) * sm_c_2_co2 * pm_ts(ttot2)))
                        + sum(regi, (vm_emiTe.l(ttot,regi,"co2") + vm_emiCdr.l(ttot,regi,"co2") + vm_emiMac.l(ttot,regi,"co2"))) * sm_c_2_co2 * ((pm_ttot_val(ttot)-pm_ttot_val(ttot-1))/2 + 0.5)
                        + sum(regi, (vm_emiTe.l("2020",regi,"co2") + vm_emiCdr.l("2020",regi,"co2") + vm_emiMac.l("2020",regi,"co2"))) * sm_c_2_co2 * (pm_ts("2020")/2 + 0.5);
-  s_actualbudgetco2 = smax(t$(t.val le cm_peakBudgYr),p_actualbudgetco2(t));
+  !!s_actualbudgetco2 = smax(t$(t.val le cm_peakBudgYr),p_actualbudgetco2(t));
+  s_actualbudgetco2 = smax(t,p_actualbudgetco2(t));
   loop(ttot$(p_actualbudgetco2(ttot) eq s_actualbudgetco2),
     cm_peakBudgYr = ttot.val;
     s_peakBudgYr_plus_one = cm_peakBudgYr + sum(ttot2$(ttot2.val eq cm_peakBudgYr), pm_ts(ttot2));
