@@ -31,6 +31,7 @@ pm_taxCO2eq(ttot,all_regi)                           "CO2 tax path in T$/GtC = $
 pm_taxCDR(ttot,all_regi)                             "CDR tax path in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
 p_taxcdr_iterationdiff(ttot,all_regi)                "helper parameter for cdr revenue level adjustment"
 o_taxCDR_iterDiff_Itr(iteration,all_regi)            "output parameter for manual checking of CDR revenue development"
+pm_taxCO2exponential(ttot,all_regi)                  "Helper parameter with exponential C-price curve to account more accurately for timing of net zero"
 
 pm_taxCO2eqRegi(tall,all_regi)                       "additional regional CO2 tax path in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
 pm_taxCO2eqHist(ttot,all_regi)                       "Historic CO2 tax path in 2010 and 2015 (also in BAU!) in T$/GtC = $/kgC. To get $/tCO2, multiply with 272 [T$/GtC]"
