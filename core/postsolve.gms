@@ -521,7 +521,7 @@ if(cm_iterative_target_adj eq 11,
   !!s_actualbudgetco2 = smax(t$(t.val le cm_peakBudgYr),p_actualbudgetco2(t));
   s_actualbudgetco2 = smax(t,p_actualbudgetco2(t));
   loop(ttot$(p_actualbudgetco2(ttot) eq s_actualbudgetco2),
-    cm_peakBudgYr = max(ttot.val,2080);
+    cm_peakBudgYr = min(ttot.val,2080);
     s_peakBudgYr_plus_one = cm_peakBudgYr + sum(ttot2$(ttot2.val eq cm_peakBudgYr), pm_ts(ttot2));
   );
   s_emi_pre_peak = sum(regi,(sum(ttot$(ttot.val eq cm_peakBudgYr),vm_emiAll.l(ttot,regi,"co2"))));
