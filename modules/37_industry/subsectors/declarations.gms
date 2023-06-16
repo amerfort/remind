@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -17,11 +17,15 @@ Parameters
   p37_clinker_cement_ratio(ttot,all_regi)                                      "clinker content per unit cement used"                                         
   pm_ue_eff_target(all_in)                                                     "energy efficiency target trajectories [% p.a.]"                               
   pm_IndstCO2Captured(ttot,all_regi,all_enty,all_enty,secInd37,all_emiMkt)     "Captured CO2 in industry by energy carrier, subsector and emissions market"   
-  p37_CESMkup(ttot,all_regi,all_in)                                            "CES markup cost parameter [trUSD/CES input]"                                  
+  p37_CESMkup(ttot,all_regi,all_in)                                            "parameter for those CES markup cost accounted as investment cost in the budget [trUSD/CES input]"                                  
   p37_cesIO_up_steel_secondary(tall,all_regi,all_GDPscen)                      "upper limit to secondary steel production based on scrap availability"        
   p37_steel_secondary_max_share(tall,all_regi)                                 "maximum share of secondary steel production"
   p37_BAU_industry_ETS_solids(tall,all_regi)                                   "industry solids demand in baseline scenario"
   p37_cesIO_baseline(tall,all_regi,all_in)                                     "vm_cesIO from the baseline scenario"
+$ifthen.process_based_steel "%cm_process_based_steel%" == "on"                 !! cm_process_based_steel
+**p37_specMatsDem(mats,all_te,opModes)                                         "Specific materials demand of a production technology and operation mode [t_input/t_output]"
+**p37_specFeDem(all_enty,all_te,opModes)                                       "Specific final-energy demand of a production technology and operation mode [MWh/t_output]"
+$endif.process_based_steel
 
 *** output parameters only for reporting
   o37_emiInd(ttot,all_regi,all_enty,secInd37,all_enty)                   "industry CCS emissions [GtC/a]"                                                                                
@@ -42,14 +46,23 @@ $endif.sec_steel_scen
 ;
 
 Positive Variables
-  vm_macBaseInd(ttot,all_regi,all_enty,secInd37)   "industry CCS baseline emissions [GtC/a]"
-  vm_emiIndCCS(ttot,all_regi,all_enty)             "industry CCS emissions [GtC/a]"
-  vm_IndCCSCost(ttot,alL_regi,all_enty)            "industry CCS cost"
-  v37_emIIndCCSmax(ttot,all_regi,emiInd37)         "maximum abatable industry emissions"
+  vm_macBaseInd(ttot,all_regi,all_enty,secInd37)                            "industry CCS baseline emissions [GtC/a]"
+  vm_emiIndCCS(ttot,all_regi,all_enty)                                      "industry CCS emissions [GtC/a]"
+  vm_IndCCSCost(ttot,alL_regi,all_enty)                                     "industry CCS cost"
+  v37_emIIndCCSmax(ttot,all_regi,emiInd37)                                  "maximum abatable industry emissions"
+
+$ifthen.process_based_steel "%cm_process_based_steel%" == "on"                 !! cm_process_based_steel
+  v37_demMatsEcon(tall,all_regi,all_enty)                                   "External demand of materials from economy"
+  v37_demMatsProc(tall,all_regi,all_enty)                                   "Internal demand of materials from processes"
+  v37_prodMats(tall,all_regi,all_enty,all_te,opModes)                       "Production of materials"
+  v37_demFEMats(tall,all_regi,all_enty,all_emiMkt)                          "Final-energy demand of material-flow model"
+$endif.process_based_steel
 ;
 
 Equations
+$ifthen.no_calibration "%CES_parameters%" == "load"   !! CES_parameters
   q37_energy_limits(ttot,all_regi,all_in)                 "thermodynamic/technical limit of energy use"
+$endif.no_calibration
   q37_limit_secondary_steel_share(ttot,all_regi)          "no more than 90% of steel from seconday production"
   q37_macBaseInd(ttot,all_regi,all_enty,secInd37)         "gross industry emissions before CCS"
   q37_emiIndCCSmax(ttot,all_regi,emiInd37)                "maximum abatable industry emissions at current CO2 price"
@@ -58,6 +71,13 @@ Equations
   q37_IndCCSCost                                          "Calculate industry CCS costs"
   q37_demFeIndst(ttot,all_regi,all_enty,all_emiMkt)       "industry final energy demand (per emission market)"
   q37_costCESmarkup(ttot,all_regi,all_in)                 "calculation of additional CES markup cost to represent demand-side technology cost of end-use transformation, for example, cost of heat pumps etc."
+
+$ifthen.process_based_steel "%cm_process_based_steel%" == "on"                 !! cm_process_based_steel
+  q37_balMats(tall,all_regi,all_enty)                     "Balance of materials in material-flow model"
+  q37_limitCapMat(tall,all_regi,all_enty,all_te)          "Material-flow conversion is limited by capacities"
+  q37_demMatsProc(tall,all_regi,all_enty)                 "Demand of process materials"
+  q37_demFEMats(tall,all_regi,all_enty,all_emiMkt)        "Final-energy demand of materail-flow model"
+$endif.process_based_steel
 ;
 
 *** EOF ./modules/37_industry/subsectors/declarations.gms

@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -9,9 +9,9 @@
 parameters
 p50_damageFuncCoef1			"damage function coefficient"
 p50_damageFuncCoef2			"damage function coefficient"
-p50_damageFuncCoefTC0(isoTC)		"damage function coefficient for TC, constant"
-p50_damageFuncCoefTC1(isoTC)			"damage function coefficient for TC, linear in temperature"
-p50_damageFuncCoefTC2(isoTC) 			"damage function coefficient for TC, quadratic in temperture"
+p50_damageFuncCoefTC0(iso)		"damage function coefficient for TC, constant"
+p50_damageFuncCoefTC1(iso)			"damage function coefficient for TC, linear in temperature"
+p50_damageFuncCoefTC2(iso) 			"damage function coefficient for TC, quadratic in temperture"
 pm_damage(tall,all_regi)                             "damage factor (reduces GDP)"
 pm_damageIso(tall,iso)                             "damage factor (reduces GDP)"
 *p50_damageAllIso(tall,iso)                             "damage factor (reduces GDP)"

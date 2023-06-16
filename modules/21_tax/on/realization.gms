@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -7,6 +7,7 @@
 *** SOF ./modules/21_tax/on/realization.gms
 
 *####################### R SECTION START (PHASES) ##############################
+$Ifi "%phase%" == "sets" $include "./modules/21_tax/on/sets.gms"
 $Ifi "%phase%" == "declarations" $include "./modules/21_tax/on/declarations.gms"
 $Ifi "%phase%" == "datainput" $include "./modules/21_tax/on/datainput.gms"
 $Ifi "%phase%" == "equations" $include "./modules/21_tax/on/equations.gms"

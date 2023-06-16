@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -14,7 +14,6 @@
 *' @authors David Klein
 
 *###################### R SECTION START (MODULETYPES) ##########################
-$Ifi "%biomass%" == "exogenous" $include "./modules/30_biomass/exogenous/realization.gms"
 $Ifi "%biomass%" == "magpie_40" $include "./modules/30_biomass/magpie_40/realization.gms"
 *###################### R SECTION END (MODULETYPES) ############################
 *** EOF ./modules/30_biomass/module.gms

@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -8,14 +8,9 @@
 
 *AM the lowbound of solar and pv for 2025 and 2030 to be taken from the NDCs (in GW), therefore multiplying by 0.001 for TW*
 vm_cap.lo(t,regi,"spv","1")$(t.val lt 2031 AND t.val gt 2024) = p40_TechBound(t,regi,"spv")*0.001; 
-vm_cap.lo(t,regi,"tnrs","1")$(t.val lt 2031) = p40_TechBound(t,regi,"tnrs")*0.001;
+vm_cap.lo(t,regi,"tnrs","1")$(t.val ge 2025) = p40_TechBound(t,regi,"tnrs")*0.001;
+vm_cap.lo(t,regi_nucscen,"tnrs",rlf)$((t.val ge 2025) and (cm_nucscen eq 5)) = 0; !! we assume: Nucscen (limiting nuclear deployment) overrides NDC targets -> resetting lower bound to value defined at cm_nucscen switch
 vm_cap.lo(t,regi,"hydro","1")$(t.val lt 2031 AND t.val gt 2024) = p40_TechBound(t,regi,"hydro")*0.001;
-
-
-* FS: in case of a nuclear phase-out scenario (nucscen 7), nuclear lower bound from p40_techBound only up to 2025
-if(cm_nucscen eq 7,
-  vm_cap.lo(t,regi_nucscen,"tnrs","1")$(t.val gt 2025) = 0;
-);
 
 
 $ifthen.complex_transport "%transport%" == "complex"
@@ -68,8 +63,8 @@ $endif.complex_transport
 
  display vm_cap.lo;
 ***NDCplus variant: additional bounds on nuclear policies:  no nuclear renaissance - no further ramping up of the industry, and focus on countries currently investing (mostly CHA, IND, RUS)
-***nuclear yearly additions per year are max. 10% of total currently under construction and 2.5% of combined planned and proposed plants 
-vm_deltaCap.up(t,regi,"tnrs","1")$(t.val gt 2030) = 0.1 * pm_NuclearConstraint("2020",regi,"tnrs") + 0.025 * (pm_NuclearConstraint("2025",regi,"tnrs")+pm_NuclearConstraint("2030",regi,"tnrs"));
+***nuclear yearly additions per year are max. 30% of total currently under construction and 7.5% of combined planned and proposed plants
+vm_deltaCap.up(t,regi,"tnrs","1")$(t.val gt 2030) = 0.3 * pm_NuclearConstraint("2020",regi,"tnrs") + 0.075 * (pm_NuclearConstraint("2025",regi,"tnrs")+pm_NuclearConstraint("2030",regi,"tnrs"));
 
 ***SR/BS/CB 2020-09-09
 *** -----------------------------------------------------------------------------------------------------------------

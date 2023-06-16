@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -38,7 +38,7 @@ if (cm_keep_presolve_gdxes eq 1,
   logfile.nr = 1;
   logfile.nd = 0;
   put_utility logfile, "shell" /
-    "mv presolve_nash.gdx presolve_nash_" all_regi.tl "_CES-%c_CES_calibration_iteration%_Nash-" iteration.val "_Sol-" sol_itr.val ".gdx";
+    "mv presolve_nash.gdx presolve_nash_" all_regi.tl "_CES-" sm_CES_calibration_iteration "_Nash-" iteration.val "_Sol-" sol_itr.val ".gdx";
   logfile.nr = sm_tmp;
   logfile.nd = sm_tmp2;
 );
@@ -114,6 +114,7 @@ if(o_modelstat ne 2,
 $endif.solprint
 
 p80_repy_iteration(all_regi,solveinfo80,iteration) = p80_repy(all_regi,solveinfo80);
+
 
 *** EOF ./modules/80_optimization/nash/solve.gms
 

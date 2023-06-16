@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -60,7 +60,6 @@ p80_messageShow(convMessage80)             "nash display helper"
 p80_trackConsecFail(all_regi)              "Parameter to keep track of consecutive solve failurs of regions in Nash mode."
 
 p80_curracc(ttot,all_regi)                 "current account"
-p80_t_interpolate(tall,tall)               "weights to interpolate from t_input_gdx to t"
 
 pm_cumEff(tall,all_regi,all_in)            "parameter for spillover externality (aggregated productivity level)"
 

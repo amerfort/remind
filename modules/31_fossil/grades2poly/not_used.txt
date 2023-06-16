@@ -1,4 +1,4 @@
-# |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -12,7 +12,6 @@ pm_IO_trade, parameter, ??
 pm_EN_demand_from_initialcap2, parameter, ??
 pm_prtp, parameter, ??
 pm_costsTradePeFinancial,parameter,???
-cm_trdadj,switch,???
 qm_fuel2pe,equation,???
 vm_Xport,input,questionnaire
 pm_fuelex_cum,input,questionnaire

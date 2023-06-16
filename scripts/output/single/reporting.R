@@ -1,4 +1,4 @@
-# |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -12,20 +12,22 @@ load_all("/p/tmp/amerfort/fresh_SepMark/remind2")
 library(lucode2)
 library(gms)
 library(methods)
+library(edgeTransport)
+library(quitte)
 ############################# BASIC CONFIGURATION #############################
 gdx_name     <- "fulldata.gdx"             # name of the gdx
 gdx_ref_name <- "input_refpolicycost.gdx"  # name of the reference gdx (for policy cost calculation)
 
 
 if(!exists("source_include")) {
-  #Define arguments that can be read from command line
-   outputdir <- "output/R17IH_SSP2_postIIASA-26_2016-12-23_16.03.23"     # path to the output folder
-   readArgs("outputdir","gdx_name","gdx_ref_name")
+   # Define arguments that can be read from command line
+   outputdir <- "."
+   readArgs("outputdir", "gdx_name", "gdx_ref_name")
 }
 
 gdx      <- file.path(outputdir,gdx_name)
 gdx_ref  <- file.path(outputdir,gdx_ref_name)
-if(!file.exists(gdx_ref)) { gdx_ref <- NULL }
+if (!file.exists(gdx_ref)) { gdx_ref <- NULL }
 scenario <- getScenNames(outputdir)
 ###############################################################################
 # paths of the reporting files
@@ -44,7 +46,7 @@ if (length(remind_policy_reporting_file) > 0) {
 # produce REMIND reporting *.mif based on gdx information
 message("\n### start generation of mif files at ", Sys.time())
 tmp <- try(convGDX2MIF(gdx,gdx_ref,file=remind_reporting_file,scenario=scenario)) # try to execute convGDX2MIF
-if(class(tmp)=="try-error") convGDX2MIF_fallback_for_coupling(gdx,file=remind_reporting_file,scenario=scenario)
+if(class(tmp)=="try-error") convGDX2MIF_REMIND2MAgPIE(gdx, file = remind_reporting_file, scenario = scenario)
 
 #  MAGICC code not working with REMIND-EU
 # generate MAGICC reporting and append to REMIND reporting
@@ -59,7 +61,7 @@ if (0 == nchar(Sys.getenv('MAGICC_BINARY'))) {
              "awk -f MAGICC_reporting.awk -v c_expname=\"", scenario, "\"",
              " < climate_reporting_template.txt ",
              " > ","../../../", magicc_reporting_file,"; ",
-             "sed -i 's/glob/World/g' ","../../../", magicc_reporting_file, "; ",
+             "sed -i 's/;glob;/;World;/g' ","../../../", magicc_reporting_file, "; ",
              "cat ", "../../../",magicc_reporting_file, " >> ", "../../../",remind_reporting_file, "; ",
              sep = ""))
 }
@@ -69,10 +71,50 @@ if (0 == nchar(Sys.getenv('MAGICC_BINARY'))) {
 ## the reporting is appended to REMIND_generic_<scenario>.MIF
 ## REMIND_generic_<scenario>_withoutPlus.MIF is replaced.
 
-if(file.exists(file.path(outputdir, "EDGE-T"))){
-message("start generation of EDGE-T reporting")
-  reportEDGETransport(outputdir)
-message("end generation of EDGE-T reporting")
+edgetOutputDir <- file.path(outputdir, "EDGE-T")
+if(file.exists(edgetOutputDir)) {
+  if (! file.exists(file.path(edgetOutputDir, "demandF_plot_pkm.RDS"))) {
+    message("EDGE-T reporting files are missing, probably because the run was killed.")
+    message("Rerunning toolIterativeEDGETransport(reporting = TRUE).")
+    savewd <- getwd()
+    setwd(outputdir)
+    edgeTransport::toolIterativeEDGETransport(reporting = TRUE)
+    setwd(savewd)
+  }
+  message("start generation of EDGE-T reporting")
+  EDGET_output <- toolReportEDGET(edgetOutputDir,
+                                  extendedReporting = FALSE,
+                                  scenario_title = scenario, model_name = "REMIND",
+                                  gdx = file.path(outputdir, "fulldata.gdx"))
+
+  write.mif(EDGET_output, remind_reporting_file, append = TRUE)
+  deletePlus(remind_reporting_file, writemif = TRUE)
+
+  message("end generation of EDGE-T reporting")
+}
+
+configfile <- file.path(outputdir, "config.Rdata")
+envir <- new.env()
+load(configfile, envir = envir)
+magpie_reporting_file <- envir$cfg$pathToMagpieReport
+if (! is.null(magpie_reporting_file) && file.exists(magpie_reporting_file)) {
+  message("add MAgPIE reporting from ", magpie_reporting_file)
+  tmp_rem <- read.report(remind_reporting_file, as.list=FALSE)
+  tmp_mag <- read.report(magpie_reporting_file, as.list=FALSE)[, getYears(tmp_rem), ]
+  # remove population from magpie reporting to avoid duplication (units "million" vs. "million people")
+  tmp_mag <- tmp_mag[, , "Population (million people)", invert = TRUE]  
+  # harmonize scenario name from -mag-xx to -rem-xx
+  getNames(tmp_mag, dim = 1) <- paste0(scenario)
+  tmp_rem_mag <- mbind(tmp_rem, tmp_mag)
+  # extract variable names without units for both models
+  remind_variables <- magclass::unitsplit(getNames(tmp_rem_mag[, , "REMIND"], dim = 3))$variable
+  magpie_variables <- magclass::unitsplit(getNames(tmp_rem_mag[, , "MAgPIE"], dim = 3))$variable
+  if (any(remind_variables %in% magpie_variables)) {
+      message("Cannot produce common REMIND-MAgPIE reporting because there are identical variable names in both models!")
+  } else {
+    write.report(tmp_rem_mag, file = remind_reporting_file, ndigit = 7)
+    deletePlus(remind_reporting_file, writemif = TRUE)
+  }
 }
 
 message("### end generation of mif files at ", Sys.time())
@@ -91,3 +133,5 @@ if(file.exists(file.path(outputdir, DIETERGDX))){
   remind2::reportDIETER(DIETERGDX,outputdir)
   message("end generation of DIETER reporting")
 }
+
+message("### reporting finished.")

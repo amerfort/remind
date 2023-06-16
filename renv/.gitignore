@@ -1,0 +1,9 @@
+sandbox/
+archive/
+library/
+local/
+cellar/
+lock/
+python/
+staging/
+old_renv.lock

@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -172,17 +172,22 @@ fete(entyFe,te) = YES;
 sefe(entySe,entyFe) = YES;
 );
 
+*** extended region group set
+regi_groupExt(ext_regi,all_regi)$regi_group(ext_regi,all_regi) = Yes;
+loop(all_regi,
+  loop(ext_regi$sameas(ext_regi,all_regi),
+    regi_groupExt(ext_regi,all_regi) = Yes;
+  );
+);
+
 *** MAGICC related sets
 t_magiccttot(tall) = ttot(tall) + t_extra(tall);
 t_magicc(t_magiccttot)$(t_magiccttot.val ge 2005) = Yes;
 
 display "MAGICC related sets", t_magicc, t_extra, t;
 
-Execute_Loadpoint 'input'   t_input_gdx = t;
-
-t_interpolate(ttot) = t(ttot) - t_input_gdx(ttot);
-
 *** Alias of mapping
 en2en2(enty,enty2,te) = en2en(enty,enty2,te);
+
 
 *** EOF ./core/sets_calculations.gms

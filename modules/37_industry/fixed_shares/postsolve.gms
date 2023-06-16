@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -23,7 +23,7 @@ pm_FEPrice(ttot,regi,entyFE,"indst",emiMkt)$( abs(qm_budget.m(ttot,regi)) gt sm_
 *** A correct split is done in the subsectors realization.
 o37_demFeIndSub(ttot,regi,entySe,entyFe,secInd37,emiMkt) 
   = sum(fe2ppfEn37(entyFe,in), p37_shIndFE(regi,in,secInd37)) 
-  * vm_demFeSector.l(ttot,regi,entySe,entyFe,"indst",emiMkt);
+  * vm_demFeSector_afterTax.l(ttot,regi,entySe,entyFe,"indst",emiMkt);
   
 *** FE per subsector whose emissions can be captured (helper parameter for 
 *** calculation of industry captured CO2 below)

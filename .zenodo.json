@@ -1,6 +1,6 @@
 {
   "title": "REMIND - REgional Model of INvestments and Development",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "creators": [
     {
       "name": "Luderer, Gunnar",
@@ -67,6 +67,16 @@
       "orcid": "0000-0002-3240-2608"
     },
     {
+      "name": "Fuchs, Sophie",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0009-0000-7258-1287"
+    },
+    {
+      "name": "Führlich, Pascal",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0000-0002-6856-8239"
+    },
+    {
       "name": "Giannousakis, Anastasis",
       "affiliation": "Potsdam Institute for Climate Impact Research",
       "orcid": "0000-0002-4225-0011"
@@ -127,7 +137,13 @@
     },
     {
       "name": "Malik, Aman",
-      "affiliation": "Potsdam Institute for Climate Impact Research"
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0000-0002-7310-8448"
+    },
+    {
+      "name": "Mandaroux, Rahel",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0000-0001-5596-2571"
     },
     {
       "name": "Manger, Susanne"
@@ -158,6 +174,11 @@
     {
       "name": "Pehl, Michaja",
       "affiliation": "Potsdam Institute for Climate Impact Research"
+    },
+    {
+      "name": "Pflüger, Mika",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0000-0002-7814-8916"
     },
     {
       "name": "Piontek, Franziska",
@@ -228,5 +249,5 @@
   "license": {
     "id": "AGPL-3.0-or-later"
   },
-  "publication_date": "2022-07-01"
+  "publication_date": "2023-02-10"
 }

@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -13,6 +13,9 @@
   Execute_Loadpoint 'input' vm_taxrev.l = vm_taxrev.l;
   Execute_Loadpoint 'input' vm_fuExtr.l = vm_fuExtr.l;
   Execute_Loadpoint 'input' vm_prodPe.l = vm_prodPe.l;
+
+*** assign fake values for p80_repyLastOptim which gets initialised in the loop
+p80_repyLastOptim(regi,solveinfo80) = NA;
 
 
 *AJS* initialize starting points for prices, trade volumes etc. from gdx.
@@ -49,66 +52,9 @@ loop(ttot$(ttot.val ge 2005),
 
 p80_taxrev0(ttot,regi) = vm_taxrev.l(ttot,regi);
 
-	       );
-	   );
+           );
+      );
 );
-
-
-*** interpolation for full_TS
-$ifthen.full_TS %cm_less_TS% == "off"
-loop(t_interpolate,
-  sm_tmp    = t_interpolate.val;
-  s80_before = smax(t_input_gdx$( t_input_gdx.val lt sm_tmp ), t_input_gdx.val);
-  s80_after  = smin(t_input_gdx$( t_input_gdx.val gt sm_tmp ), t_input_gdx.val);
-
-  p80_t_interpolate(t_interpolate,t)$( t.val eq s80_before )
-  = (s80_after - sm_tmp) / (s80_after - s80_before);
-
-  p80_t_interpolate(t_interpolate,t)$( t.val eq s80_after )
-  = (sm_tmp - s80_before) / (s80_after - s80_before);
-);
-
-Display "interpolate t:", t, t_input_gdx, t_interpolate, p80_t_interpolate;
-Display pm_pvp;
-
-pm_pvp(t_interpolate,trade)$(NOT tradeSe(trade))
-= sum(t_input_gdx,
-    pm_pvp(t_input_gdx,trade)
-  * p80_t_interpolate(t_interpolate,t_input_gdx)
-  );
-
-pm_Xport0(t_interpolate,regi,trade)$(NOT tradeSe(trade))
-= sum(t_input_gdx,
-    pm_Xport0(t_input_gdx,regi,trade)
-  * p80_t_interpolate(t_interpolate,t_input_gdx)
-  );
-
-p80_Mport0(t_interpolate,regi,trade)$(NOT tradeSe(trade))
-= sum(t_input_gdx,
-    p80_Mport0(t_input_gdx,regi,trade)
-  * p80_t_interpolate(t_interpolate,t_input_gdx)
-  );
-
-vm_Xport.l(t_interpolate,regi,trade)$(NOT tradeSe(trade))
-= sum(t_input_gdx,
-    vm_Xport.l(t_input_gdx,regi,trade)
-  * p80_t_interpolate(t_interpolate,t_input_gdx)
-  );
-
-vm_Mport.l(t_interpolate,regi,trade)$(NOT tradeSe(trade))
-= sum(t_input_gdx,
-    vm_Mport.l(t_input_gdx,regi,trade)
-  * p80_t_interpolate(t_interpolate,t_input_gdx)
-  );
-
-p80_normalize0(t_interpolate,regi,trade)$(NOT tradeSe(trade))
-= sum(t_input_gdx,
-    p80_normalize0(t_input_gdx,regi,trade)
-  * p80_t_interpolate(t_interpolate,t_input_gdx)
-  );
-
-Display "interpolation done:", pm_pvp, pm_Xport0, p80_Mport0, p80_normalize0;
-$endif.full_TS
 
 loop(regi,
     loop(tradePe,
@@ -134,9 +80,9 @@ p80_pvp_itr(ttot,trade,"1")$(NOT tradeSe(trade)) = pm_pvp(ttot,trade);
 *AJS* Take care of resource prices that were imported as zero (as seen for 2150, peur), as they cause problems in the covergence process. Default to last periods price:
 loop(tradePe,
     loop(ttot$(NOT sameas(ttot,'2005')),
-	if(p80_pvp_itr(ttot,tradePe,"1") eq 0,
-	    p80_pvp_itr(ttot,tradePe,"1") = p80_pvp_itr(ttot-1,tradePe,"1")$(NOT sameas(ttot,'2005'));
-	    );
+      if(p80_pvp_itr(ttot,tradePe,"1") eq 0,
+          p80_pvp_itr(ttot,tradePe,"1") = p80_pvp_itr(ttot-1,tradePe,"1")$(NOT sameas(ttot,'2005'));
+          );
     );
 );
 

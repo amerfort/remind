@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -17,7 +17,8 @@ p02_inconvPen_Switch_Track(t,regi) = (sum((entySe,entyFe,te,sector,emiMkt)$(se2f
 																		/ vm_cons.l(t,regi);	
 $ENDIF.INCONV_bioSwitch
 
-
+*the inequality term in the SCC calculation is set to 1 here
+pm_sccIneq(tall,regi) = 1;
 
 
 *** EOF ./modules/02_welfare/utilitarian/postsolve.gms

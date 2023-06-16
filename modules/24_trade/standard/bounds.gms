@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -116,12 +116,13 @@ loop(regi,
       );
 );
 
-*** FS: constrain biomass imports in EU subregions from cm_startyear or 2020 onwards to a quarter of 2015 PE bioenergy demand
-if ( cm_biotrade_phaseout eq 1,
-	vm_Mport.up(t,regi,"pebiolc")$(t.val ge cm_startyear AND t.val gt 2015 AND regi_group("EUR_regi",regi)) = 
-      pm_demPeBio("2015",regi)$(regi_group("EUR_regi",regi))/4;
+*** Forbid bioenergy trade if 2nd gen. bioenergy should be phased out to avoid
+*** failing markets, which may in particular happening in early years, with
+*** still non-zero production
+if (cm_phaseoutBiolc eq 1,
+   vm_Mport.up(t,regi,"pebiolc")$(t.val ge cm_startyear) = 1e-6;
+   vm_Xport.up(t,regi,"pebiolc")$(t.val ge cm_startyear) = 1e-6;
 );
-
 
 *** force secondary energy trade to zero
 vm_Mport.fx(t,regi,entySe) = 0;

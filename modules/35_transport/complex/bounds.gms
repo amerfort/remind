@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -109,7 +109,7 @@ vm_shUePeT.up(t,regi,"apCarElT") = 95;  !! limit electric vehicles to less than 
 vm_shUePeT.up(t,regi,"apCarH2T") = 100; !! limit hydrogen vehicles to less than 100% market share of LDV (Uepet)
 vm_shUePeT.lo(t,regi,"apCarPeT") =  0;  !! no ICE required anymore for LDV (Uepet)
 
-$ifthen not "%cm_INNOPATHS_LDV_mkt_share%" == "off"
+$ifthen not "%cm_LDV_mkt_share%" == "off"
    vm_shUePeT.up(t,regi,te)$(p35_shUePeT_bound(te,"upper")) = p35_shUePeT_bound(te,"upper");
    vm_shUePeT.lo(t,regi,te)$(p35_shUePeT_bound(te,"lower")) = p35_shUePeT_bound(te,"lower");
 $endif

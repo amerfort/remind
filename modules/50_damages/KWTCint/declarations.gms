@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -16,8 +16,8 @@ p50_damageFuncCoefa1     "coef1 of damamge function",
 p50_damageFuncCoefa2     "coef2 of damamge function"
 p50_damageFuncCoefb1     "coef1 of damamge function",
 p50_damageFuncCoefb2     "coef2 of damamge function"
-p50_damageFuncCoefTC0(isoTC)	"coef0 for tropical cyclone damage function"
-p50_damageFuncCoefTC1(isoTC)	"coef1 for tropical cyclone damage function"
+p50_damageFuncCoefTC0(iso)	"coef0 for tropical cyclone damage function"
+p50_damageFuncCoefTC1(iso)	"coef1 for tropical cyclone damage function"
 pm_damageProd(tall,all_regi)	"damage from aggregate damage function"
 pm_damageTC(tall,iso)		"tropical cyclone damages"
 pm_damageGrowthRateTC(tall,iso)	"growth rate damage from tropical cyclones"

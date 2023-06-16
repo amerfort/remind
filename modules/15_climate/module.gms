@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -8,12 +8,14 @@
 
 *' @title climate
 *'
-*' @description  The 15_climate module calculates the resulting climate variables using either MAGICC6.4 or a stylized box model that can be used within the optimization routine.
+*' @description  
+*' The 15_climate module takes emissions and simulates the resulting climate variables (forcings, global mean temperature)
+*' using the MAGICC climate emulator. It may also be used within the optimization or between iterations
+*' in order to internalize climate damages or adjust the carbon price to meet a desired climate target
 *'
 *' @authors Jessica Strefler, Michaja Pehl, Christoph Bertram
 
 *###################### R SECTION START (MODULETYPES) ##########################
-$Ifi "%climate%" == "box" $include "./modules/15_climate/box/realization.gms"
 $Ifi "%climate%" == "magicc" $include "./modules/15_climate/magicc/realization.gms"
 $Ifi "%climate%" == "off" $include "./modules/15_climate/off/realization.gms"
 *###################### R SECTION END (MODULETYPES) ############################

@@ -1,4 +1,4 @@
-*** |  (C) 2006-2022 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2006-2023 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -8,7 +8,7 @@
 
 	
 Parameter
-	pm_regiTarget_dev(ext_regi,ttot,ttot2)	   "target deviation across iterations in current emissions divided by target emissions"
+  pm_emiMktTarget_dev(ttot,ttot2,ext_regi,emiMktExt)  "target deviation across iterations in current emissions divided by target emissions"
 ;
 
 
