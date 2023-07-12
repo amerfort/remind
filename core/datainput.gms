@@ -1552,6 +1552,8 @@ sm_globalBudget_dev = 1;
 *** ACM
 *** initialise separate price for CDR 
 pm_taxCDR(t,regi) = 0;
+*** initialise helper parameter
+pm_taxCO2exponential(t,regi) =0;
 *** initial carbon tax growth rate
 sm_co2_tax_growth = cm_co2_tax_growth;
 

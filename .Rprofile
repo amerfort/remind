@@ -59,6 +59,13 @@ if (!dir.exists(".venv/")
 # To use these, set the environment variable in your ~/.bashrc file in your home
 # direcotry (on linux) or in the system environment variables dialog (on windows):
 
+# local directories
+# e.g.
+# on Linux (separate multiple paths by colons)
+# REMIND_repos_dirs="/my/first/path:/my/second/path"
+# on Windows (separate multiple paths by semicolons)
+# REMIND_repos_dirs="C:\my\first\path;D:\my\second\path"
+remindReposDirs <- Sys.getenv("REMIND_repos_dirs")
 
 # for scp targets, you need to set three environment variables
 # on linux e.g. (separate multiple paths by semicolons)
