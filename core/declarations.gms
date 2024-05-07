@@ -643,6 +643,8 @@ s_actual2050co2                                       "current iterations actual
 s_actual2050cdr                                       "current iterations actual global cdr amount in 2050 needed to adjust cdr revenues until 2050"
 s_actual2050ghgEUR                                    "current iterations actual EUR ghg emissions including land-use cdr in 2050 needed to adjust co2 tax until 2050"
 s_actual2050cdrEUR                                    "current iterations actual EUR novel cdr amount in 2050 needed to adjust cdr revenues until 2050"
+s_actualNetNegEmi                                     "current iterations cumulative net negative emissions until 2100 in GtCO2"
+s_postpeakdiscCDRsubsidy                              "scalar to discount post peak CDR subsidy with respect to CO2 tax"
 
 sm_globalBudget_dev                                   "actual level of global cumulated emissions budget divided by target budget"
 

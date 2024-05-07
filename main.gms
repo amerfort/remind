@@ -1057,6 +1057,13 @@ parameter
 
 
 parameter
+  cm_targetNetNegEmi     "Target on cumulative negative emissions from peak year until 2100"
+;
+  cm_targetNetNegEmi      = -1; !! def =-1
+*' -1 indicates no target, otherwise number indicates global cumulative net negative emission target until 2100 in GtCO2
+
+
+parameter
   cm_DiscRateScen          "Scenario for the implicit discount rate applied to the energy efficiency capital"
 ;
   cm_DiscRateScen        = 0;  !! def = 0  !! regexp = [0-4]

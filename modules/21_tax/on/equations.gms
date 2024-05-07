@@ -31,7 +31,7 @@ q21_taxrev(t,regi)$(t.val ge max(2010,cm_startyear))..
   vm_taxrev(t,regi)
   =e=
     v21_taxrevGHG(t,regi)
-  - v21_taxrevCDR(t,regi)$(cm_iterative_target_adj eq 13)   
+  - v21_taxrevCDR(t,regi)$(cm_iterative_target_adj eq 13 OR cm_targetNetNegEmi ge 0)   
   + sum(emi_sectors, v21_taxrevCO2Sector(t,regi,emi_sectors))
   + v21_taxrevCO2luc(t,regi)
   + v21_taxrevCCS(t,regi) 
