@@ -127,6 +127,9 @@ p_extRegiccsinjecrateRegi(ext_regi)                         "Regional CCS inject
 pm_dataeta(tall,all_regi,all_te)                            "regional eta data"
 p_emi_quan_conv_ar4(all_enty)                               "conversion factor for various gases to GtCeq"
 pm_emifac(tall,all_regi,all_enty,all_enty,all_te,all_enty)  "emission factor by technology for all types of emissions in emiTe"
+*** ACM tail pipe emission factor for industry emissions
+pm_emifac_tailpipe(tall,all_regi,all_enty,all_enty)         "tail pipe emissions in industry fuel combustion, necessary to calculate industry cdr"
+
 pm_omeg (all_regi,opTimeYr,all_te)                          "technical depreciation parameter, gives the share of a capacity that is still usable after tlt. [none/share, value between 0 and 1]"
 p_aux_lifetime(all_regi,all_te)                             "auxiliary parameter for calculating life times, calculated externally in excel sheet"
 pm_pedem_res(ttot,all_regi,all_te)                          "Demand for pebiolc residues, needed for enhancement of residue potential [TWa]"
@@ -437,9 +440,10 @@ vm_transpGDPscale(ttot,all_regi)                            "dampening factor to
 
 
 *** Industry CDR
-v_IndstCDR(ttot,all_regi)                            "Industry CDR"
-v_IndstShareco2neutrcarbs(ttot,all_regi)             "Share of hydrocarbon fuels with atmospheric carbon in Industry FE demand"
-v_FracCCS(ttot,all_regi)                             "share of geologically stored co2 from captured co2"
+***v_IndstCDR(ttot,all_regi)                            "Industry CDR old variable"
+vm_IndCDR(ttot,all_regi)                             "Industry CDR" 
+vm_IndstShareco2neutrcarbs(ttot,all_regi,entyFE)             "Share of hydrocarbon fuels with atmospheric carbon in Industry FE demand"
+vm_FracCCS(ttot,all_regi)                             "share of geologically stored co2 from captured co2"
 v_shareAtmCO2inSynfuels(ttot,all_regi)               "Share of atmospheric co2 from all captured co2"
 
 ;
@@ -557,8 +561,8 @@ q_capH2BI(ttot,all_regi)                                  "H2 infrastructure cap
 q_limitCapFeH2BI(ttot,all_regi,emi_sectors)               "capacity limit equation for H2 infrastructure capacities of buildings and industry"
 
 *** Industry CDR
-q_IndstCDR(ttot,all_regi)                            "Industry CDR"
-q_IndstShareco2neutrcarbs(ttot,all_regi)             "Share of hydrocarbon fuels with atmospheric carbon in Industry FE demand"
+*** q_IndstCDR(ttot,all_regi)                            "Industry CDR"
+q_IndstShareco2neutrcarbs(ttot,all_regi,entyFE)             "Share of hydrocarbon fuels with atmospheric carbon in Industry FE demand"
 q_FracCCS(ttot,all_regi)                             "share of geologically stored co2 from captured co2"
 q_shareAtmCO2inSynfuels(ttot,all_regi)               "Share of atmospheric co2 from all captured co2"
 

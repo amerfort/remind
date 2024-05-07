@@ -1737,9 +1737,8 @@ entySeBio(all_enty)       "biomass secondary energy types"
 
 entySeSyn(all_enty)       "synfuel secondary energy types"
 /
-	seliqbio     "secondary energy liquids from biomass"
-	sesobio      "secondary energy solids from biomass"
-	segabio      "secondary energy gas from biomass"
+	seliqsyn     "secondary energy liquids from synfuels"
+	segasyn      "secondary energy gas from synfuels"
 /
 
 entySeFos(all_enty) "secondary energy types from fossil primary energy"

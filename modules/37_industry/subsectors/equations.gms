@@ -157,6 +157,20 @@ q37_emiIndCCSmax(ttot,regi,emiInd37)$( ttot.val ge cm_startyear ) ..
   )
 ;
 
+q37_IndCDR(ttot,regi)$(ttot.val ge cm_startyear)..
+  vm_IndCDR(ttot,regi) 
+  =e=
+      sum(emiMac2mac(emiInd37,macInd37),
+        sum(entyFe,
+          sum((secInd37_2_emiINd37(secInd37,emiInd37)),
+            vm_macBaseInd(ttot,regi,entyFE,secInd37))$(NOT SAMEAS (emiInd37,"co2cement_process"))            
+            * vm_IndstShareco2neutrcarbs(ttot,regi,entyFE)
+      )
+    * pm_macSwitch(macInd37)              !! sub-sector CCS available or not
+    * pm_macAbatLev(ttot,regi,macInd37)   !! abatement level at current price
+  ) * vm_FracCCS(ttot,regi);
+
+
 *' Limit industry CCS to maximum possible CCS level.
 q37_IndCCS(ttot,regi,emiInd37)$( ttot.val ge cm_startyear ) ..
   vm_emiIndCCS(ttot,regi,emiInd37)

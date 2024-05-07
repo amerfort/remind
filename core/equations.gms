@@ -688,8 +688,8 @@ q_ShareAtmCO2inSynfuels(t,regi)..
   (sum(emiBECCS2te(enty,enty2,te,enty3),vm_emiTeDetail(t,regi,enty,enty2,te,enty3)) !!BECC
   + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf))  !!DACC
   !! - excluding carbon from fossil and synthetic fegas from DAC heating
-  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFEsector(t,regi,"segafos","fegas","CDR","ETS")
-  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFEsector(t,regi,"segasyn","fegas","CDR","ETS"))
+  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFeSector_afterTax(t,regi,"segafos","fegas","CDR","ETS")
+  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFeSector_afterTax(t,regi,"segasyn","fegas","CDR","ETS"))
   /
   !! Divided by all captured CO2 (TODO: To be accurate exclude captured carbon from synfuels in DAC and Industry)
     (sum(teCCS2rlf(te,rlf),
@@ -700,14 +700,16 @@ q_ShareAtmCO2inSynfuels(t,regi)..
 ***--------------------------------------------------
 *' Share of atmospheric carbon in industry fuels
 ***--------------------------------------------------
-q_IndstShareco2neutrcarbs(t,regi)..
-  v_IndstShareco2neutrcarbs(t,regi)
+q_IndstShareco2neutrcarbs(t,regi,entyFE)..
+  vm_IndstShareco2neutrcarbs(t,regi,entyFE)
   =e=
-  sum(map_eqCarbCont(entySE,entySe2,entyFE,te)$(se_co2neutralcarbs(entySE)),
-    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te,"co2") * v_shareAtmCO2inSynfuels(t,regi)$((sameas(entySE,"seliqsyn")) OR (sameas(entySE,"segasyn"))))
-  /
-  (sum(map_eqCarbCont(entySE,entySe2,entyFE,te)$(se_carbs(entySE)),
-    sum(emiMkt, vm_demFEsector(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac(t,regi,entySe2,entyFE,te,"co2"))
+  (sum(entySeBio(entySE),
+    sum(emiMkt$(sector2emiMkt("indst",emiMkt)), vm_demFeSector_afterTax(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac_tailpipe(t,regi,entySE,entyFE))
+  + sum(entySeSyn(entySE),
+    sum(emiMkt$(sector2emiMkt("indst",emiMkt)), vm_demFeSector_afterTax(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac_tailpipe(t,regi,entySE,entyFE) * v_shareAtmCO2inSynfuels(t,regi)$((sameas(entySE,"seliqsyn")) OR (sameas(entySE,"segasyn"))))) 
+    /
+  sum(se_carbs(entySE),
+    sum(emiMkt$(sector2emiMkt("indst",emiMkt)), vm_demFeSector_afterTax(t,regi,entySE,entyFE,"indst",emiMkt)) * pm_emifac_tailpipe(t,regi,entySE,entyFE)
     + sm_eps)
 ;
 
@@ -715,7 +717,7 @@ q_IndstShareco2neutrcarbs(t,regi)..
 *' Fraction of captured emissions that get stored geologically
 ***--------------------------------------------------
 q_FracCCS(t,regi)..
-  v_FracCCS(t,regi)
+  vm_FracCCS(t,regi)
   =e=
   (sum(teCCS2rlf(te,rlf),
         vm_co2CCS(t,regi,"cco2","ico2",te,rlf)) /
@@ -726,13 +728,13 @@ q_FracCCS(t,regi)..
 ***--------------------------------------------------
 *' Industry CDR (CCS from carbon neutral fuels, i.e., biofuels or atmospheric part of synfuels)
 ***--------------------------------------------------
-q_IndstCDR(t,regi) .. 
-  v_IndstCDR(t,regi)
-  =e= 
-  v_IndstShareco2neutrcarbs(t,regi)
-  * sum(emiInd37_fuel , vm_emiIndCCS(t,regi,emiInd37_fuel))
-  * v_FracCCS(t,regi)
-  ;
+*** q_IndstCDR(t,regi) .. 
+***  v_IndstCDR(t,regi)
+***  =e= 
+***  vm_IndstShareco2neutrcarbs(t,regi,entyFE)
+***  * sum(emiInd37_fuel , vm_emiIndCCS(t,regi,emiInd37_fuel))
+***  * vm_FracCCS(t,regi)
+***  ;
 
 ***--------------------------------------------------
 *' All CDR emissions summed up
@@ -744,15 +746,15 @@ q_emiCdrAll(t,regi)..
   !! + DACC
   + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf))
   !! - fossil CCS from DAC with fegas
-  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFEsector(t,regi,"segafos","fegas","CDR","ETS"))
+  -  0.9 * pm_emifac(t,regi,"segafos","fegas","tdfosgas","co2") * vm_demFeSector_afterTax(t,regi,"segafos","fegas","CDR","ETS"))
   !! scaled by the fraction that gets stored geologically
-  * v_FracCCS(t,regi)
-  !! net negative emissions from co2luc
-  -  p_macBaseMagpieNegCo2(t,regi)
+  * vm_FracCCS(t,regi)
+  !! net negative emissions from co2luc 20230712 not included anymore to only account for permanent CDR
+  !!-  p_macBaseMagpieNegCo2(t,regi) 
   !! negative emissions from the cdr module that are not stored geologically
   - (vm_emiCdr(t,regi,"co2") + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf)))
   !! Industry CDR (CCS from carbon neutral fuels)
-  + v_IndstCDR(t,regi)
+  + vm_IndCDR(t,regi)
 ;
 
 

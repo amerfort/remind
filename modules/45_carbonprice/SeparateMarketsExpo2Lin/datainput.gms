@@ -27,7 +27,7 @@ sm_co2_tax_growth = cm_co2_tax_growth;
 
 pm_taxCDR(ttot,regi)$(ttot.val ge 2025 AND ttot.val le cm_peakBudgYr) = pm_taxCO2eq("2025",regi)*cm_cdr_tax_growth**(ttot.val-2025);
 pm_taxCDR(ttot,regi)$(ttot.val gt cm_peakBudgYr) =sum(t$(t.val eq cm_peakBudgYr),pm_taxCDR(t,regi)); !! keep taxes constant after cm_peakBudgYr
-pm_taxCDR(t,regi) = pm_taxCO2eq(t,regi) * cm_cdr2co2_price_ratio; 
+*** pm_taxCDR(t,regi) = pm_taxCO2eq(t,regi) * cm_cdr2co2_price_ratio; 
 pm_taxCO2exponential(ttot,regi)$(ttot.val ge 2025) = pm_taxCO2eq("2025",regi)*cm_cdr_tax_growth**(ttot.val-2025);
 
 display pm_taxCDR, pm_taxCO2eq,pm_taxCO2exponential;

@@ -71,6 +71,7 @@ $endif.no_calibration
   q37_IndCCSCost                                          "Calculate industry CCS costs"
   q37_demFeIndst(ttot,all_regi,all_enty,all_emiMkt)       "industry final energy demand (per emission market)"
   q37_costCESmarkup(ttot,all_regi,all_in)                 "calculation of additional CES markup cost to represent demand-side technology cost of end-use transformation, for example, cost of heat pumps etc."
+  q37_IndCDR(ttot,all_regi)                               "Industry CDR"
 
 $ifthen.process_based_steel "%cm_process_based_steel%" == "on"                 !! cm_process_based_steel
   q37_balMats(tall,all_regi,all_enty)                     "Balance of materials in material-flow model"
