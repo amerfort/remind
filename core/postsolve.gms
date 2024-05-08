@@ -488,7 +488,7 @@ if (cm_iterative_target_adj eq 9,
 	loop(regi, !! not a nice solution to having only the price of one regi display (for better visibility), but this way it overwrites again and again until the value from the last regi remain
 	    o_taxCO2eq_afterPeakShiftLoop_Itr_1regi(t,iteration+1) = pm_taxCO2eq(t,regi); 
 	);
-  if(c_postpeakNetNegi ge 0, pm_taxCDR(ttot, regi) = pm_taxCO2eq(ttot,regi));
+  if(cm_targetNetNegEmi ge 0, pm_taxCDR(ttot, regi) = pm_taxCO2eq(ttot,regi));
   display o_delay_increase_peakBudgYear, o_reached_until2150pricepath, pm_taxCO2eq, o_peakBudgYr_Itr, o_taxCO2eq_afterPeakShiftLoop_Itr_1regi, o_pkBudgYr_flipflop;
   ); !! if cm_emiscen eq 9,
 );   !! if cm_iterative_target_adj eq 9,
