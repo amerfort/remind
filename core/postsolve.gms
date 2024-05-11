@@ -602,10 +602,8 @@ if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0,
   if(s_actualNetNegEmi le 0, s_actualNetNegEmi = sm_eps);   
   display s_actualNetNegEmi;
   if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(cm_targetNetNegEmi - s_actualNetNegEmi) ge 5 ,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
-    !! calculate CDR subsidy discount (share of C-price that is granted to post-peak CDR)
-    s_postpeakdiscCDRsubsidy = min(max((cm_targetNetNegEmi/s_actualNetNegEmi)** (10/(2 * iteration.val + 23)),0.5+iteration.val/208),2 - iteration.val/102);
-    !! adjust CDR subsidy
-    pm_taxCDR(ttot,regi)$(ttot.val gt c_peakBudgYr) = s_postpeakdiscCDRsubsidy * pm_taxCO2eq(ttot,regi)$(ttot.val gt c_peakBudgYr);
+    p_taxcdr_iterationdiff(t,regi)$(t.val gt c_peakBudgYr) = pm_taxCDR(t,regi)$(t.val gt c_peakBudgYr) * min(max((cm_targetNetNegEmi/s_actualNetNegEmi)** (10/(2 * iteration.val + 23)),0.5+iteration.val/208),2 - iteration.val/102)  - pm_taxCDR(t,regi)$(t.val gt c_peakBudgYr);
+    pm_taxCDR(t,regi)$(t.val gt c_peakBudgYr) = pm_taxCDR(t,regi)$(t.val gt c_peakBudgYr) + p_taxcdr_iterationdiff(t,regi)$(t.val gt c_peakBudgYr) ;
   );
   display pm_taxCDR,pm_taxCO2eq;
 );
