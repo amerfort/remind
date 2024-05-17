@@ -602,9 +602,9 @@ if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0,
       + (pm_ts(ttot))$( c_peakBudgYr lt ttot.val AND ttot.val lt 2100 )
   !! first half of the final period, until the end of the middle year
       + ((pm_ttot_val(ttot) - pm_ttot_val(ttot-1)) / 2 + 0.5)$(ttot.val eq 2100 )))  * sm_c_2_co2;
-  if(s_actualNetNegEmi le 0, s_actualNetNegEmi = sm_eps);   
+  !! if(s_actualNetNegEmi le 0, s_actualNetNegEmi = sm_eps);   
   display s_actualNetNegEmi;
-  if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(cm_targetNetNegEmi - s_actualNetNegEmi) ge 5 ,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
+  if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(cm_targetNetNegEmi - s_actualNetNegEmi) ge 5 AND s_actualNetNegEmi gt 0,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
     p_taxcdr_iterationdiff(t,regi)$(t.val gt c_peakBudgYr) = pm_taxCDR(t,regi)$(t.val gt c_peakBudgYr) * min(max((cm_targetNetNegEmi/s_actualNetNegEmi)** (10/(2 * iteration.val + 23)),0.5+iteration.val/208),2 - iteration.val/102)  - pm_taxCDR(t,regi)$(t.val gt c_peakBudgYr);
     pm_taxCDR(t,regi)$(t.val gt c_peakBudgYr) = pm_taxCDR(t,regi)$(t.val gt c_peakBudgYr) + p_taxcdr_iterationdiff(t,regi)$(t.val gt c_peakBudgYr) ;
   );
