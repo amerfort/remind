@@ -829,9 +829,9 @@ q_emiCdrAll(t,regi)..
   !! scaled by the fraction that gets stored geologically
   * vm_FracCCS(t,regi)
   !! OAE net ocean 
-  + (1 - s33_OAE_chem_decomposition) * vm_emiCdrTeDetail(t, regi, "oae")
+  - (1 - s33_OAE_chem_decomposition) * vm_emiCdrTeDetail(t, regi, "oae")
   !! CDR from enhanced weathering
-  + vm_emiCdrTeDetail(t, regi, "weathering")
+  - vm_emiCdrTeDetail(t, regi, "weathering")
   !! negative emissions from biochar
   -   sum(emiBiochar2te(enty,enty2,te,enty3), vm_emiTeDetail(t,regi,enty,enty2,te,enty3))
   !! Industry CDR (CCS from carbon neutral fuels)

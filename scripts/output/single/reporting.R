@@ -7,7 +7,7 @@
 
 library(magclass)
 # library(remind2)
-devtools::load_all("/p/tmp/tabeado/SynTra_lowRisk/remind2")
+devtools::load_all("/p/projects/uptake/syntra_w_SepMark/remind2")
 library(lucode2)
 library(gms)
 library(methods)
