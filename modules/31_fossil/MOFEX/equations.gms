@@ -15,7 +15,6 @@
 *   change for example.
 *===========================================
 * Authors...: SB
-* Wiki......: http://redmine.pik-potsdam.de/projects/remind-r/wiki/31_fossil
 * History...:
 *   - 2012-09-10 : Creation
 *===========================================
@@ -129,4 +128,7 @@ $elseif.cm_oil_scen %cm_oil_scen% == "6"          +(10)$(cm_startyear eq 2015 AN
 $elseif.cm_oil_scen %cm_oil_scen% == "4"          +(10)$(cm_startyear eq 2015 AND pm_ttot_val(ttot+1) eq 2015 AND ((sameas(enty,"peoil") AND sameas(rlf,"7")) OR (sameas(enty,"pegas") AND sameas(rlf,"6"))))
 $endif.cm_oil_scen
 ;
+
+*' @stop
+
 *** EOF ./modules/31_fossil/MOFEX/equations.gms
