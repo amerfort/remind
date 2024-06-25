@@ -822,7 +822,7 @@ parameter
 *' * (5): iterative adjustment of CO2 tax based on economy-wide CO2 cumulative emission budget(2020-2100), for runs with emission budget or CO2 tax constraints. See core/postsolve.gms for direct algorithms
 *' * (6): iterative adjustment of CO2 tax based on economy-wide CO2 cumulative emission peak budget, for runs with emission budget or CO2 tax constraints. See core/postsolve.gms for direct algorithms
 *' * (7): iterative adjustment of CO2 tax based on economy-wide CO2 cumulative emission peak budget, for runs with emission budget or CO2 tax constraints. Features: results in a peak budget with zero net CO2 emissions after peak budget is reached. See core/postsolve.gms for direct algorithms
-*' * (9): [require the right settings in 45_carbonprice] iterative adjustment of CO2 tax based on economy-wide CO2 cumulative emission peak budget, for runs with emission budget or CO2 tax constraints. Features: 1) after the year when budget peaks, CO2 tax has an annual increase by c_taxCO2inc_after_peakBudgYr, 2) automatically shifts c_peakBudgYr to find the correct year of budget peaking for a given budget. For REMIND version v2.1 or above.
+*' * (9): [require the right settings in 45_carbonprice] iterative adjustment of CO2 tax based on economy-wide CO2 cumulative emission peak budget, for runs with emission budget or CO2 tax constraints. Features: 1) after the year when budget peaks, CO2 tax has an annual increase by c_taxCO2inc_after_peakBudgYr, 2) automatically shifts cm_peakBudgYr to find the correct year of budget peaking for a given budget. For REMIND version v2.1 or above.
 *'
 parameter
   cm_NDC_divergentScenario  "choose scenario about convergence of CO2eq prices [45_carbonprice = NDC]"
@@ -996,9 +996,9 @@ parameter
   c_H2InBuildOnlyAfter = 2150;   !! def = 2150 (rule out H2 in buildings)
 *' For all years until the given year, FE demand for H2 in buildings is set to zero
 parameter
-  c_peakBudgYr       "date of net-zero CO2 emissions for peak budget runs without overshoot"
+  cm_peakBudgYr       "date of net-zero CO2 emissions for peak budget runs without overshoot"
 ;
-  c_peakBudgYr            = 2050;   !! def = 2050
+  cm_peakBudgYr            = 2050;   !! def = 2050
 *'   time of net-zero CO2 emissions (peak budget), requires emiscen to 9 and cm_iterative_target_adj to 7, will potentially be adjusted by algorithms
 parameter
   c_taxCO2inc_after_peakBudgYr "annual increase of CO2 tax after the Peak Budget Year in $ per tCO2"
