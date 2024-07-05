@@ -814,7 +814,7 @@ parameter
 parameter
   cm_iterative_target_adj   "settings on iterative adjustment for CO2 tax based on in-iteration emission or forcing level. Allow iteratively generated endogenous global CO2 tax under peak budget constraint."
 ;
-  cm_iterative_target_adj = 0;      !! def = 0  !! regexp = 0|2|3|4|5|6|7|9
+  cm_iterative_target_adj = 0;      !! def = 0  !! regexp = 0|2|3|4|5|6|7|9|13|14
 *' * (0): no iterative adjustment of CO2 tax (terminology: CO2 price and CO2 tax in REMIND is used interchangeably)
 *' * (2): iterative adjustment of CO2 tax or cumulative emission based on climate forcing calculated by climate model magicc, for runs with budget or CO2 tax constraints. See ./modules/45_carbonprice/NDC/postsolve.gms for direct algorithm
 *' * (3): [requires 45_carbonprice = NDC and emiscen = 9] iterative adjustment of CO2 tax based on 2025 or 2030 regionally differentiated emissions, for runs with emission budget or CO2 tax constraints. See ./modules/45_carbonprice/NDC/postsolve.gms for direct algorithm
@@ -955,6 +955,14 @@ parameter
 *' * (0)   No net negative tax, the full CO2 price always applies.
 *' * (0.5) Halves the effective CO2 price when regional net CO2 emissions turn negative.
 *' * (1)   No effective CO2 tax once regional emissions turn net-negative. Hence regions never become net-negative.
+parameter
+  cm_SepMarkCDR       "Switch to separate CDR subsidy from CO2 tax"
+;
+  cm_SepMarkCDR      = 0; !! def =0
+*' * (0) - Integrated market for emissions and removals, prices are identical
+*' * (1) - Separate markets, CDR subsidy and CO2 tax are different 
+*' Has to be combined with carbonprice SeparateMarketsExpo2Lin
+*' if combined with cm_iterative_target_adj eq 13 CDR subsidy and CO2 tax are derived endogenously to match c_target2050co2 and c_target2050cdr
 
 parameter
   c_target2050co2     "global co2 emission year target in 2050"
@@ -979,6 +987,20 @@ parameter
 ;
   cm_cdr2co2_price_ratio      = 1; !! def =1
 *' 
+
+parameter
+  cm_cdr_tax_const          "Switch to set a constant CDR price path from 2025 to 2100."
+;
+  cm_cdr_tax_const      = 0; !! def =0
+*' (0) CDR subsidy price path will be initialised as expo into const.
+*' (1) CDR subsidy price path is constant from 2025 to 2100
+
+parameter
+  cm_cdr_tax_decliningFrom "Switch to set a (high) CDR subsidy now (defined by number provided) that declines linearly until 2100."
+;
+  cm_cdr_tax_decliningFrom      = 0; !! def =0
+*' (0) no decline of CDR subsidy
+*' (1) Sets CDR subsidy price path declining from switch value in 2025 to 0 in 2100. Cannot be combined with cm_iterative_target_adj eq 13
 
 parameter
   cm_DiscRateScen          "Scenario for the implicit discount rate applied to the energy efficiency capital"

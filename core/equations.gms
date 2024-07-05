@@ -786,8 +786,8 @@ q_emiCdrAll(t,regi)..
   * vm_FracCCS(t,regi)
   !! net negative emissions from co2luc 20230712 not included anymore to only account for permanent CDR
   !!-  p_macBaseMagpieNegCo2(t,regi) 
-  !! negative emissions from the cdr module that are not stored geologically
-  - (vm_emiCdr(t,regi,"co2") + sum(teCCS2rlf(te,rlf), vm_ccs_cdr(t,regi,"cco2","ico2","ccsinje",rlf)))
+  !! CDR from enhanced weathering
+  - vm_emiCdrTeDetail(t, regi, "weathering")
   !! Industry CDR (CCS from carbon neutral fuels)
   + vm_IndCDR(t,regi)
 ;
