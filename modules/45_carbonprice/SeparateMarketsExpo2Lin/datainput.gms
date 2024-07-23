@@ -35,7 +35,7 @@ if(cm_cdr_tax_const eq 1,
  
 *** exogenous CDR subsidy path from cm_cdr_tax_decliningFrom in $/tCO2 in 2025 to 0 in 2100 
 if(cm_cdr_tax_decliningFrom gt 0, 
-    pm_taxCDR(ttot,regi)$(ttot.val ge 2025 AND ttot.val le 2100) =((-cm_cdr_tax_decliningFrom / 75) * ttot.val + cm_cdr_tax_decliningFrom)/272 ;
+    pm_taxCDR(ttot,regi)$(ttot.val ge 2025 AND ttot.val le 2100) =((-cm_cdr_tax_decliningFrom / 75) * (ttot.val - 2025) + cm_cdr_tax_decliningFrom)/272 ;
 );
 
 pm_taxCO2exponential(ttot,regi)$(ttot.val ge 2025) = pm_taxCO2eq("2025",regi)*cm_cdr_tax_growth**(ttot.val-2025);
