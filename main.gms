@@ -981,6 +981,12 @@ parameter
 *' 
 
 parameter
+  cm_targetNetNegEmi    "Target on cumulative negative emissions from peak year until 2100, if set to value greater than zero"
+;
+  cm_targetNetNegEmi      = -1; !! def = -1
+*' 
+
+parameter
   cm_DiscRateScen          "Scenario for the implicit discount rate applied to the energy efficiency capital"
 ;
   cm_DiscRateScen        = 0;  !! def = 0  !! regexp = [0-4]

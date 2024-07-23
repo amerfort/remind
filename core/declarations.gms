@@ -642,6 +642,9 @@ s_emi_post_peak                                       "Global (net-negative) CO2
 s_netzeroCO2year_delta                                "Difference of actual net-zero year (may be between REMIND time steps) to cm_peakBudgYr of global net-zero CO2 emissions"
 sm_globalBudget_dev                                   "actual level of global cumulated emissions budget divided by target budget"
 
+s_ctax_postpeakslope                                  "CDR tax reduction slope after peak, if target on total net-negative emissions is set"
+s_ctax_postpeakslope_diff                             "Helper parameter for iterative adjustment of s_ctax_postpeakslope in the postsolve"
+
 sm_eps                                                "small number: 1e-9 "  /1e-9/
 
 sm_CES_calibration_iteration                          "current calibration iteration number, loaded from environment variable cm_CES_calibration_iteration"  /0/

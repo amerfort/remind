@@ -489,11 +489,38 @@ if (cm_iterative_target_adj eq 9,
 	loop(regi, !! not a nice solution to having only the price of one regi display (for better visibility), but this way it overwrites again and again until the value from the last regi remain
 	    o_taxCO2eq_afterPeakShiftLoop_Itr_1regi(t,iteration+1) = pm_taxCO2eq(t,regi); 
 	);
-	
+  if(cm_targetNetNegEmi ge 0, 
+    pm_taxCDR(ttot, regi)$(ttot.val le cm_peakBudgYr) = pm_taxCO2eq(ttot,regi)$(ttot.val le cm_peakBudgYr);
+	  pm_taxCDR(t,regi)$(t.val gt cm_peakBudgYr) = sum(t2$(t2.val eq 2100),pm_taxCDR(t2,regi));  !! keep CDR subsidy constant after peak year
+    );	
     display o_delay_increase_peakBudgYear, o_reached_until2150pricepath, pm_taxCO2eq, o_peakBudgYr_Itr, o_taxCO2eq_afterPeakShiftLoop_Itr_1regi, o_pkBudgYr_flipflop;
   ); !! if cm_emiscen eq 9,
 );   !! if cm_iterative_target_adj eq 9,
 
+
+!! adjustment of post peak CO2 price and CDR subsidy to regulate the amount of net negative emissions if specified in cm_targetNetNegEmi 
+if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0 AND iteration.val gt 4,
+  !! calculate cumulative net negative emissions after peak year (as positive number)
+  s_actualNetNegEmi = - sum((regi,ttot)$(cm_peakBudgYr le ttot.val AND ttot.val le 2100 ),
+    vm_emiAll.l(ttot,regi,"co2")
+    * ( !! second half of the peak year period: e.g. 2050-2052 = 3 years if cm_peakBudgYr is 2050)
+        (pm_ts(ttot) / 2 + 0.5)$( ttot.val eq cm_peakBudgYr )
+        !! entire middle periods
+      + (pm_ts(ttot))$( cm_peakBudgYr lt ttot.val AND ttot.val lt 2100 )
+  !! first half of the final period, until the end of the middle year
+      + ((pm_ttot_val(ttot) - pm_ttot_val(ttot-1)) / 2 + 0.5)$(ttot.val eq 2100 )))  * sm_c_2_co2;
+  !! if(s_actualNetNegEmi le 0, s_actualNetNegEmi = sm_eps);   
+  display s_actualNetNegEmi;
+  if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(cm_targetNetNegEmi - s_actualNetNegEmi) ge 5 ,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
+    s_ctax_postpeakslope_diff = s_ctax_postpeakslope + (((cm_targetNetNegEmi - s_actualNetNegEmi)/cm_targetNetNegEmi)**(20/(2 * iteration.val + 23)) -1);
+    s_ctax_postpeakslope = s_ctax_postpeakslope + s_ctax_postpeakslope_diff;
+		pm_taxCDR(t,regi)$(t.val gt t2.val AND t.val ge cm_peakBudgYr) = pm_taxCDR(t2,regi) + (t.val - t2.val) * s_ctax_postpeakslope * sm_DptCO2_2_TDpGtC;  !! increase by c_taxCO2inc_after_peakBudgYr per year
+    if(s_ctax_postpeakslope gt 0 ,
+    		pm_taxCO2eq(t,regi)$(t.val gt t2.val AND t.val ge cm_peakBudgYr) = pm_taxCO2eq(t2,regi) + (t.val - t2.val) * s_ctax_postpeakslope * sm_DptCO2_2_TDpGtC;  !! increase by c_taxCO2inc_after_peakBudgYr per year
+    );
+  );
+  display pm_taxCDR,pm_taxCO2eq;
+);
 
 
 *** Anne

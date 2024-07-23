@@ -71,6 +71,10 @@ if((c_target2050co2 eq 0 AND c_target2050cdr gt 0),
   pm_taxCO2eq(t,regi) = 0;
 );  
 
+*** initialise subsidy for CDR that is used if cm_SepMarkCDR eq 1
+pm_taxCDR(ttot,regi) = 0;
+if(cm_targetNetNegEmi ge 0, pm_taxCDR(ttot,regi) = pm_taxCO2eq(ttot,regi));
+
 display p45_regCO2priceFactor, p45_CO2priceTrajDeveloped, pm_taxCO2eq;
 
 *** EOF ./modules/45_carbonprice/diffCurvPhaseIn2Lin/datainput.gms
