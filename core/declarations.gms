@@ -635,6 +635,7 @@ s_actual2050co2                                       "current iterations actual
 s_actual2050cdr                                       "current iterations actual global cdr amount in 2050 needed to adjust cdr revenues until 2050"
 s_actual2050net                                       "current iterations global net co2 emissions in 2050"
 s_actual2050budget                                    "current iterations cumulated emissions from 2020 until 2050 needed to adjust s_cprice_growthrate in separate co2 and cdr markets"
+s_actualNetNegEmi                                     "current iterations cumulative net negative emissions to compare with target for iterative post peak tax adjustment"
 sm_co2_tax_growth                                     "carbon price trajectories growth rate to match 2050 budgets with separate co2 and cdr markets"
 s_peakBudgYr_plus_one                                 "time step after peak year (needed to adjust C-price trajectory to reflect peak years between time steps)"
 s_emi_pre_peak                                        "Global CO2 emissions right before peak (needed to adjust C-price trajectory to reflect peak years between time steps)"
@@ -642,8 +643,8 @@ s_emi_post_peak                                       "Global (net-negative) CO2
 s_netzeroCO2year_delta                                "Difference of actual net-zero year (may be between REMIND time steps) to cm_peakBudgYr of global net-zero CO2 emissions"
 sm_globalBudget_dev                                   "actual level of global cumulated emissions budget divided by target budget"
 
-s_ctax_postpeakslope                                  "CDR tax reduction slope after peak, if target on total net-negative emissions is set"
-s_ctax_postpeakslope_diff                             "Helper parameter for iterative adjustment of s_ctax_postpeakslope in the postsolve"
+s_ctax_postpeakslope                                  "CDR tax reduction slope after peak, if target on total net-negative emissions is set" /0/
+s_ctax_postpeakslope_diff                             "Helper parameter for iterative adjustment of s_ctax_postpeakslope in the postsolve" /0/
 
 sm_eps                                                "small number: 1e-9 "  /1e-9/
 
