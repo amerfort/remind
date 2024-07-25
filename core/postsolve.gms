@@ -512,15 +512,23 @@ if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0 AND iteration.val gt 4,
   !! if(s_actualNetNegEmi le 0, s_actualNetNegEmi = sm_eps);   
   display s_actualNetNegEmi;
   if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(cm_targetNetNegEmi - s_actualNetNegEmi) ge 5 ,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
-    s_ctax_postpeakslope_diff = s_ctax_postpeakslope + (((cm_targetNetNegEmi - s_actualNetNegEmi)/cm_targetNetNegEmi) * 10/(3 * iteration.val +10));
+    s_ctax_postpeakslope_diff = max(min((((cm_targetNetNegEmi - s_actualNetNegEmi)/cm_targetNetNegEmi) * 10/(3 * iteration.val +10)),5),-5);
     s_ctax_postpeakslope = s_ctax_postpeakslope + s_ctax_postpeakslope_diff;
       loop(t2$(t2.val eq cm_peakBudgYr),
         pm_taxCDR(t,regi)$(t.val gt t2.val) = pm_taxCDR(t2,regi) + (t.val - t2.val) * s_ctax_postpeakslope * sm_DptCO2_2_TDpGtC;  !! increase by c_taxCO2inc_after_peakBudgYr per year
-    		if(s_ctax_postpeakslope gt 0 ,
+    		loop(t$(t.val gt cm_peakBudgYr),
+        loop(regi,
+          if(pm_taxCDR(t,regi) lt 0,
+            pm_taxCDR(t,regi) = 0;
+        );
+        );
+        );
+        if(s_ctax_postpeakslope gt 0 ,
           pm_taxCO2eq(t,regi)$(t.val gt t2.val) = pm_taxCO2eq(t2,regi) + (t.val - t2.val) * s_ctax_postpeakslope * sm_DptCO2_2_TDpGtC;  !! increase by c_taxCO2inc_after_peakBudgYr per year
 	    );
     );
   );
+  display s_ctax_postpeakslope_diff,s_ctax_postpeakslope;
   display pm_taxCDR,pm_taxCO2eq;
 );
 
