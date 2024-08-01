@@ -489,10 +489,6 @@ if (cm_iterative_target_adj eq 9,
 	loop(regi, !! not a nice solution to having only the price of one regi display (for better visibility), but this way it overwrites again and again until the value from the last regi remain
 	    o_taxCO2eq_afterPeakShiftLoop_Itr_1regi(t,iteration+1) = pm_taxCO2eq(t,regi); 
 	);
-  if(cm_targetNetNegEmi ge 0, 
-    pm_taxCDR(ttot, regi)$(ttot.val le cm_peakBudgYr) = pm_taxCO2eq(ttot,regi)$(ttot.val le cm_peakBudgYr);
-	  pm_taxCDR(t,regi)$(t.val gt cm_peakBudgYr) = sum(t2$(t2.val eq 2100),pm_taxCDR(t2,regi));  !! keep CDR subsidy constant after peak year
-    );	
     display o_delay_increase_peakBudgYear, o_reached_until2150pricepath, pm_taxCO2eq, o_peakBudgYr_Itr, o_taxCO2eq_afterPeakShiftLoop_Itr_1regi, o_pkBudgYr_flipflop;
   ); !! if cm_emiscen eq 9,
 );   !! if cm_iterative_target_adj eq 9,
@@ -511,6 +507,13 @@ if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0 AND iteration.val gt 4,
       + ((pm_ttot_val(ttot) - pm_ttot_val(ttot-1)) / 2 + 0.5)$(ttot.val eq 2100 )))  * sm_c_2_co2;
   !! if(s_actualNetNegEmi le 0, s_actualNetNegEmi = sm_eps);   
   display s_actualNetNegEmi;
+  !! adjust CDR tax to changes in CO2 price (using last iterations slope for post peak)
+  pm_taxCDR(ttot, regi)$(ttot.val le cm_peakBudgYr) = pm_taxCO2eq(ttot,regi)$(ttot.val le cm_peakBudgYr);
+  loop(t2$(t2.val eq cm_peakBudgYr),
+    pm_taxCDR(t,regi)$(t.val gt t2.val) = pm_taxCDR(t2,regi) + (t.val - t2.val) * s_ctax_postpeakslope * sm_DptCO2_2_TDpGtC;  !! increase by c_taxCO2inc_after_peakBudgYr per year
+  );
+  !! adjust post peak CDR tax slope according to net negative emission target
+  s_ctax_postpeakslope_diff = 0;
   if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(cm_targetNetNegEmi - s_actualNetNegEmi) ge 5 ,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
     s_ctax_postpeakslope_diff = max(min(((cm_targetNetNegEmi - s_actualNetNegEmi)/cm_targetNetNegEmi),5),-5);
     s_ctax_postpeakslope = s_ctax_postpeakslope + s_ctax_postpeakslope_diff;
