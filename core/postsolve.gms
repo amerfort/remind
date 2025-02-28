@@ -495,7 +495,7 @@ if (cm_iterative_target_adj eq 9,
 
 
 !! adjustment of post peak CO2 price and CDR subsidy to regulate the amount of net negative emissions if specified in cm_targetNetNegEmi 
-if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0 AND iteration.val gt 4,
+if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0 AND iteration.val gt 3,
   !! calculate cumulative net negative emissions after peak year (as positive number)
   s_actualNetNegEmi = - sum((regi,ttot)$(cm_peakBudgYr le ttot.val AND ttot.val le 2100 ),
     vm_emiAll.l(ttot,regi,"co2")
@@ -515,7 +515,7 @@ if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0 AND iteration.val gt 4,
   !! adjust post peak CDR tax slope according to net negative emission target
   s_ctax_postpeakslope_diff = 0;
   if(o_modelstat eq 2 AND ord(iteration)<cm_iteration_max AND abs(cm_targetNetNegEmi - s_actualNetNegEmi) ge 5 ,   !!only for optimal iterations, and not after the last one, and only if target not yet reached
-    s_ctax_postpeakslope_diff = max(min(((cm_targetNetNegEmi - s_actualNetNegEmi)/cm_targetNetNegEmi),5),-5);
+    s_ctax_postpeakslope_diff = max(min(((cm_targetNetNegEmi - s_actualNetNegEmi)/100),5),-5);
     s_ctax_postpeakslope = s_ctax_postpeakslope + s_ctax_postpeakslope_diff;
       loop(t2$(t2.val eq cm_peakBudgYr),
         pm_taxCDR(t,regi)$(t.val gt t2.val) = pm_taxCDR(t2,regi) + (t.val - t2.val) * s_ctax_postpeakslope * sm_DptCO2_2_TDpGtC;  !! increase by c_taxCO2inc_after_peakBudgYr per year
@@ -531,6 +531,8 @@ if(cm_emiscen eq 9 AND cm_targetNetNegEmi ge 0 AND iteration.val gt 4,
 	    );
     );
   );
+  pm_taxCO2eq(t,regi)$(t.val gt 2100) = sum(ttot$(ttot.val eq 2100),pm_taxCO2eq(ttot,regi)); 
+  pm_taxCDR(t,regi)$(t.val gt 2100) = sum(ttot$(ttot.val eq 2100),pm_taxCDR(ttot,regi)); 
   display s_ctax_postpeakslope_diff,s_ctax_postpeakslope;
   display pm_taxCDR,pm_taxCO2eq;
 );

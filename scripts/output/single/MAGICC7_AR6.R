@@ -74,7 +74,7 @@ climateAssessmentInputData <- as.quitte(remindReportingFile) %>%
   # piamInterfaces package. See also:
   # https://github.com/pik-piam/piamInterfaces/blob/master/inst/iiasaTemplates/climate_assessment_variables.yaml
   generateIIASASubmission(
-    mapping = "AR6",
+    mapping = "/p/projects/piam/abrahao/scratch/piamInterfaces_gabriel/inst/mappings/mapping_AR6_toMAGICC7.csv",
     outputFilename = NULL,
     iiasatemplate = climateAssessmentYaml,
     logFile = logFile
@@ -139,11 +139,12 @@ Sys.setenv(MAGICC_WORKER_NUMBER = 1) # TODO: Get this from slurm or nproc
 # TODO: This makes assumptions about the users climate-assessment installation. There are a couple of options:
 # A) Remove entirely and assume that the user has set up their environment correctly
 # B) Make this more flexible by explictly setting them in default.cfg
-#activate_venv_cmd <- paste("source", normalizePath(file.path(cfg$climate_assessment_root, "..", "venv", "bin", "activate")))
+activate_venv_cmd <- paste("source", normalizePath(file.path(cfg$climate_assessment_root, "..", "venv", "bin", "activate")))
 #deactivate_venv_cmd <- "deactivate"
 
 runHarmoniseAndInfillCmd <- paste(
-  "python", file.path(scriptsFolder, "run_harm_inf.py"),
+  "module load anaconda;source activate ca-new;",
+  "conda run -n ca-new python", file.path(scriptsFolder, "run_harm_inf.py"),
   climateAssessmentEmi,
   climateAssessmentFolder,
   "--no-inputcheck",
@@ -151,7 +152,8 @@ runHarmoniseAndInfillCmd <- paste(
 )
 
 runClimateEmulatorCmd <- paste(
-  "python", file.path(scriptsFolder, "run_clim.py"),
+  "module load anaconda;source activate ca-new;",
+  "conda run -n ca-new python", file.path(scriptsFolder, "run_clim.py"),
   normalizePath(file.path(climateAssessmentFolder, paste0(baseFileName, "_harmonized_infilled.csv"))),
   climateAssessmentFolder,
   "--num-cfgs", nparsets,
