@@ -445,9 +445,13 @@ $endif
 *** -------------------------------------------------------------------------------------------------------------
 
 if ( (c_ccsinjecratescen gt 0) AND (NOT cm_emiscen eq 1),
-  vm_co2CCS.lo(t,regi,"cco2","ico2","ccsinje","1")$(t.val le 2030) = p_boundCapCCS(t,regi,"operational")$(t.val le 2030) * s_MtCO2_2_GtC;
+  !! vm_co2CCS.lo(t,regi,"cco2","ico2","ccsinje","1")$(t.val le 2030) = p_boundCapCCS(t,regi,"operational")$(t.val le 2030) * s_MtCO2_2_GtC;
   vm_co2CCS.up(t,regi,"cco2","ico2","ccsinje","1")$(t.val le 2030) = (p_boundCapCCS(t,regi,"operational")$(t.val le 2030) + p_boundCapCCS(t,regi,"construction")$(t.val le 2030) + p_boundCapCCS(t,regi,"planned")$(t.val le 2030) * c_fracRealfromAnnouncedCCScap2030) * s_MtCO2_2_GtC;
 );
+
+
+***
+vm_co2CCS.up(t,regi,"cco2","ico2","ccsinje","1")$(t.val ge 2030 AND t.val le 2100 AND c_ccsprojections eq 1) = p_projectionsCCSmax(t,regi,"%c_ccs_growth_scen%","%c_ccs_growth_lim%")$(t.val ge 2030 AND t.val le 2100) * s_MtCO2_2_GtC;
 
 *** Fix capacities of technologies with carbon capture to zero if there are no CCS projects in the pipeline in that region
 *** This is only reasonable, as long as we also don't expect any CCU projects in the early years.

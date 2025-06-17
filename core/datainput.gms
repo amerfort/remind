@@ -909,6 +909,18 @@ $offdelim
 /
 ;
 
+
+set ccs_growth_scens "CCS growth scenarios for upscaling analysis" /"Minimum", "Medium", "Maximum"/;
+set ccs_growth_lims "Limitation on regional maximum CCS capacity (K in logistic growth model)" /"histEmi", "geolConstr", "econEff", "allLimits"/;
+parameter p_projectionsCCSmax(ttot,all_regi,ccs_growth_scens,ccs_growth_lims)        "installed and planned capacity of CCS"
+/ 
+$ondelim
+$include "./core/input/ccs_regional_growth_CP500-2050_all.cs4r"
+$offdelim
+/
+;
+
+
 *** read in indicators on whether CCS is used in 2025 and 2030 (0 = no)
 parameter p_boundCapCCSindicator(all_regi)        "CCS used in until 2030"
 /
@@ -1263,6 +1275,7 @@ $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 $endif.cm_subsec_model_steel
   p_adj_seed_te(ttot,regi,"MeOH") = 0.5;
   p_adj_seed_te(ttot,regi,"h22ch4") = 0.5;
+  p_adj_seed_te(ttot,regi,"ccsinje") = c_ccsAdjSeed;
 
 *RP: for comparison of different technologies:
 *** pm_conv_cap_2_MioLDV <- 650  # The world has slightly below 800million cars in 2005 (IEA TECO2), so with a global vm_cap of 1.2, this gives ~650
@@ -1286,7 +1299,7 @@ $endif.cm_subsec_model_steel
   p_adj_coeff(ttot,regi,"coalh2")          = 0.55;
   p_adj_coeff(ttot,regi,"bioh2")           = 0.6;
   p_adj_coeff(ttot,regi,teCCS)             = 1.0;
-  p_adj_coeff(ttot,regi,"ccsinje")         = 1.0;
+  p_adj_coeff(ttot,regi,"ccsinje")         = c_ccsAdjCoeff;
   p_adj_coeff(ttot,regi,"spv")             = 0.15;
   p_adj_coeff(ttot,regi,"windon")          = 0.25;
   p_adj_coeff(ttot,regi,"windoff")         = 0.35;

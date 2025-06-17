@@ -831,6 +831,36 @@ parameter
 *' *   (5) sustainability case: 0.001; max 3.9 GtCO2/yr globally
 *' *   (6) intermediate estimate: 0.0022; max 8.6 GtCO2/yr globally
 *'
+
+parameter
+  c_ccsprojections          "Use upper bounds for CCS capacity growth based on logistic growth model"
+;
+  c_ccsprojections      = 0;         !! def = 0  !! regexp = 0|1
+*' This flag determines whether externally calculated upper bounds on CCS capacity growth should be used. 
+*' if externally calculated ccsprojections shall be used, the flags c_ccs_growth_scen and c_ccs_growth_lim determine the assumptions 
+*' for the logistic growth model.
+*' *   (0) REMIND default upper bounds
+*' *   (1) read in and use upper bounds calculated by external logistic growth model 
+*'
+
+parameter
+  c_ccsAdjSeed          "Seed value for adjustment costs of ccsinje technology"
+;
+  c_ccsAdjSeed      = 1;         !! def = 1 
+*' Change seed value for calculation of adjustment costs for CCS infrastructure build up. Lower values result in higher adjustment costs.
+*' *   (1) default value
+*' *   (0.25) example value: default for nascent technologies such as carbon capture technologies. 
+*'
+
+parameter
+  c_ccsAdjCoeff          "Factor for adjustment costs of ccsinje technology"
+;
+  c_ccsAdjCoeff      = 1;         !! def = 1 
+*' Change Factor for calculation of adjustment costs for CCS infrastructure build up. Higher values result in higher adjustment costs.
+*' *   (1) default value for nascent technologies
+*' *   (1.5) higher values represent larger adustment costs. 
+*'
+
 parameter
   c_ccscapratescen          "CCS capture rate"
 ;
@@ -1894,7 +1924,22 @@ $setGlobal c_nonco2_macc_scenario  Default     !! def = Default
 *' *  (off): no, only infeasable regions are repeated, standard setting
 *' *  (on):  also non-optimal regions are solved again, up to cm_solver_try_max
 $setglobal cm_repeatNonOpt off      !! def = off  !! regexp = off|on
-
+*' c_ccs_growth_scen "Max, med or min assumptions on logistic growth of CCS capacities"
+*' This flag determines the level of optimism regarding parameters of the logistic growth model of CCS capacities
+*' It requires c_ccsprojections = 1, such that external growth limits are used.  
+*' *   (Maximum) emergency CCS deployment
+*' *   (Medium) ambitious CCS growth
+*' *   (Minimum) current CCS growth
+$setGlobal c_ccs_growth_scen  Maximum   !! def = Maximum  
+*' c_ccs_growth_lim          "Max, med or min assumptions on logistic growth of CCS capacities"
+*' This flag determines the limitations to maximum CCS deployment (market saturation in logistic growth model)
+*' depending on different limitations/rationales.
+*' It requires c_ccsprojections = 1, such that external growth limits are used.  
+*' *   (econEff) global market saturation (K=4,12 or 20 GtCO2/yr) is distributed across regions based on economic efficiency (from REMIND scenarios with global constraints only)
+*' *   (histEmi) global market saturation (K=4,12 or 20 GtCO2/yr) is distributed across regions according to historic responsibility 
+*' *   (geolConstr) maximum injection rate is constrained by percentage of total storage potential (based on new data from Iain)
+*' *   (allLimits) picking for each region the lowest value from the three available limitations above
+$setGlobal  c_ccs_growth_lim  allLimits   !! def = allLimits  
 *' @stop
 
 *-------------------------------------------------------------------------------------
