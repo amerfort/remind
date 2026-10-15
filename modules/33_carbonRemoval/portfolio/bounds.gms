@@ -82,4 +82,15 @@ else
 *** Set upper bound on the amount of FE available for a sector
 v33_FEsector_total.up(t,regi,entyFe,sector)$p33_shfetot_up(t,regi,entyFe,sector) = p33_FE_limit(t,regi,entyFe,sector);
 
+
+*------------------------------------------------------------------------------------
+*' #### UPTAKE specific Regional constraints on maximum novel CDR
+*------------------------------------------------------------------------------------
+
+vm_emiCdrNovel.up(t,regi)
+    $(cm_UPTAKEmaxCDRregi > 0)
+    = sum(cdrScenario$(p33_CDRregiScenario(cdrScenario)
+                       eq cm_UPTAKEmaxCDRregi),
+          f33_CDRregiTarget(cdrScenario,regi)) * sm_MtCO2_2_GtC;
+
 *** EOF ./modules/33_carbonRemoval/portfolio/bounds.gms

@@ -152,5 +152,41 @@ loop(ext_regi$p33_GDP_NetNeg_share_s(ext_regi),
     p33_GDP_NetNeg_share(regi)$(regi_groupExt(ext_regi, regi)) = p33_GDP_NetNeg_share_s(ext_regi);
   );
 
+*** UPTAKE specific limits on regional CDR
+
+* ---------------------------------------------------------------------------
+* UPTAKE specific regional target values
+* ---------------------------------------------------------------------------
+
+Table f33_CDRregiTarget(cdrScenario,all_regi)
+
+                         CAZ   CHA   EUR   IND   JPN   LAM   MEA   NEU   OAS   REF   SSA   USA
+
+Drawdown_REG75           493  1544   869  1057   225  1819  1012   140  1696  1293  1103  1423
+Drawdown_REG50           329  1029   580   704   150  1213   675    93  1131   863   735   949
+Drawdown_REG05            33   103    58    70    15   121    68     9   113    86    74    95
+
+Stabilisation_REG75      176   769   363   532    72   316   455    81   805   324   302   743
+Stabilisation_REG50      118   512   243   355    48   211   304    54   537   216   201   495
+Stabilisation_REG05       12    51    24    36     5    21    30     5    54    22    20    50
+
+DrawdownES_REG75        1196  2709  1148   763   344    36  2111   241  1729  4093   129  2814
+DrawdownES_REG50         798  1806   765   509   229    24  1407   161  1152  2729    86  1876
+DrawdownES_REG05          80   181    77    51    23     2   141    16   115   273     9   188
+;
+
+
+Parameter p33_CDRregiScenario(cdrScenario);
+
+p33_CDRregiScenario("Drawdown_REG75")      = 1;
+p33_CDRregiScenario("Drawdown_REG50")      = 2;
+p33_CDRregiScenario("Drawdown_REG05")      = 3;
+p33_CDRregiScenario("Stabilisation_REG75") = 4;
+p33_CDRregiScenario("Stabilisation_REG50") = 5;
+p33_CDRregiScenario("Stabilisation_REG05") = 6;
+p33_CDRregiScenario("DrawdownES_REG75") = 7;
+p33_CDRregiScenario("DrawdownES_REG50") = 8;
+p33_CDRregiScenario("DrawdownES_REG05") = 9;
+
 *' @stop
 *** EOF ./modules/33_carbonRemoval/portfolio/datainput.gms

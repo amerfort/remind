@@ -1105,6 +1105,24 @@ parameter
 ;
   cm_33_maxFeShare = 0.1; !!  def = 0.1 !! regexp = is.nonnegative
 *' 
+
+parameter
+  cm_UPTAKEmaxCDRregi             "UPTAKE scenario specific regional bounds on novel CDR for T3p5"
+;
+  cm_UPTAKEmaxCDRregi       = 0;   !! def = 0 !! regexp = [0-9]
+*' This switch is related to UPTAKE scenarios with regional nCDR constraints.
+*' CCS here refers to carbon sequestration, carbon capture is modelled separately.
+*' *   (0) no regional bounds
+*' *   (1) Drawdown_REG75 
+*' *   (2) Drawdown_REG50
+*' *   (3) Drawdown_REG05
+*' *   (4) Stabilisation_REG75
+*' *   (5) Stabilisation_REG50
+*' *   (6) Stabilisation_REG05 
+*' *   (7) DrawdownES_REG75 
+*' *   (8) DrawdownES_REG50
+*' *   (9) DrawdownES_REG05
+
 parameter
   cm_postTargetIncrease     "carbon price increase per year after regipol emission target is reached (euro per tCO2)"
 ;

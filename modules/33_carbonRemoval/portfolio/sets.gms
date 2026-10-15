@@ -112,4 +112,24 @@ teNoTransform2rlf(teNoTransform2rlf33) = YES;
 teAdj(teAdj33) = YES;
 teLearn(teLearn33) = YES;
 
+
+*------------------------------------------------------------------------------------
+*' #### UPTAKE specific Regional constraints on maximum novel CDR
+*------------------------------------------------------------------------------------
+
+Set cdrScenario /
+    Drawdown_REG75
+    Drawdown_REG50
+    Drawdown_REG05
+    Stabilisation_REG75
+    Stabilisation_REG50
+    Stabilisation_REG05
+    DrawdownES_REG75
+    DrawdownES_REG50
+    DrawdownES_REG05
+
+/;
+
+
+
 *** EOF ./modules/33_carbonRemoval/portfolio/sets.gms
